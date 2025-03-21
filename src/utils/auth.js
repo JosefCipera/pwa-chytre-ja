@@ -1,6 +1,6 @@
 import { checkProductionData } from "../modules/dataCheck.js";
 
-export const updateRange = "'Data'!A1:Q3"; // ✅ Správný list
+// export const updateRange = "'Data'!A1:Q3"; // ✅ Správný list
 
 let accessToken = null;
 const SCOPES = "https://www.googleapis.com/auth/spreadsheets";
@@ -30,7 +30,8 @@ export function initGoogleAuth() {
 function refreshAccessToken() {
     console.log("🔄 Žádám o nový přístupový token...");
     tokenClient.requestAccessToken({
-        prompt: "consent", // 🟢 Nutí uživatele schválit oprávnění znovu
+        // prompt: "consent", // 🟢 Nutí uživatele schválit oprávnění znovu
+        prompt: "none", // uživatel nemusí schvalovat oprávnění
         callback: (response) => {
             if (response.error) {
                 console.error("❌ Chyba při získání nového tokenu:", response);

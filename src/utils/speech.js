@@ -1,5 +1,5 @@
 import { executeCommand, fetchCommands } from './actions.js';
-import { updateRange } from "./auth.js"; // ✅ Import globální proměnné
+import { updateRange } from "./config.js"; // ✅ Import globální proměnné
 let firstRecognition = true;
 
 export function startSpeechRecognition() {

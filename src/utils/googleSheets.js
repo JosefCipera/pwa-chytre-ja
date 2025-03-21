@@ -1,6 +1,9 @@
-import { GOOGLE_SHEETS_API_KEY, spreadsheetId, SHEET_NAME } from "./config.js"; // ✅ Opravený import
+import { GOOGLE_SHEETS_API_KEY, spreadsheetId, SHEET_NAME, updateRange } from "./config.js"; // ✅ Opravený import
 import { getAccessToken } from "./auth.js"; // ✅ Import správné funkce pro token
-import { updateRange } from "./config.js"; // ✅ Import rozsahu z config.js
+
+// console.log("📥 Načítám spreadsheetId v googleSheets.js:", spreadsheetId);
+console.log("✅ Načtené ID tabulky:", spreadsheetId);
+console.log("✅ Načtený název listu:", SHEET_NAME);
 
 export async function updateSheetData(updatedData) {
     console.log("🔄 Aktualizuji Google Sheet...", updatedData);
@@ -10,6 +13,9 @@ export async function updateSheetData(updatedData) {
         console.error("❌ Chyba: Přístupový token není dostupný.");
         return;
     }
+
+    console.log("📌 Kontrola ID tabulky:", spreadsheetId);
+    console.log("📌 Kontrola názvu listu:", SHEET_NAME);
 
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${updateRange}?valueInputOption=RAW`;
 
@@ -28,7 +34,10 @@ export async function updateSheetData(updatedData) {
 
 export async function fetchSheetData(spreadsheetId, range) {
     console.log("📥 Načítám data z Google Sheets...", spreadsheetId, range);
-    console.log("📌 API požadavek:", `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}`);
+    // console.log("📌 API požadavek:", `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}`);
+    console.log("📌 Odesílám požadavek na API:");
+    console.log(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}`);
+
 
     const response = await fetch(
         `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}`,
@@ -40,7 +49,6 @@ export async function fetchSheetData(spreadsheetId, range) {
             }
         }
     );
-
     const data = await response.json();
     console.log("📊 API odpověď:", data);
 

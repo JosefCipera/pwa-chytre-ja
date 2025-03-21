@@ -7,4 +7,4 @@ export const DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?ve
 export const SCOPES = "https://www.googleapis.com/auth/spreadsheets";
 
 
-export const updateRange = "'Data'!A1:AA1000"; // ✅ Rozsah v listu
+export const updateRange = "'Data'!A1:Z100"; // ✅ Rozsah v listu
