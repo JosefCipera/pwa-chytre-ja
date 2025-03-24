@@ -38,7 +38,7 @@ html {
     height: auto; /* Zachování poměru */
     cursor: pointer;
     transition: opacity 0.3s; /* Změníme na opacity pro lepší efekt */
-    background: #ffffff; /* Bílé pozadí pro lepší kontrast na desktopu */
+    background: transparent; 
     border-radius: 10px; /* Lehké zaokrouhlení pro estetiku */
     padding: 5px; /* Levé okraje pro průhlednou ikonu */
     box-sizing: border-box; /* Zajistíme správné výpočty */
