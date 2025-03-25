@@ -119,3 +119,15 @@ html {
         box-sizing: border-box; /* Zajistíme správné výpočty */
     }
 }
+
+.video-active .top-half {
+    display: none; /* Skryje mikrofon při přehrávání */
+}
+
+.video-active .bottom-half {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
