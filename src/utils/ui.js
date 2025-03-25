@@ -49,3 +49,5 @@ export function displayVideo(url) {
         container.classList.remove('video-active'); // Odebereme třídu
     };
 }
+window.displayVideo = displayVideo;
+
