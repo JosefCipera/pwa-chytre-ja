@@ -4,6 +4,48 @@ export function showMicrophone() {
         micIcon.style.display = "block";
         setTimeout(() => {
             micIcon.style.display = "none";
-        }, 2000); // Skryje mikrofon po 2 sekund�ch
+        }, 2000); // Skryje mikrofon po 2 sekundách
     }
+}
+export function displayVideo(url) {
+    const output = document.getElementById('output');
+    const container = document.querySelector('.container');
+    const micIcon = document.getElementById('start-speech');
+
+    if (!url) {
+        output.innerHTML = '<span class="status">Video nenalezeno</span>';
+        return;
+    }
+
+    // Skryjeme mikrofon a zobrazíme přehrávač
+    micIcon.style.display = 'none';
+    output.innerHTML = ''; // Vyčistíme obsah
+    container.classList.add('video-active'); // Přidáme třídu pro stylování
+
+    let videoElement;
+    if (url.includes('youtube.com') || url.includes('vimeo.com')) {
+        videoElement = document.createElement('iframe');
+        videoElement.width = "100%";
+        videoElement.height = "100%";
+        videoElement.allow = "autoplay; fullscreen";
+        videoElement.src = url.includes('youtube.com')
+            ? `https://www.youtube.com/embed/${new URL(url).searchParams.get('v')}?autoplay=1`
+            : `https://player.vimeo.com/video/${url.split('/').pop()}?autoplay=1`;
+    } else {
+        videoElement = document.createElement('video');
+        videoElement.controls = true;
+        videoElement.autoplay = true;
+        videoElement.src = url;
+        videoElement.style.width = "100%";
+        videoElement.style.height = "100%";
+    }
+
+    output.appendChild(videoElement);
+
+    // Po skončení videa vrátíme mikrofon
+    videoElement.onended = () => {
+        output.innerHTML = '<span class="status">Řekněte příkaz, např. "Přehrát video školení"</span>';
+        micIcon.style.display = 'block';
+        container.classList.remove('video-active'); // Odebereme třídu
+    };
 }
