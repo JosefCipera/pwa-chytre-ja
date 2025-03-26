@@ -22,13 +22,15 @@ export async function fetchCommands(command) {
         return;
     }
     import { displayVideo } from "./ui.js"; 
-
-    if (command.includes("video")) {
-        const videoURL = "https://www.youtube.com/watch?v=PXlpcD24Djo&t=489s"; // Testovací URL
-        displayVideo(videoURL);
-        return;
-    }
     
+    function convertToEmbedUrl(videoUrl) {
+        if (videoUrl.includes("youtube.com/watch?v=")) {
+            const videoId = videoUrl.split("v=")[1]?.split("&")[0]; // Extrahujeme ID videa
+            return `https://www.youtube.com/embed/${videoId}`;
+        }
+        return videoUrl; // Vrátíme původní URL, pokud není z YouTube
+    }
+
     console.log("🎤 Načítám URL pro příkaz:", command);
     const webhookUrl = "https://hook.eu1.make.com/17gn7hrtmnfgsykl52dcn2ekx15nvh1f"; // Aktualizuj URL
 
