@@ -7,7 +7,7 @@ export function showMicrophone() {
         }, 2000); // Skryje mikrofon po 2 sekundách
     }
 }
-function displayVideo(videoUrl) {
+export function displayVideo(videoUrl) {
     console.log("📺 Spouštím video:", videoUrl);
 
     const videoContainer = document.getElementById("video-container");
