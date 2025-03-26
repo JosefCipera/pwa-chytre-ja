@@ -11,41 +11,30 @@ export function displayVideo(url) {
     const output = document.getElementById('output');
     const container = document.querySelector('.container');
     const micIcon = document.getElementById('start-speech');
-    
-    console.log("🎥 Připravuji přehrání videa:", videoUrl);
+
+    console.log("🎥 Připravuji přehrání videa:", url);
     if (!url) {
-        output.innerHTML = '<span class="status">Video nenalezeno</span>';
+        output.innerHTML = '<span class="status">⚠️ Video nenalezeno</span>';
         return;
     }
-    console.log("🎥 Připravuji přehrání videa:", videoUrl);
-    
-    const outputDiv = document.getElementById("output");
-    outputDiv.innerHTML = `
-        <iframe 
-            width="560" 
-            height="315" 
-            src="${videoUrl}?origin=${window.location.origin}&rel=0&showinfo=0&modestbranding=1&controls=1" 
-            frameborder="0" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen>
-        </iframe>
-         <button id="playVideo">▶️ Přehrát</button>
-    `;
-    
-    // Skryjeme mikrofon a zobrazíme přehrávač
+
+    // Vyčistíme obsah výstupu
+    output.innerHTML = '';
+
+    // Skryjeme mikrofon
     micIcon.style.display = 'none';
-    output.innerHTML = ''; // Vyčistíme obsah
-    container.classList.add('video-active'); // Přidáme třídu pro stylování
+    container.classList.add('video-active');
 
     let videoElement;
     if (url.includes('youtube.com') || url.includes('vimeo.com')) {
+        // Převod URL na embed verzi
+        const embedUrl = convertToEmbedUrl(url);
         videoElement = document.createElement('iframe');
         videoElement.width = "100%";
         videoElement.height = "100%";
         videoElement.allow = "autoplay; fullscreen";
-        videoElement.src = url.includes('youtube.com')
-            ? `https://www.youtube.com/embed/${new URL(url).searchParams.get('v')}?autoplay=1`
-            : `https://player.vimeo.com/video/${url.split('/').pop()}?autoplay=1`;
+        videoElement.src = embedUrl;
+        videoElement.frameBorder = "0";
     } else {
         videoElement = document.createElement('video');
         videoElement.controls = true;
@@ -55,14 +44,36 @@ export function displayVideo(url) {
         videoElement.style.height = "100%";
     }
 
-    output.appendChild(videoElement);
-
-    // Po skončení videa vrátíme mikrofon
-    videoElement.onended = () => {
+    // Tlačítko pro zavření videa
+    const closeButton = document.createElement('button');
+    closeButton.innerText = "❌ Zavřít video";
+    closeButton.onclick = () => {
         output.innerHTML = '<span class="status">Řekněte příkaz, např. "Přehrát video školení"</span>';
         micIcon.style.display = 'block';
-        container.classList.remove('video-active'); // Odebereme třídu
+        container.classList.remove('video-active');
     };
+
+    output.appendChild(videoElement);
+    output.appendChild(closeButton);
 }
+
+// Převod YouTube a Vimeo URL na embed formát
+export function convertToEmbedUrl(url) {
+    try {
+        let embedUrl = url;
+        if (url.includes("youtube.com")) {
+            const videoId = new URL(url).searchParams.get("v");
+            embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+        } else if (url.includes("vimeo.com")) {
+            const videoId = url.split("/").pop();
+            embedUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1`;
+        }
+        return embedUrl;
+    } catch (error) {
+        console.error("❌ Chyba při konverzi URL:", error);
+        return url;
+    }
+}
+
 window.displayVideo = displayVideo;
 
