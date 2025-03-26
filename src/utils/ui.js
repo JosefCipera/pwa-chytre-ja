@@ -55,5 +55,5 @@ export function convertToEmbedUrl(url) {
         return url;
     }
 }
-// window.displayVideo = displayVideo;
+window.displayVideo = displayVideo;
 
