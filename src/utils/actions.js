@@ -90,3 +90,6 @@ export async function executeCommand(command) {
         console.log("⚠️ Make nevrátil žádnou URL.");
     }
 }
+
+window.fetchCommands = fetchCommands; // Zajistí, že bude dostupná v konzoli
+
