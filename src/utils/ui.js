@@ -18,6 +18,10 @@ export function displayVideo(url) {
         return;
     }
 
+    console.log("📺 Otevírám video:", url);
+    window.open(url, "_blank"); // Otevře video v nové záložce
+
+
     // Vyčistíme obsah výstupu
     output.innerHTML = '';
 
