@@ -27,6 +27,10 @@ export function displayVideo(videoUrl) {
 
     // Použití YouTube API přehrávače
     videoFrame.src = embedUrl + "?autoplay=1&enablejsapi=1";
+    
+    console.log("🔍 video-container před zobrazením:", videoContainer.classList);
+    videoContainer.classList.remove("hidden");
+    console.log("✅ video-container po zobrazení:", videoContainer.classList);
 
     // Zobrazíme kontejner
     videoContainer.classList.remove("hidden");
