@@ -18,19 +18,20 @@ export function displayVideo(videoUrl) {
         return;
     }
 
-    // Převedeme URL na embed (pokud už není)
+    // Převedeme URL na embed
     const embedUrl = convertToEmbedUrl(videoUrl);
-    
     if (!embedUrl) {
         console.error("❌ Chyba: Neplatná URL pro vložení videa.");
         return;
     }
 
-    // Nastavíme video a zobrazíme ho
-    videoFrame.src = embedUrl;
+    // Použití YouTube API přehrávače
+    videoFrame.src = embedUrl + "?autoplay=1&enablejsapi=1";
+
+    // Zobrazíme kontejner
     videoContainer.classList.remove("hidden");
 
-    // Po zavření video zastavíme
+    // Zavírací tlačítko
     document.getElementById("close-video").addEventListener("click", () => {
         videoContainer.classList.add("hidden");
         videoFrame.src = ""; // Resetujeme zdroj videa
