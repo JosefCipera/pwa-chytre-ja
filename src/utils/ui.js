@@ -7,58 +7,34 @@ export function showMicrophone() {
         }, 2000); // Skryje mikrofon po 2 sekundách
     }
 }
-export function displayVideo(url) {
-    const output = document.getElementById('output');
-    const container = document.querySelector('.container');
-    const micIcon = document.getElementById('start-speech');
+function displayVideo(videoUrl) {
+    console.log("📺 Spouštím video:", videoUrl);
 
-    console.log("🎥 Připravuji přehrání videa:", url);
-    if (!url) {
-        output.innerHTML = '<span class="status">⚠️ Video nenalezeno</span>';
+    const videoContainer = document.getElementById("video-container");
+    const videoFrame = document.getElementById("video-frame");
+
+    if (!videoContainer || !videoFrame) {
+        console.error("❌ Chyba: Kontejner pro video nebyl nalezen!");
         return;
     }
 
-    console.log("📺 Otevírám video:", url);
-    window.open(url, "_blank"); // Otevře video v nové záložce
-
-
-    // Vyčistíme obsah výstupu
-    output.innerHTML = '';
-
-    // Skryjeme mikrofon
-    micIcon.style.display = 'none';
-    container.classList.add('video-active');
-
-    let videoElement;
-    if (url.includes('youtube.com') || url.includes('vimeo.com')) {
-        // Převod URL na embed verzi
-        const embedUrl = convertToEmbedUrl(url);
-        videoElement = document.createElement('iframe');
-        videoElement.width = "100%";
-        videoElement.height = "100%";
-        videoElement.allow = "autoplay; fullscreen";
-        videoElement.src = embedUrl;
-        videoElement.frameBorder = "0";
-    } else {
-        videoElement = document.createElement('video');
-        videoElement.controls = true;
-        videoElement.autoplay = true;
-        videoElement.src = url;
-        videoElement.style.width = "100%";
-        videoElement.style.height = "100%";
+    // Převedeme URL na embed (pokud už není)
+    const embedUrl = convertToEmbedUrl(videoUrl);
+    
+    if (!embedUrl) {
+        console.error("❌ Chyba: Neplatná URL pro vložení videa.");
+        return;
     }
 
-    // Tlačítko pro zavření videa
-    const closeButton = document.createElement('button');
-    closeButton.innerText = "❌ Zavřít video";
-    closeButton.onclick = () => {
-        output.innerHTML = '<span class="status">Řekněte příkaz, např. "Přehrát video školení"</span>';
-        micIcon.style.display = 'block';
-        container.classList.remove('video-active');
-    };
+    // Nastavíme video a zobrazíme ho
+    videoFrame.src = embedUrl;
+    videoContainer.classList.remove("hidden");
 
-    output.appendChild(videoElement);
-    output.appendChild(closeButton);
+    // Po zavření video zastavíme
+    document.getElementById("close-video").addEventListener("click", () => {
+        videoContainer.classList.add("hidden");
+        videoFrame.src = ""; // Resetujeme zdroj videa
+    });
 }
 
 // Převod YouTube a Vimeo URL na embed formát
