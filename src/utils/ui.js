@@ -11,7 +11,8 @@ export function displayVideo(url) {
     const output = document.getElementById('output');
     const container = document.querySelector('.container');
     const micIcon = document.getElementById('start-speech');
-
+    
+    console.log("🎥 Připravuji přehrání videa:", videoUrl);
     if (!url) {
         output.innerHTML = '<span class="status">Video nenalezeno</span>';
         return;
@@ -28,6 +29,7 @@ export function displayVideo(url) {
             allow="autoplay; encrypted-media" 
             allowfullscreen>
         </iframe>
+         <button id="playVideo">▶️ Přehrát</button>
     `;
     
     // Skryjeme mikrofon a zobrazíme přehrávač
