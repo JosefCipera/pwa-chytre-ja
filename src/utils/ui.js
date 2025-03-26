@@ -7,6 +7,11 @@ export function showMicrophone() {
         }, 2000); // Skryje mikrofon po 2 sekundách
     }
 }
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("✅ DOM plně načten.");
+    console.log("📌 video-container existuje?", document.getElementById("video-container"));
+});
+
 export function displayVideo(videoUrl) {
     console.log("📺 Spouštím video:", videoUrl);
 
