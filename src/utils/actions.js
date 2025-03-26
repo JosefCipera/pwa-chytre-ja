@@ -12,8 +12,13 @@ export { commands };
 
 export let commandList = {};  // Správně exportujeme seznam povelů
 
-export async function fetchCommands(command) {
-    console.trace("🕵️‍♂️ fetchCommands() bylo zavoláno s:", command);
+//export async function fetchCommands(command) {
+//    console.trace("🕵️‍♂️ fetchCommands() bylo zavoláno s:", command);
+
+export async functionfetchCommands(recognizedText).then((url) => {
+    const embedUrl = convertToEmbedUrl(url);
+    displayVideo(embedUrl);
+});
 
     // ✅ Pokud je rozpoznán příkaz "kontrola dat", spustíme signInAndRunCheck()
     if (command.toLowerCase() === "kontrola dat") {
