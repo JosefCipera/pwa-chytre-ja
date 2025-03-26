@@ -1,5 +1,6 @@
 import { signInAndRunCheck } from "./auth.js";
-import { updateRange } from "./config.js"; // ✅ Import globální proměnné
+import { updateRange } from "./config.js"; 
+import { displayVideo } from "./ui.js"; 
 
 const commands = {
     "kontrola dat": () => {
@@ -10,30 +11,23 @@ const commands = {
 
 export { commands };
 
-export let commandList = {};  // Správně exportujeme seznam povelů
+// Převod URL na YouTube embed formát
+function convertToEmbedUrl(videoUrl) {
+    if (videoUrl.includes("youtube.com/watch?v=")) {
+        const videoId = videoUrl.split("v=")[1]?.split("&")[0]; // Extrahujeme ID videa
+        return `https://www.youtube.com/embed/${videoId}`;
+    }
+    return videoUrl; // Pokud není z YouTube, vrátíme původní URL
+}
 
-//export async function fetchCommands(command) {
-//    console.trace("🕵️‍♂️ fetchCommands() bylo zavoláno s:", command);
+// Funkce pro získání URL z Make a zobrazení videa
+export async function fetchCommands(command) {
+    console.trace("🕵️‍♂️ fetchCommands() bylo zavoláno s:", command);
 
-export async functionfetchCommands(recognizedText).then((url) => {
-    const embedUrl = convertToEmbedUrl(url);
-    displayVideo(embedUrl);
-});
-
-    // ✅ Pokud je rozpoznán příkaz "kontrola dat", spustíme signInAndRunCheck()
     if (command.toLowerCase() === "kontrola dat") {
         console.log("✅ Spouštím signInAndRunCheck() pro kontrolu dat...");
-        signInAndRunCheck(); // 🔥 Spustí přihlášení a kontrolu tabulky
+        signInAndRunCheck();
         return;
-    }
-    import { displayVideo } from "./ui.js"; 
-    
-    function convertToEmbedUrl(videoUrl) {
-        if (videoUrl.includes("youtube.com/watch?v=")) {
-            const videoId = videoUrl.split("v=")[1]?.split("&")[0]; // Extrahujeme ID videa
-            return `https://www.youtube.com/embed/${videoId}`;
-        }
-        return videoUrl; // Vrátíme původní URL, pokud není z YouTube
     }
 
     console.log("🎤 Načítám URL pro příkaz:", command);
@@ -59,10 +53,10 @@ export async functionfetchCommands(recognizedText).then((url) => {
             const result = JSON.parse(text);
             console.log("✅ Přijatá odpověď:", result);
 
-            // Pracujeme jen s jednou URL, seznam není potřeba
             if (result.url) {
-                console.log("🚀 Přesměrování na:", result.url);
-                window.location.href = result.url; // Přesměrování přímo na URL
+                const embedUrl = convertToEmbedUrl(result.url);
+                console.log("🚀 Spouštím video:", embedUrl);
+                displayVideo(embedUrl);
             } else {
                 console.error("❌ Chyba: Make nevrátil URL:", result);
                 document.getElementById('output').innerText = "⚠️ Odpověď z Make neobsahuje URL.";
@@ -78,7 +72,7 @@ export async functionfetchCommands(recognizedText).then((url) => {
     }
 }
 
-
+// Odeslání povelu do Make a získání URL
 export async function executeCommand(command) {
     console.log(`🔎 Odesílám příkaz do Make: ${command}`);
 
@@ -87,9 +81,6 @@ export async function executeCommand(command) {
         return;
     }
 
-    const recognizedUrl = document.getElementById("recognized-url");
-
-    // Pošleme povel do Make a získáme odpověď
     const url = await fetchCommands(command);
 
     if (url) {
@@ -99,6 +90,3 @@ export async function executeCommand(command) {
         console.log("⚠️ Make nevrátil žádnou URL.");
     }
 }
-
-
-
