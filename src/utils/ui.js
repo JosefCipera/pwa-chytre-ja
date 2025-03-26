@@ -11,6 +11,9 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("✅ DOM plně načten.");
     console.log("📌 video-container existuje?", document.getElementById("video-container"));
 });
+document.addEventListener("DOMContentLoaded", function () {
+    displayVideo("https://www.youtube.com/embed/PXlpcD24Djo");
+});
 
 export function displayVideo(videoUrl) {
     console.log("📺 Spouštím video:", videoUrl);
