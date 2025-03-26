@@ -16,7 +16,20 @@ export function displayVideo(url) {
         output.innerHTML = '<span class="status">Video nenalezeno</span>';
         return;
     }
-
+    console.log("🎥 Připravuji přehrání videa:", videoUrl);
+    
+    const outputDiv = document.getElementById("output");
+    outputDiv.innerHTML = `
+        <iframe 
+            width="560" 
+            height="315" 
+            src="${videoUrl}?autoplay=1&rel=0&showinfo=0&modestbranding=1&controls=1" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen>
+        </iframe>
+    `;
+    
     // Skryjeme mikrofon a zobrazíme přehrávač
     micIcon.style.display = 'none';
     output.innerHTML = ''; // Vyčistíme obsah
