@@ -7,47 +7,44 @@ export function showMicrophone() {
         }, 2000); // Skryje mikrofon po 2 sekundách
     }
 }
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("✅ DOM plně načten.");
-    console.log("📌 video-container existuje?", document.getElementById("video-container"));
-});
-document.addEventListener("DOMContentLoaded", function () {
-    displayVideo("https://www.youtube.com/embed/PXlpcD24Djo");
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("📌 UI.js načteno - čekám na příkaz pro zobrazení videa");
 });
 
-export function displayVideo(videoUrl) {
+function displayVideo(videoUrl) {
     console.log("📺 Spouštím video:", videoUrl);
 
     const videoContainer = document.getElementById("video-container");
     const videoFrame = document.getElementById("video-frame");
+    const mainContainer = document.querySelector(".main-container");
 
-    if (!videoContainer || !videoFrame) {
-        console.error("❌ Chyba: Kontejner pro video nebyl nalezen!");
+    if (!videoContainer || !videoFrame || !mainContainer) {
+        console.error("❌ Chyba: Chybí HTML prvky pro video");
         return;
     }
 
-    // Převedeme URL na embed
-    const embedUrl = convertToEmbedUrl(videoUrl);
-    if (!embedUrl) {
-        console.error("❌ Chyba: Neplatná URL pro vložení videa.");
+    videoFrame.src = videoUrl;
+    videoContainer.classList.remove("hidden");
+    mainContainer.classList.add("hidden");
+
+    console.log("✅ Video zobrazeno a mikrofon skryt");
+}
+
+function hideVideo() {
+    const videoContainer = document.getElementById("video-container");
+    const videoFrame = document.getElementById("video-frame");
+    const mainContainer = document.querySelector(".main-container");
+
+    if (!videoContainer || !videoFrame || !mainContainer) {
+        console.error("❌ Chyba: Chybí HTML prvky pro video");
         return;
     }
 
-    // Použití YouTube API přehrávače
-    videoFrame.src = embedUrl + "?autoplay=1&enablejsapi=1";
-    
-    console.log("🔍 video-container před zobrazením:", videoContainer.classList);
-    videoContainer.classList.remove("hidden");
-    console.log("✅ video-container po zobrazení:", videoContainer.classList);
+    videoFrame.src = "";
+    videoContainer.classList.add("hidden");
+    mainContainer.classList.remove("hidden");
 
-    // Zobrazíme kontejner
-    videoContainer.classList.remove("hidden");
-
-    // Zavírací tlačítko
-    document.getElementById("close-video").addEventListener("click", () => {
-        videoContainer.classList.add("hidden");
-        videoFrame.src = ""; // Resetujeme zdroj videa
-    });
+    console.log("🔄 Video skryto a mikrofon obnoven");
 }
 
 // Převod YouTube a Vimeo URL na embed formát
