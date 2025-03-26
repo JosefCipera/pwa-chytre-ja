@@ -24,7 +24,7 @@ export function displayVideo(url) {
         <iframe 
             width="560" 
             height="315" 
-            src="${videoUrl}?autoplay=1&rel=0&showinfo=0&modestbranding=1&controls=1" 
+            src="${videoUrl}?origin=${window.location.origin}&rel=0&showinfo=0&modestbranding=1&controls=1" 
             frameborder="0" 
             allow="autoplay; encrypted-media" 
             allowfullscreen>
