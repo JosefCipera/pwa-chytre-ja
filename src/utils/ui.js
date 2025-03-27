@@ -1,14 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("📌 UI.js načteno - čekám na příkaz pro zobrazení videa");
+    console.log("📌 UI.js načteno - kontroluji HTML prvky");
+
+    const videoContainer = document.getElementById("video-container");
+    const videoFrame = document.getElementById("video-frame");
+    const closeButton = document.getElementById("close-video");
+
+    console.log("🎥 videoContainer:", videoContainer);
+    console.log("🎞️ videoFrame:", videoFrame);
+    console.log("❌ closeButton:", closeButton);
 });
 
 export function displayVideo(videoUrl) {
     console.log("📺 Spouštím video:", videoUrl);
-
+/*
     const videoContainer = document.getElementById("video-container");
     const videoFrame = document.getElementById("video-frame");
     const mainContainer = document.querySelector(".main-container");
-
+*/
     if (!videoContainer || !videoFrame || !mainContainer) {
         console.error("❌ Chyba: Chybí HTML prvky pro video");
         return;
