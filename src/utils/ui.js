@@ -1,13 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
     console.log("📌 UI.js načteno - kontroluji HTML prvky");
-
-    const videoContainer = document.getElementById("video-container");
-    const videoFrame = document.getElementById("video-frame");
-    const closeButton = document.getElementById("close-video");
-
-    console.log("🎥 videoContainer:", videoContainer);
-    console.log("🎞️ videoFrame:", videoFrame);
-    console.log("❌ closeButton:", closeButton);
 });
 
 export function displayVideo(videoUrl) {
