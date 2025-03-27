@@ -1,4 +1,4 @@
-eport export function showMicrophone() {
+export export function showMicrophone() {
     const micIcon = document.getElementById("microphone");
     if (micIcon) {
         micIcon.style.display = "block";
