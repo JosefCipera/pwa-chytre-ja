@@ -1,4 +1,4 @@
-export function showMicrophone() {
+port export function showMicrophone() {
     const micIcon = document.getElementById("microphone");
     if (micIcon) {
         micIcon.style.display = "block";
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("📌 UI.js načteno - čekám na příkaz pro zobrazení videa");
 });
 
-function displayVideo(videoUrl) {
+export function displayVideo(videoUrl) {
     console.log("📺 Spouštím video:", videoUrl);
 
     const videoContainer = document.getElementById("video-container");
