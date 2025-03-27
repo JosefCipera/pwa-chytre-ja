@@ -17,6 +17,13 @@ export function displayVideo(videoUrl) {
     videoFrame.src = videoUrl;
     videoContainer.style.display = "block";
 }
+document.getElementById("close-video").addEventListener("click", () => {
+    let videoContainer = document.getElementById("video-container");
+    let videoFrame = document.getElementById("video-frame");
+
+    videoContainer.style.display = "none";
+    videoFrame.src = ""; // Zastaví video
+});
 
 function hideVideo() {
     const videoContainer = document.getElementById("video-container");
