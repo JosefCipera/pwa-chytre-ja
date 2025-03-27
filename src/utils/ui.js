@@ -1,17 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("📌 UI.js načteno - čekám na příkaz pro zobrazení videa");
-
-    // Prvky musí existovat
-    const videoContainer = document.getElementById("video-container");
-    const videoFrame = document.getElementById("video-frame");
-    const mainContainer = document.querySelector(".main-container");
-
-    if (!videoContainer || !videoFrame || !mainContainer) {
-        console.error("❌ Chyba: Některý z HTML prvků pro video neexistuje.");
-    } else {
-        console.log("✅ Všechny prvky pro video existují.");
-    }
+    console.log("📌 Dokument načten");
+    console.log(document.getElementById("video-container"));
 });
+
 
 export function displayVideo(videoUrl) {
     console.log("📺 Spouštím video:", videoUrl);
