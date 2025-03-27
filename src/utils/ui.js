@@ -25,8 +25,9 @@ export function displayVideo(videoUrl) {
         return;
     }
 
-    videoFrame.src = videoUrl;
+     // 🛠 Přidáváme odstranění hidden explicitně
     videoContainer.classList.remove("hidden");
+    videoFrame.src = videoUrl;
     mainContainer.classList.add("hidden");
 
     console.log("✅ Video zobrazeno a mikrofon skryt");
