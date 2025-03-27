@@ -173,6 +173,8 @@
     function displayContent(url) {
       const output = document.getElementById('output');
       output.innerText = `Načítám obsah: ${url}`;
+      const urlFromMake = url;
+      handleUrl(urlFromMake);
 
       // Zkontrolujeme, zda je URL platná
       if (!url || typeof url !== 'string') {
@@ -181,7 +183,7 @@
       }
 
       // Rozpoznání typu URL a zobrazení v frame nebo chybová hláška
-      if (url.includes('.mp3') || url.includes('.wav') || url.includes('podcasty.seznam.cz')) {
+        if (url.includes('.mp3') || url.includes('.wav') || url.includes('podcasty.seznam.cz')) {
         const audio = document.createElement('audio');
         audio.controls = true;
         audio.src = url;
@@ -357,6 +359,17 @@
     });
 
   </script>
+<script>
+  function handleUrl(url) {
+    const iframe = document.getElementById("video-frame");
+    if (url.includes("youtube.com") || url.includes("youtu.be")) {
+      iframe.src = url;
+      iframe.style.display = "block";
+    } else {
+      window.location.href = url;
+    }
+  }
+</script>
 
 </body>
 
