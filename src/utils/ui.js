@@ -6,23 +6,16 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 export function displayVideo(videoUrl) {
-    console.log("📺 Spouštím video:", videoUrl);
+    let videoContainer = document.getElementById("video-container");
+    let videoFrame = document.getElementById("video-frame");
 
-    const videoContainer = document.getElementById("video-container");
-    const videoFrame = document.getElementById("video-frame");
-    const mainContainer = document.querySelector(".main-container");
-
-    if (!videoContainer || !videoFrame || !mainContainer) {
-        console.error("❌ Chyba: Chybí HTML prvky pro video");
+    if (!videoContainer || !videoFrame) {
+        console.error("❌ Chyba: Některý z HTML prvků pro video neexistuje.");
         return;
     }
 
-     // 🛠 Přidáváme odstranění hidden explicitně
-    videoContainer.classList.remove("hidden");
     videoFrame.src = videoUrl;
-    mainContainer.classList.add("hidden");
-
-    console.log("✅ Video zobrazeno a mikrofon skryt");
+    videoContainer.style.display = "block";
 }
 
 function hideVideo() {
