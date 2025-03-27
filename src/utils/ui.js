@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("📌 Dokument načten");
-    console.log(document.getElementById("video-container"));
+    console.log("✅ Dokument načten");
+    console.log("📌 Video container:", document.getElementById("video-container"));
+    console.log("📌 Video frame:", document.getElementById("video-frame"));
+    console.log("📌 Close button:", document.getElementById("close-video"));
 });
-
 
 export function displayVideo(videoUrl) {
     console.log("📺 Spouštím video:", videoUrl);
