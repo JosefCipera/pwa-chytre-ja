@@ -362,13 +362,18 @@
 <script>
   function handleUrl(url) {
     const iframe = document.getElementById("video-frame");
+
+    // Podmínka pro YouTube videa
     if (url.includes("youtube.com") || url.includes("youtu.be")) {
-      iframe.src = url;
-      iframe.style.display = "block";
+        iframe.src = url;
+        iframe.style.display = "block"; // Zviditelnění iframe
     } else {
-      window.location.href = url;
+        iframe.style.display = "none"; // Skrytí iframe
+        iframe.src = ""; // Vyčištění předchozího obsahu
+        window.location.href = url; // Přesměrování na normální stránku
     }
-  }
+}
+
 </script>
 
 </body>
