@@ -2,6 +2,36 @@
 <html lang="cs">
 
 <head>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifikační Box</title>
+  <style>
+      body {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          background-color: #121212;
+          color: white;
+          font-family: Arial, sans-serif;
+      }
+      .notification-box {
+          position: absolute;
+          bottom: 10%;
+          width: 60%;
+          max-width: 400px;
+          padding: 15px;
+          border-left: 5px solid;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 8px;
+          display: none; /* Skryté ve výchozím stavu */
+      }
+      .success { border-color: #4CAF50; } /* Zelená */
+      .info { border-color: #2196F3; } /* Modrá */
+      .warning { border-color: #FF9800; } /* Oranžová */
+      .error { border-color: #F44336; } /* Červená */
+  </style>
+  
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script type="module">
     import { initGoogleAuth } from "./src/utils/auth.js";
@@ -22,6 +52,20 @@
 </head>
 
 <body>
+  <div id="notification" class="notification-box success">Úspěch! Vše proběhlo správně.</div>
+    <script>
+        function showNotification(type, message) {
+            const notification = document.getElementById('notification');
+            notification.className = `notification-box ${type}`;
+            notification.innerText = message;
+            notification.style.display = 'block';
+            setTimeout(() => notification.style.display = 'none', 3000); // Skryje se po 3s
+        }
+
+        // Testovací volání
+        setTimeout(() => showNotification('info', 'Informativní zpráva.'), 1000);
+    </script>
+  
   <button id="install-button" style="opacity: 0;">📲 Instalovat PWA</button>
 
   <div id="microphone" style="display: none;">🎤</div>
