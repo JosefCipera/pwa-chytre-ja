@@ -361,15 +361,21 @@
   </script>
 <script>
   function handleUrl(url) {
+    console.log("🔍 URL přijata:", url); // Sledujeme, co přichází
+
     const iframe = document.getElementById("video-frame");
+    const videoContainer = document.getElementById("video-container");
 
     // Podmínka pro YouTube videa
     if (url.includes("youtube.com") || url.includes("youtu.be")) {
+        console.log("🎬 Detekováno YouTube video.");
         iframe.src = url;
-        iframe.style.display = "block"; // Zviditelnění iframe
+        videoContainer.style.display = "block"; // Zviditelnění iframe
     } else {
+        console.log("🌐 Obyčejný odkaz, přesměrování.");
         iframe.style.display = "none"; // Skrytí iframe
         iframe.src = ""; // Vyčištění předchozího obsahu
+        videoContainer.style.display = "none"; // Skrytí kontejneru
         window.location.href = url; // Přesměrování na normální stránku
     }
 }
