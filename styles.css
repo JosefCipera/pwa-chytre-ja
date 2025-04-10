@@ -1,17 +1,21 @@
 body {
     margin: 0;
     height: 100vh;
-    display: block; /* Změníme na block, abychom odstranili flex omezení */
+    display: block;
+    /* Změníme na block, abychom odstranili flex omezení */
     background-color: #f0f0f0;
     font-family: Arial, sans-serif;
-    overflow-x: hidden; /* Zabrání horizontálnímu scrollování */
-    box-sizing: border-box; /* Zajistíme správné výpočty šířky/výšky */
+    overflow-x: hidden;
+    /* Zabrání horizontálnímu scrollování */
+    box-sizing: border-box;
+    /* Zajistíme správné výpočty šířky/výšky */
 }
 
 html {
     width: 100%;
     height: 100%;
-    overflow-x: hidden; /* Zabrání horizontálnímu scrollování */
+    overflow-x: hidden;
+    /* Zabrání horizontálnímu scrollování */
 }
 
 .container {
@@ -19,103 +23,177 @@ html {
     height: 100%;
     display: flex;
     flex-direction: column;
-    position: relative; /* Pro umístění videa v rámci kontejneru */
-    max-width: none !important; /* Odstraníme případné omezení šířky */
-    box-sizing: border-box; /* Zajistíme správné výpočty */
+    position: relative;
+    /* Pro umístění videa v rámci kontejneru */
+    max-width: none !important;
+    /* Odstraníme případné omezení šířky */
+    box-sizing: border-box;
+    /* Zajistíme správné výpočty */
 }
 
-.top-half, .bottom-half {
+.top-half,
+.bottom-half {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    max-width: none !important; /* Odstraníme případné omezení */
-    box-sizing: border-box; /* Zajistíme správné výpočty */
+    max-width: none !important;
+    /* Odstraníme případné omezení */
+    box-sizing: border-box;
+    /* Zajistíme správné výpočty */
 }
 
 .mic-icon {
-    width: 250px; /* Zachováme zmenšení mikrofonu na desktopu (můžeme upravit) */
-    height: auto; /* Zachování poměru */
+    width: 250px;
+    /* Zachováme zmenšení mikrofonu na desktopu (můžeme upravit) */
+    height: auto;
+    /* Zachování poměru */
     cursor: pointer;
-    transition: opacity 0.3s; /* Změníme na opacity pro lepší efekt */
-    background: #ffffff; /* Bílé pozadí pro lepší kontrast na desktopu */
-    border-radius: 10px; /* Lehké zaokrouhlení pro estetiku */
-    padding: 5px; /* Levé okraje pro průhlednou ikonu */
-    box-sizing: border-box; /* Zajistíme správné výpočty */
+    transition: opacity 0.3s;
+    /* Změníme na opacity pro lepší efekt */
+    background: #ffffff;
+    /* Bílé pozadí pro lepší kontrast na desktopu */
+    border-radius: 10px;
+    /* Lehké zaokrouhlení pro estetiku */
+    padding: 5px;
+    /* Levé okraje pro průhlednou ikonu */
+    box-sizing: border-box;
+    /* Zajistíme správné výpočty */
 }
 
 .mic-icon.recording {
-    opacity: 0.7; /* Změníme průhlednost během nahrávání */
+    opacity: 0.7;
+    /* Změníme průhlednost během nahrávání */
 }
 
 #output {
-    font-size: 20px; /* Trochu zvětšíme text pro lepší čitelnost */
+    font-size: 20px;
+    /* Trochu zvětšíme text pro lepší čitelnost */
     color: #333;
     text-align: center;
-    margin-top: 20px !important; /* Zachováme mezeru mezi mikrofonem a videem na desktopu */
-    max-width: none !important; /* Odstraníme omezení šířky */
-    width: 100%; /* Plná šířka kontejneru */
-    box-sizing: border-box; /* Zajistíme správné výpočty */
+    margin-top: 20px !important;
+    /* Zachováme mezeru mezi mikrofonem a videem na desktopu */
+    max-width: none !important;
+    /* Odstraníme omezení šířky */
+    width: 100%;
+    /* Plná šířka kontejneru */
+    box-sizing: border-box;
+    /* Zajistíme správné výpočty */
 }
 
 /* Styly pro stavové zprávy */
 .status {
     font-size: 24px;
-    color: #4444ff; /* Modrá barva pro stav */
-    font-weight: normal; /* Neboldované */
+    color: #4444ff;
+    /* Modrá barva pro stav */
+    font-weight: normal;
+    /* Neboldované */
     display: block;
     margin-bottom: 10px;
 }
 
 .hint {
     font-size: 18px;
-    color: #333; /* Černá barva pro nápovědu */
+    color: #333;
+    /* Černá barva pro nápovědu */
     display: block;
 }
 
 /* Desktop – zvětšené video pod mikrofonem, správný poměr stran, minimální mezera */
 @media (min-width: 769px) {
     .mic-icon {
-        width: 250px; /* Zachováme zmenšení mikrofonu */
+        width: 250px;
+        /* Zachováme zmenšení mikrofonu */
     }
-    .container, .bottom-half {
-        max-width: none !important; /* Odstraníme případné omezení */
-        width: 100%; /* Plná šířka kontejneru */
+
+    .container,
+    .bottom-half {
+        max-width: none !important;
+        /* Odstraníme případné omezení */
+        width: 100%;
+        /* Plná šířka kontejneru */
     }
+
     #output {
-        position: relative; /* Vrátíme video do .bottom-half */
-        width: 533px !important; /* Zachováme zvětšení videa */
-        margin: 0 auto !important; /* Centrování videa v rámci stránky */
-        padding: 0 !important; /* Odstraníme padding */
+        position: relative;
+        /* Vrátíme video do .bottom-half */
+        width: 533px !important;
+        /* Zachováme zvětšení videa */
+        margin: 0 auto !important;
+        /* Centrování videa v rámci stránky */
+        padding: 0 !important;
+        /* Odstraníme padding */
     }
-    #output audio, #output video, #output iframe {
-        height: 300px !important; /* Zachováme výšku pro poměr 16:9 s šířkou 533px */
-        width: 533px !important; /* Zachováme zvětšení šířky videa */
-        max-width: none !important; /* Odstraníme případné omezení */
-        object-fit: cover; /* Roztažení videa na plnou šířku a výšku, minimalizace černých pruhů (může oříznout okraje) */
-        margin: 0 !important; /* Odstraníme margin */
-        padding: 0 !important; /* Odstraníme padding */
-        border: none !important; /* Odstraníme okraje */
+
+    #output audio,
+    #output video,
+    #output iframe {
+        height: 300px !important;
+        /* Zachováme výšku pro poměr 16:9 s šířkou 533px */
+        width: 533px !important;
+        /* Zachováme zvětšení šířky videa */
+        max-width: none !important;
+        /* Odstraníme případné omezení */
+        object-fit: cover;
+        /* Roztažení videa na plnou šířku a výšku, minimalizace černých pruhů (může oříznout okraje) */
+        margin: 0 !important;
+        /* Odstraníme margin */
+        padding: 0 !important;
+        /* Odstraníme padding */
+        border: none !important;
+        /* Odstraníme okraje */
     }
 }
 
 /* Mobil – video pod mikrofonem, bez modrého okraje u mikrofonu */
 @media (max-width: 768px) {
     .mic-icon {
-        width: 50vw; /* Polovina šířky mobilu */
-        max-width: none; /* Žádné omezení na mobilu */
-        background: transparent; /* Bez pozadí na mobilu, aby kontrastoval s modrou plochou */
-        border: none; /* Odstraníme modrý okraj */
-        box-sizing: border-box; /* Zajistíme správné výpočty */
+        width: 50vw;
+        /* Polovina šířky mobilu */
+        max-width: none;
+        /* Žádné omezení na mobilu */
+        background: transparent;
+        /* Bez pozadí na mobilu, aby kontrastoval s modrou plochou */
+        border: none;
+        /* Odstraníme modrý okraj */
+        box-sizing: border-box;
+        /* Zajistíme správné výpočty */
     }
+
     .bottom-half {
-        align-items: flex-start; /* Posuneme obsah (.bottom-half) nahoru na mobilu */
-        padding-top: 80px; /* Zůstáváme u 80px pro posun nahoru */
+        align-items: flex-start;
+        /* Posuneme obsah (.bottom-half) nahoru na mobilu */
+        padding-top: 80px;
+        /* Zůstáváme u 80px pro posun nahoru */
     }
-    #output audio, #output video, #output iframe {
-        height: 400px; /* Zachováme původní výšku pro mobil */
-        max-width: 100%; /* Normální šířka na mobilu */
-        object-fit: contain; /* Zachování proporce */
-        box-sizing: border-box; /* Zajistíme správné výpočty */
+
+    #output audio,
+    #output video,
+    #output iframe {
+        height: 400px;
+        /* Zachováme původní výšku pro mobil */
+        max-width: 100%;
+        /* Normální šířka na mobilu */
+        object-fit: contain;
+        /* Zachování proporce */
+        box-sizing: border-box;
+        /* Zajistíme správné výpočty */
+    }
+}
+
+/* ... vaše stávající styly ... */
+.pulsate {
+    animation: pulsate-animation 1s infinite alternate;
+}
+
+@keyframes pulsate-animation {
+    0% {
+        opacity: 0.7;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1.1);
     }
 }

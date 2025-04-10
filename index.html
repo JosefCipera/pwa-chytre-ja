@@ -81,6 +81,8 @@
       isProcessing = false;
     };
 
+    const beepSound = new Audio('beep.mp3');
+
     document.getElementById('start-speech').addEventListener('click', () => {
       if (isProcessing) {
         console.log('⏳ Jiný požadavek se již zpracovává. Počkejte prosím.');
@@ -96,6 +98,60 @@
       document.getElementById('start-speech').classList.add('recording');
       isProcessing = true;
 
+      const beepSound = new Audio('beep.mp3');
+      const micIcon = document.getElementById('microphoneIcon'); // Pokud jste přidali ID
+      const defaultMicIconSrc = micIcon ? micIcon.src : '';
+      const recordingIconSrc = 'images/microphone-recording.png'; // Pokud chcete měnit ikonu
+
+      recognition.onstart = function () {
+        recording = true;
+        if (micIcon && recordingIconSrc) {
+          micIcon.src = recordingIconSrc;
+        }
+        if (micIcon) {
+          micIcon.classList.add('pulsate');
+        }
+        try {
+          beepSound.play();
+        } catch (err) {
+          console.log("Nepodařilo se přehrát zvuk: " + err);
+        }
+        // Zde už nemáte nic dalšího souvisejícího se *začátkem* nahrávání
+      }
+
+      recognition.onspeechend = function () {
+        try {
+          beepSound.play();
+        } catch (err) {
+          console.log("Nepodařilo se přehrát zvuk na konci: " + err);
+        }
+        recognition.stop();
+        recording = false;
+        if (micIcon) {
+          micIcon.classList.remove('pulsate');
+          if (defaultMicIconSrc) {
+            micIcon.src = defaultMicIconSrc;
+          }
+        }
+      }
+
+      recognition.onend = function () {
+        recording = false;
+        if (micIcon) {
+          micIcon.classList.remove('pulsate');
+          if (defaultMicIconSrc) {
+            micIcon.src = defaultMicIconSrc;
+          }
+        }
+      }
+
+      /* recognition.onend = function () {
+        recording = false;
+        if (micIcon && defaultMicIconSrc) {
+          micIcon.src = defaultMicIconSrc;
+        }
+        // ... zbytek kódu ...
+      }
       // Automatické zastavení po 10 sekundách
       setTimeout(() => {
         if (recognition) {
@@ -104,7 +160,7 @@
           document.getElementById('start-speech').classList.remove('recording');
           isProcessing = false;
         }
-      }, 10000);
+      }, 10000); */
     });
 
     recognition.onresult = (event) => {
