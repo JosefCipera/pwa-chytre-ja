@@ -136,7 +136,8 @@ recognition.onresult = (event) => {
 async function handleCommand(command) {
     console.log("🎤 Odesílám povel na Make:", command);
 
-    const webhookUrl = "https://hook.eu1.make.com/17gn7hrtmnfgsykl52dcn2ekx15nvh1f"; // Aktualizuj URL
+    // const webhookUrl = "https://hook.eu1.make.com/17gn7hrtmnfgsykl52dcn2ekx15nvh1f"; // Aktualizuj URL
+    const webhookUrl = "https://hook.eu1.make.com/7oiexq848aerxmqcztnyvs06qtw31rh6"; // Webhook pro AI
 
     try {
         const response = await fetch(webhookUrl, {
