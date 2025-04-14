@@ -31,7 +31,8 @@ html {
     /* Zajistíme správné výpočty */
 }
 
-.top-half {
+.top-half,
+.bottom-half {
     flex: 1;
     display: flex;
     justify-content: center;
@@ -83,6 +84,69 @@ html {
     display: block;
 }
 
+/* Desktop – zvětšené video pod mikrofonem, správný poměr stran, minimální mezera */
+@media (min-width: 769px) {
+    .mic-icon {
+        width: 250px;
+        /* Zachováme zmenšení mikrofonu */
+    }
+
+    .container,
+    .bottom-half {
+        max-width: none !important;
+        /* Odstraníme případné omezení */
+        width: 100%;
+        /* Plná šířka kontejneru */
+    }
+
+    #output {
+        position: relative;
+        /* Vrátíme video do .bottom-half */
+        width: 533px !important;
+        /* Zachováme zvětšení videa */
+        margin: 0 auto !important;
+        /* Centrování videa v rámci stránky */
+        padding: 0 !important;
+        /* Odstraníme padding */
+    }
+}
+
+/* Mobil – video pod mikrofonem, bez modrého okraje u mikrofonu */
+@media (max-width: 768px) {
+    .mic-icon {
+        width: 50vw;
+        /* Polovina šířky mobilu */
+        max-width: none;
+        /* Žádné omezení na mobilu */
+        background: transparent;
+        /* Bez pozadí na mobilu, aby kontrastoval s modrou plochou */
+        border: none;
+        /* Odstraníme modrý okraj */
+        box-sizing: border-box;
+        /* Zajistíme správné výpočty */
+    }
+
+    .bottom-half {
+        align-items: flex-start;
+        /* Posuneme obsah (.bottom-half) nahoru na mobilu */
+        padding-top: 80px;
+        /* Zůstáváme u 80px pro posun nahoru */
+    }
+
+    #output audio,
+    #output video,
+    #output iframe {
+        height: 400px;
+        /* Zachováme původní výšku pro mobil */
+        max-width: 100%;
+        /* Normální šířka na mobilu */
+        object-fit: contain;
+        /* Zachování proporce */
+        box-sizing: border-box;
+        /* Zajistíme správné výpočty */
+    }
+}
+
 /* ... vaše stávající styly ... */
 .pulsate {
     animation: pulsate-animation 1s infinite alternate;
@@ -103,55 +167,35 @@ html {
 /* styles.css */
 /* ... vaše stávající CSS styly ... */
 
-.bottom-half {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* Vrátíme align-items na center */
-    max-width: none !important;
-    box-sizing: border-box;
-}
-
 #output {
-    width: fit-content;
-    max-width: 90%;
-    min-height: 60px;
+    width: 90% !important;
+    /* Zvětšení šířky boxu a vynucení přepisu */
     background-color: rgba(200, 200, 200, 0.2);
     color: #333;
-    padding: 15px 10px;
-    position: relative;
-    /* Přidáme position: relative */
-    top: -50px;
-    /* Posuneme o 50px nahoru (můžete upravit) */
+    padding: 10px;
+    margin-top: 10px;
     border-left: 5px solid #888;
     text-align: left;
     font-size: 1.4em;
     box-sizing: border-box;
-    margin-left: 20px;
-    margin-right: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin-left: 20px !important;
+    /* Větší odsazení od levého okraje a vynucení přepisu */
 }
 
 #output.default-text {
-    width: fit-content;
-    max-width: 90%;
-    min-height: 60px;
+    width: 90% !important;
+    /* Zvětšení šířky boxu i pro výchozí text */
     background-color: rgba(128, 128, 128, 0.2);
-    border-left-color: transparent;
-    padding: 15px 10px;
-    position: relative;
-    top: -50px;
+    border-left-color: 5px solid #888 !important;
+    padding: 10px;
+    /* Stejný padding pro konzistenci */
+    margin-top: 10px;
+    /* Stejná mezera od mikrofonu */
     text-align: center;
     font-size: 1.4em;
     box-sizing: border-box;
-    margin-left: 20px;
-    margin-right: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin-left: 20px !important;
+    /* Větší odsazení od levého okraje i pro výchozí text */
 }
 
 /* Styly pro různé závažnosti notifikací (ponecháme s !important pro jistotu) */

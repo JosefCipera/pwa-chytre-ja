@@ -1,17 +1,47 @@
 
-// import * as actions from "./utils/actions.js";
-// import * as speech from "./utils/speech.js";
-// import * as config from "./utils/config.js";
-// import * as install from "./utils/install.js";
-// import * as auth from "./utils/auth.js";
 import * as Auth from "./utils/auth.js"; // ✅ Importujeme všechny funkce pod jménem Auth
 
-/* import { initInstallPrompt } from "./utils/install.js";
-import { fetchCommands } from './utils/actions.js';
-import { initGoogleAuth, signInAndRunCheck } from "./utils/auth.js";
-import { startSpeechRecognition } from "./utils/speech.js";
-import { updateRange } from "./utils/config.js"; // ✅ Import v hlavním souboru
-*/
+const outputElement = document.getElementById('output');
+let isDefaultTextVisible = true;
+const notificationQueue = [
+    { message: 'Výroba zastavena – porucha stroje.', severity: 'urgent', duration: 5000 },
+    { message: 'Zaplánování výroby dokončeno.', severity: 'informative', duration: 4000 },
+    { message: 'Zakázka XYZ dokončena v termínu.', severity: 'ok', duration: 3000 },
+    { message: 'Sklad surovin klesl pod 10 % – hrozí zpoždění.', severity: 'warning', duration: 5000 },
+    { message: 'Zpráva po 5 sekundách.', severity: 'informative', duration: 5000 }
+];
+let currentNotificationIndex = 0;
+
+function showNotification(notification) {
+    outputElement.textContent = notification.message;
+    outputElement.className = '';
+    outputElement.classList.add(notification.severity ? `notification-${notification.severity}` : '');
+    isDefaultTextVisible = false;
+    setTimeout(() => {
+        if (currentNotificationIndex < notificationQueue.length - 1) {
+            currentNotificationIndex++;
+            showNotification(notificationQueue[currentNotificationIndex]);
+        } else {
+            outputElement.textContent = "Řekněte příkaz, např. 'Zobraz vytížení', 'Přehrát video školení', nebo 'Spusť audio návod'.";
+            outputElement.className = 'default-text';
+            isDefaultTextVisible = true;
+        }
+    }, notification.duration);
+}
+
+// Při načtení stránky zobrazíme výchozí text a poté spustíme zobrazení notifikací
+document.addEventListener('DOMContentLoaded', () => {
+    outputElement.textContent = "Řekněte příkaz, např. 'Zobraz vytížení', 'Přehrát video školení', nebo 'Spusť audio návod'.";
+    outputElement.className = 'default-text';
+    isDefaultTextVisible = true;
+
+    // Spustíme zobrazení první notifikace z fronty
+    if (notificationQueue.length > 0) {
+        setTimeout(() => {
+            showNotification(notificationQueue[0]);
+        }, 1000); // Malé zpoždění po načtení stránky
+    }
+});
 
 window.onload = () => {
     console.log("✅ Stránka načtena, inicializuji Google Auth...");
@@ -136,8 +166,8 @@ recognition.onresult = (event) => {
 async function handleCommand(command) {
     console.log("🎤 Odesílám povel na Make:", command);
 
-    // const webhookUrl = "https://hook.eu1.make.com/17gn7hrtmnfgsykl52dcn2ekx15nvh1f"; // Aktualizuj URL
-    const webhookUrl = "https://hook.eu1.make.com/7oiexq848aerxmqcztnyvs06qtw31rh6"; // Webhook pro AI
+    const webhookUrl = "https://hook.eu1.make.com/17gn7hrtmnfgsykl52dcn2ekx15nvh1f"; // Aktualizuj URL
+    // const webhookUrl = "https://hook.eu1.make.com/7oiexq848aerxmqcztnyvs06qtw31rh6"; // Webhook pro AI
 
     try {
         const response = await fetch(webhookUrl, {
