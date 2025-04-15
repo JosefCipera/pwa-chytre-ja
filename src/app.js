@@ -6,51 +6,48 @@ let isDefaultTextVisible = true;
 const notificationQueue = [
     { message: 'Výroba zastavena – porucha stroje.', severity: 'urgent', duration: 5000 },
     { message: 'Zaplánování výroby dokončeno.', severity: 'informative', duration: 4000 },
-    { message: 'Zakázka XYZ dokončena v termínu.', severity: 'ok', duration: 3000 },
+    { message: 'Zakázka XYZ dokončena v termínu.', severity: 'ok', duration: 4000 },
     { message: 'Sklad surovin klesl pod 10 % – hrozí zpoždění.', severity: 'warning', duration: 5000 },
-    { message: 'Zpráva po 5 sekundách.', severity: 'informative', duration: 5000 }
+    { message: 'Zpráva po 5 sekundách.', severity: 'informative', duration: 4000 }
 ];
 let currentNotificationIndex = 0;
+let notificationTimeout;
 
 function showNotification(notification) {
+    clearTimeout(notificationTimeout);
     outputElement.textContent = notification.message;
     outputElement.className = '';
     outputElement.classList.add(notification.severity ? `notification-${notification.severity}` : '');
-    isDefaultTextVisible = false;
-    setTimeout(() => {
-        if (currentNotificationIndex < notificationQueue.length - 1) {
-            currentNotificationIndex++;
-            showNotification(notificationQueue[currentNotificationIndex]);
-        } else {
-            outputElement.textContent = "Řekněte příkaz, např. 'Zobraz vytížení', 'Přehrát video školení', nebo 'Spusť audio návod'.";
+
+    if (notification.severity === 'ok' || notification.severity === 'informative') {
+        outputElement.classList.add('fade-out');
+        notificationTimeout = setTimeout(() => {
             outputElement.className = 'default-text';
             isDefaultTextVisible = true;
-        }
-    }, notification.duration);
+        }, notification.duration);
+    } else if (notification.severity === 'urgent' || notification.severity === 'warning') {
+        outputElement.classList.add('blink');
+        notificationTimeout = setTimeout(() => {
+            outputElement.classList.remove('blink');
+            outputElement.className = 'default-text';
+            isDefaultTextVisible = true;
+        }, notification.duration);
+    }
+
+    isDefaultTextVisible = false;
 }
 
-// Při načtení stránky zobrazíme výchozí text a poté spustíme zobrazení notifikací
+function displayNotification(index) {
+    if (index >= 0 && index < notificationQueue.length) {
+        showNotification(notificationQueue[index]);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    outputElement.textContent = "Řekněte příkaz, např. 'Zobraz vytížení', 'Přehrát video školení', nebo 'Spusť audio návod'.";
     outputElement.className = 'default-text';
     isDefaultTextVisible = true;
 
-    // Spustíme zobrazení první notifikace z fronty
-    if (notificationQueue.length > 0) {
-        setTimeout(() => {
-            showNotification(notificationQueue[0]);
-        }, 1000); // Malé zpoždění po načtení stránky
-    }
-});
-
-window.onload = () => {
-    console.log("✅ Stránka načtena, inicializuji Google Auth...");
-    initGoogleAuth();
-};
-
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("🚀 Aplikace spuštěna...");
-
+    displayNotification(4); // Zobrazí první zprávu po načtení
 });
 
 
