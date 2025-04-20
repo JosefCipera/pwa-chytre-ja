@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chytré já</title>
+
   <link rel="manifest" href="./manifest.json">
   <link rel="stylesheet" href="./styles.css">
   <link rel="icon" type="image/png" href="./images/avatarka_bílé_pozadí.png">
@@ -18,14 +19,18 @@
   <div class="container">
     <div class="top-half">
       <div class="microphone-container">
-
         <img src="./images/microphone-transparent-192.png" alt="Microphone" id="start-speech" class="mic-icon">
       </div>
     </div>
 
     <div class="bottom-half">
-      <div id="output">Řekněte příkaz, např. 'Zobraz vytížení', 'Přehrát video školení', nebo 'Spusť audio návod'.
+      <div id="output">Řekněte příkaz, např. 'Zobraz vytížení', 'Přehrát video školení', nebo 'Spusť audio
+        návod'.</div>
+      <div class="webhook-container" id="webhook-setup">
+        <input type="text" id="webhook-url" placeholder="Zadejte webhook URL">
+        <button id="set-webhook-button">Nastavit URL</button>
       </div>
+      <button id="change-webhook" style="display: none;">Změnit URL</button>
     </div>
     <button id="installPWA" style="display: none;">📲 Nainstalovat aplikaci</button>
   </div>

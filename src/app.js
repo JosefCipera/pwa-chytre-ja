@@ -10,46 +10,39 @@ const notificationQueue = [
     { message: 'Sklad surovin klesl pod 10 % – hrozí zpoždění.', severity: 'warning', duration: 5000 },
     { message: 'Zpráva po 5 sekundách.', severity: 'informative', duration: 4000 }
 ];
+let recording = false; // Deklarace proměnné recording
 let currentNotificationIndex = 0;
 let notificationTimeout;
 
 function showNotification(notification) {
     clearTimeout(notificationTimeout);
     outputElement.textContent = notification.message;
-    outputElement.className = '';
-    outputElement.classList.add(notification.severity ? `notification-${notification.severity}` : '');
+    outputElement.className = ''; // Reset tříd
+
+    // Zajistí, že třída není prázdná
+    const severityClass = notification.severity ? `notification-${notification.severity}` : 'notification-normal';
+    outputElement.classList.add(severityClass);
 
     if (notification.severity === 'ok' || notification.severity === 'informative') {
         outputElement.classList.add('fade-out');
         notificationTimeout = setTimeout(() => {
-            outputElement.className = 'default-text';
+            outputElement.textContent = ''; // Vymaže text
+            outputElement.className = ''; // Reset tříd (ne default-text)
+            outputElement.style.display = 'none'; // Skryje #output
             isDefaultTextVisible = true;
-        }, notification.duration);
+        }, notification.duration || 3000);
     } else if (notification.severity === 'urgent' || notification.severity === 'warning') {
         outputElement.classList.add('blink');
         notificationTimeout = setTimeout(() => {
             outputElement.classList.remove('blink');
-            outputElement.className = 'default-text';
+            outputElement.className = ''; // Reset tříd (ne default-text)
+            outputElement.style.display = 'none'; // Skryje #output
             isDefaultTextVisible = true;
-        }, notification.duration);
+        }, notification.duration || 3000);
     }
 
     isDefaultTextVisible = false;
 }
-
-function displayNotification(index) {
-    if (index >= 0 && index < notificationQueue.length) {
-        showNotification(notificationQueue[index]);
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    outputElement.className = 'default-text';
-    isDefaultTextVisible = true;
-
-    displayNotification(4); // Zobrazí první zprávu po načtení
-});
-
 
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./service-worker.js")
@@ -84,6 +77,14 @@ recognition.onerror = (event) => {
 recognition.onend = () => {
     console.log('🔇 Hlasové rozpoznávání ukončeno.');
     document.getElementById('start-speech').classList.remove('recording');
+    const micIcon = document.getElementById('microphoneIcon');
+    if (micIcon) {
+        micIcon.classList.remove('pulsate');
+        micIcon.style.opacity = '1'; // Vrátí původní vzhled
+        if (defaultMicIconSrc) {
+            micIcon.src = defaultMicIconSrc;
+        }
+    }
     isProcessing = false;
 };
 
@@ -133,23 +134,15 @@ document.getElementById('start-speech').addEventListener('click', () => {
         }
         recognition.stop();
         recording = false;
-        if (micIcon) {
-            micIcon.classList.remove('pulsate');
-            if (defaultMicIconSrc) {
-                micIcon.src = defaultMicIconSrc;
-            }
-        }
-    }
+        resetMicIcon(); // Reset vzhledu mikrofonu
+    };
 
-    recognition.onend = function () {
-        recording = false;
-        if (micIcon) {
-            micIcon.classList.remove('pulsate');
-            if (defaultMicIconSrc) {
-                micIcon.src = defaultMicIconSrc;
-            }
-        }
-    }
+    recognition.onend = () => {
+        console.log('🔇 Hlasové rozpoznávání ukončeno.');
+        document.getElementById('start-speech').classList.remove('recording');
+        resetMicIcon(); // Reset vzhledu mikrofonu
+        isProcessing = false;
+    };
 });
 
 recognition.onresult = (event) => {
@@ -160,53 +153,124 @@ recognition.onresult = (event) => {
     handleCommand(command);
 };
 
-async function handleCommand(command) {
-    console.log("🎤 Odesílám povel na Make:", command);
+// async function handleCommand(command) {
+// console.log("🎤 Odesílám povel na Make:", command);
+// const webhookUrl = "https://hook.eu1.make.com/4jibyt5oj7j96mnuaiow2mnofgpfhomo"; // Webhook bez AI
+// const webhookUrl = "https://hook.eu1.make.com/17gn7hrtmnfgsykl52dcn2ekx15nvh1f"; // Webhook pro URL
+// const webhookUrl = "https://hook.eu1.make.com/7oiexq848aerxmqcztnyvs06qtw31rh6"; // Webhook pro AI
 
-    const webhookUrl = "https://hook.eu1.make.com/17gn7hrtmnfgsykl52dcn2ekx15nvh1f"; // Aktualizuj URL
-    // const webhookUrl = "https://hook.eu1.make.com/7oiexq848aerxmqcztnyvs06qtw31rh6"; // Webhook pro AI
+const startSpeech = document.getElementById('start-speech');
+const output = document.getElementById('output');
+
+function setWebhookUrl() {
+    const webhookUrl = document.getElementById('webhook-url').value;
+    if (webhookUrl) {
+        localStorage.setItem('webhookUrl', webhookUrl);
+        output.innerText = 'Webhook URL nastaven: ' + webhookUrl;
+        document.getElementById('webhook-setup').style.display = 'none';
+        document.getElementById('change-webhook').style.display = 'block';
+    } else {
+        output.innerText = '⚠️ Zadejte platnou URL.';
+    }
+}
+
+function showWebhookSetup() {
+    document.getElementById('webhook-setup').style.display = 'flex';
+    document.getElementById('change-webhook').style.display = 'none';
+    document.getElementById('webhook-url').value = localStorage.getItem('webhookUrl') || '';
+}
+
+async function handleCommand(command) {
+    const webhookUrl = localStorage.getItem('webhookUrl') || '';
+    const output = document.getElementById('output');
+    if (!webhookUrl) {
+        output.innerText = '⚠️ Nastavte webhook URL.';
+        console.error('Webhook URL není nastaven');
+        resetMicIcon(); // Reset mikrofonu
+        return;
+    }
 
     try {
         const response = await fetch(webhookUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ Povel: command })
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ command: command })
         });
-
-        console.log("🔍 HTTP status:", response.status);
-
-        if (!response.ok) {
-            throw new Error(`Chyba při odesílání na Make: ${response.status}`);
-        }
 
         const text = await response.text();
         console.log("📜 Surová odpověď:", text);
 
+        if (!text) {
+            console.log("ℹ️ Žádná odpověď z Make (např. notification).");
+            output.innerText = `Příkaz '${command}' zpracován, žádná akce.`;
+            resetMicIcon(); // Reset mikrofonu
+            return;
+        }
+
         try {
             const result = JSON.parse(text);
             console.log("✅ Zpracovaná odpověď (JSON):", result);
-
+            if (result.message) {
+                console.log("🔔 Notifikace detekována:", result.message);
+                showNotification({
+                    message: result.message,
+                    severity: result.severity || "normal",
+                    duration: result.duration || 3000
+                });
+                resetMicIcon(); // Reset mikrofonu
+                return;
+            }
+            // stávající logika url
             if (Array.isArray(result.url)) {
                 console.log("📋 Seznam URL detekován:", result.url);
-                // Zde můžeš zobrazit seznam, pokud chceš uživateli nabídnout více možností
-            } else if (typeof result.url === "string") {
+                output.innerText = `Nalezeno více URL: ${result.url.join(', ')}`;
+            } else if (typeof result.url === "string" && result.url) {
                 console.log("🚀 Přesměrování na jednu URL:", result.url);
-                window.location.href = result.url; // Přesměrování na URL
+                output.innerText = `Přesměrování na ${result.url}...`;
+                window.location.href = result.url;
             } else {
-                console.error("❌ Odpověď z Make neobsahuje platnou URL:", result);
-                document.getElementById('output').innerText = "⚠️ Chybná odpověď z Make.";
+                console.log("ℹ️ Žádná platná URL v odpovědi:", result);
+                output.innerText = `Příkaz '${command}' zpracován, žádná akce.`;
             }
         } catch (error) {
             console.error("❌ Chyba při parsování JSON odpovědi:", error, "Odpověď:", text);
-            document.getElementById('output').innerText = "⚠️ Chyba při zpracování odpovědi.";
+            output.innerText = "⚠️ Chyba při zpracování odpovědi.";
         }
-
     } catch (error) {
-        console.error("❌ Chyba při komunikaci s Make:", error);
-        document.getElementById('output').innerText = "⚠️ Chyba při připojení.";
+        console.error("❌ Chyba při připojení k Make:", error);
+        output.innerText = "⚠️ Chyba při připojení k Make.";
+    } finally {
+        resetMicIcon(); // Reset mikrofonu i při chybě
     }
 }
 
+// Nová funkce pro reset mikrofonu
+function resetMicIcon() {
+    const startSpeech = document.getElementById('start-speech');
+    const micIcon = document.getElementById('microphoneIcon');
+    if (startSpeech) {
+        startSpeech.classList.remove('recording'); // Zajištění odstranění třídy
+    }
+    if (micIcon) {
+        micIcon.classList.remove('recording', 'pulsate');
+        micIcon.style.opacity = '1 !important'; // Vynutí původní vzhled
+        if (defaultMicIconSrc) {
+            micIcon.src = defaultMicIconSrc;
+        }
+    }
+    recording = false;
+    isProcessing = false;
+}
+
+// Přidání event listenerů při startu
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('webhookUrl')) {
+        document.getElementById('webhook-setup').style.display = 'none';
+        document.getElementById('change-webhook').style.display = 'block';
+    }
+    document.getElementById('set-webhook-button').addEventListener('click', setWebhookUrl);
+    document.getElementById('change-webhook').addEventListener('click', showWebhookSetup);
+});
 
 function displayContent(url) {
     const output = document.getElementById('output');
@@ -384,3 +448,55 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+//  ... tvůj existující kód ...
+
+// Funkce pro zobrazení notifikace z Make
+function showNotificationFromMake(message, severity, duration) {
+    const newNotification = {
+        message: message,
+        severity: severity,
+        duration: duration || 5000 // Výchozí trvání
+    };
+    showNotification(newNotification);
+}
+
+// Funkce pro zpracování odpovědi z Make (Kontrola dat)
+/* function handleDataValidationResponse(response) {
+    if (response.type === "validation_result") {
+        if (response.status === "success") {
+            // Zobraz notifikaci o úspěchu
+            showNotificationFromMake(response.message, "success", 3000);
+        } else if (response.status === "error") {
+            // Zobraz notifikaci o chybách
+            showNotificationFromMake(response.message, "warning", 5000);
+            // Zobraz seznam chyb (tuto funkci si musíš implementovat)
+            displayValidationErrors(response.errors);
+        }
+    }
+}
+
+// Funkce pro odeslání dat do Make a spuštění kontroly
+function validateDataWithMake(data) {
+    fetch('/make-webhook-url-pro-kontrolu-dat', { // Nahraď URL
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(responseData => handleDataValidationResponse(responseData))
+        .catch(error => console.error('Chyba při kontrole dat:', error));
+}
+
+// Funkce pro zobrazení chyb validace (tuto si musíš implementovat)
+function displayValidationErrors(errors) {
+    //  Kód pro zobrazení chyb v PWA
+    //  Např. vytvoření seznamu, zobrazení u inputů atd.
+    console.warn("Chyby validace:", errors);
+}
+
+//  ... tvůj kód pro spuštění kontroly dat ...
+//  Např. po kliknutí na tlačítko:
+//  document.getElementById("tlacitko-kontrola").addEventListener("click", () => {
+//    validateDataWithMake(dataProKontrolu);
+//  }); */
