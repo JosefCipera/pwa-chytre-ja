@@ -1,62 +1,66 @@
-import { GOOGLE_SHEETS_API_KEY, spreadsheetId, SHEET_NAME, updateRange } from "./config.js"; // ✅ Opravený import
-import { getAccessToken } from "./auth.js"; // ✅ Import správné funkce pro token
+import { GOOGLE_SHEETS_API_KEY, spreadsheetId, SHEET_NAME } from "./config.js"; // Upraven import
 
-// console.log("📥 Načítám spreadsheetId v googleSheets.js:", spreadsheetId);
 console.log("✅ Načtené ID tabulky:", spreadsheetId);
 console.log("✅ Načtený název listu:", SHEET_NAME);
 
-export async function updateSheetData(updatedData) {
-    console.log("🔄 Aktualizuji Google Sheet...", updatedData);
+export async function updateSheetData(updatedData, range) {
+    console.log("🔄 Aktualizuji Google Sheet...", { updatedData, range });
 
-    const accessToken = getAccessToken(); // ✅ Získání aktuálního tokenu
-    if (!accessToken) {
-        console.error("❌ Chyba: Přístupový token není dostupný.");
-        return;
+    try {
+        console.log("📌 URL pro aktualizaci:", `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?valueInputOption=RAW&key=${GOOGLE_SHEETS_API_KEY}`);
+
+        const response = await fetch(
+            `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?valueInputOption=RAW&key=${GOOGLE_SHEETS_API_KEY}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ values: updatedData })
+            }
+        );
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error("❌ Chyba při aktualizaci Google Sheets:", errorData);
+            throw new Error(`Chyba API: ${errorData.error.message}`);
+        }
+
+        const result = await response.json();
+        console.log("✅ Výsledek aktualizace:", result);
+        return result;
+    } catch (error) {
+        console.error("❌ Selhání aktualizace Google Sheets:", error.message);
+        throw error;
     }
-
-    console.log("📌 Kontrola ID tabulky:", spreadsheetId);
-    console.log("📌 Kontrola názvu listu:", SHEET_NAME);
-
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${updateRange}?valueInputOption=RAW`;
-
-    const response = await fetch(url, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}` // ✅ Správně použijeme token
-        },
-        body: JSON.stringify({ values: updatedData })
-    });
-
-    const result = await response.json();
-    console.log("✅ Výsledek aktualizace:", result);
 }
 
 export async function fetchSheetData(spreadsheetId, range) {
     console.log("📥 Načítám data z Google Sheets...", spreadsheetId, range);
-    // console.log("📌 API požadavek:", `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}`);
-    console.log("📌 Odesílám požadavek na API:");
-    console.log(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}`);
+    console.log("📌 Odesílám požadavek na API:", `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${GOOGLE_SHEETS_API_KEY}`);
 
-
-    const response = await fetch(
-        `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}`,
-        {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${getAccessToken()}`,
-                "Content-Type": "application/json"
+    try {
+        const response = await fetch(
+            `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${GOOGLE_SHEETS_API_KEY}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
             }
+        );
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error("❌ Chyba při načítání dat z Google Sheets:", errorData);
+            throw new Error(`Chyba API: ${errorData.error.message}`);
         }
-    );
-    const data = await response.json();
-    console.log("📊 API odpověď:", data);
 
-    if (data.error) {
-        console.error("❌ Chyba při načítání dat:", data.error);
+        const data = await response.json();
+        console.log("📊 API odpověď:", data);
+        return data;
+    } catch (error) {
+        console.error("❌ Selhání načítání dat z Google Sheets:", error.message);
+        throw error;
     }
-
-    return data;
 }
-
-

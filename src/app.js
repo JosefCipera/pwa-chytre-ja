@@ -3,16 +3,25 @@ import * as Auth from "./utils/auth.js"; // ✅ Importujeme všechny funkce pod 
 
 const outputElement = document.getElementById('output');
 let isDefaultTextVisible = true;
-const notificationQueue = [
+/* const notificationQueue = [
     { message: 'Výroba zastavena – porucha stroje.', severity: 'urgent', duration: 5000 },
     { message: 'Zaplánování výroby dokončeno.', severity: 'informative', duration: 4000 },
     { message: 'Zakázka XYZ dokončena v termínu.', severity: 'ok', duration: 4000 },
     { message: 'Sklad surovin klesl pod 10 % – hrozí zpoždění.', severity: 'warning', duration: 5000 },
     { message: 'Zpráva po 5 sekundách.', severity: 'informative', duration: 4000 }
 ];
+*/
 let recording = false; // Deklarace proměnné recording
 let currentNotificationIndex = 0;
 let notificationTimeout;
+
+// Funkce pro zobrazení výchozího textu
+function showDefaultText() {
+    outputElement.textContent = 'Řekněte příkaz, např. Zobraz vytížení, Přehrát video školení, nebo Spusť audio návod';
+    outputElement.className = 'default-text';
+    outputElement.style.display = 'flex';
+    isDefaultTextVisible = true;
+}
 
 function showNotification(notification) {
     clearTimeout(notificationTimeout);
@@ -29,7 +38,7 @@ function showNotification(notification) {
             outputElement.textContent = ''; // Vymaže text
             outputElement.className = ''; // Reset tříd (ne default-text)
             outputElement.style.display = 'none'; // Skryje #output
-            isDefaultTextVisible = true;
+            showDefaultText(); // Zobrazí výchozí text po notifikaci
         }, notification.duration || 3000);
     } else if (notification.severity === 'urgent' || notification.severity === 'warning') {
         outputElement.classList.add('blink');
@@ -37,7 +46,7 @@ function showNotification(notification) {
             outputElement.classList.remove('blink');
             outputElement.className = ''; // Reset tříd (ne default-text)
             outputElement.style.display = 'none'; // Skryje #output
-            isDefaultTextVisible = true;
+            showDefaultText(); // Zobrazí výchozí text po notifikaci
         }, notification.duration || 3000);
     }
 
@@ -88,7 +97,7 @@ recognition.onend = () => {
     isProcessing = false;
 };
 
-// const beepSound = new Audio('beep.mp3');
+const beepSound = new Audio('beep.mp3');
 
 document.getElementById('start-speech').addEventListener('click', () => {
     if (isProcessing) {
@@ -270,6 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     document.getElementById('set-webhook-button').addEventListener('click', setWebhookUrl);
     document.getElementById('change-webhook').addEventListener('click', showWebhookSetup);
+    showDefaultText(); // Inicializace výchozího textu při načtení
 });
 
 function displayContent(url) {
@@ -376,7 +386,7 @@ function displayContent(url) {
         window.location.href = url;
     }
 }
-
+/*
 let deferredPrompt;
 const installButton = document.getElementById("install-button");
 
@@ -387,9 +397,9 @@ function checkIfInstalled() {
         installButton.style.display = "none"; // Ihned skryjeme tlačítko
     }
 }
-
+*/
 // ✅ Zkontrolujeme instalaci ihned po načtení stránky
-document.addEventListener("DOMContentLoaded", checkIfInstalled);
+/* document.addEventListener("DOMContentLoaded", checkIfInstalled);
 
 // ✅ Když se nabídne instalace PWA
 window.addEventListener("beforeinstallprompt", (event) => {
@@ -401,7 +411,7 @@ window.addEventListener("beforeinstallprompt", (event) => {
         document.getElementById("install-button").style.opacity = "1";
     }, 100);
 });
-
+*/
 
 // ✅ Událost, která se spustí ihned po instalaci PWA
 window.addEventListener("appinstalled", () => {
@@ -411,7 +421,7 @@ window.addEventListener("appinstalled", () => {
 
 
 // ✅ Extra kontrola každou sekundu, zda je PWA aktivní
-setInterval(checkIfInstalled, 1000);
+// setInterval(checkIfInstalled, 1000);
 
 // console.log("📊 Globální updateRange:", updateRange); // ✅ Ověření v konzoli
 

@@ -1,6 +1,6 @@
 {
-  "name": "Voice Commands PWA",
-  "short_name": "VoicePWA",
+  "name": "Chytré já",
+  "short_name": "Chytré já",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
