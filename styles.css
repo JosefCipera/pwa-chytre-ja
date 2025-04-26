@@ -319,12 +319,13 @@ html {
 /* Media queries pro mobilní zařízení */
 @media (max-width: 768px) {
     .mic-icon {
-        width: 120px;
+        width: 180px;
+        /* Zvětšeno o 50% z 120px */
     }
 
     .wave {
-        width: 120px;
-        height: 120px;
+        width: 180px;
+        height: 180px;
         border: 3px solid rgba(0, 87, 255, 0.6);
     }
 
@@ -333,7 +334,8 @@ html {
         min-height: 40px;
         padding: 8px 6px;
         top: 0;
-        font-size: 0.9em;
+        font-size: 1.35em;
+        /* Zvětšeno o 50% z 0.9em */
         margin-left: 10px;
         margin-right: 10px;
         margin-top: 5px;
@@ -346,37 +348,46 @@ html {
     }
 
     #webhook-url {
-        width: 140px;
-        font-size: 0.85em;
-        padding: 6px;
+        width: 210px;
+        /* Zvětšeno o 50% z 140px */
+        font-size: 1.275em;
+        /* Zvětšeno o 50% z 0.85em */
+        padding: 9px;
+        /* Zvětšeno o 50% z 6px */
     }
 
     .webhook-container button,
     #change-webhook {
-        padding: 6px 10px;
-        font-size: 0.85em;
-        min-width: 90px;
+        padding: 9px 15px;
+        /* Zvětšeno o 50% z 6px 10px */
+        font-size: 1.275em;
+        /* Zvětšeno o 50% z 0.85em */
+        min-width: 135px;
+        /* Zvětšeno o 50% z 90px */
         margin-top: 5px;
     }
 
     .status {
-        font-size: 16px;
+        font-size: 24px;
+        /* Zvětšeno o 50% z 16px */
     }
 
     .hint {
-        font-size: 12px;
+        font-size: 18px;
+        /* Zvětšeno o 50% z 12px */
     }
 }
 
 /* Extra malé obrazovky (např. starší telefony) */
 @media (max-width: 480px) {
     .mic-icon {
-        width: 100px;
+        width: 150px;
+        /* Zvětšeno o 50% z 100px */
     }
 
     .wave {
-        width: 100px;
-        height: 100px;
+        width: 150px;
+        height: 150px;
         border: 2px solid rgba(0, 87, 255, 0.6);
     }
 
@@ -385,7 +396,8 @@ html {
         min-height: 35px;
         padding: 6px 4px;
         top: 0;
-        font-size: 0.85em;
+        font-size: 1.275em;
+        /* Zvětšeno o 50% z 0.85em */
         margin-top: 5px;
     }
 
@@ -396,24 +408,32 @@ html {
     }
 
     #webhook-url {
-        width: 120px;
-        font-size: 0.8em;
-        padding: 5px;
+        width: 180px;
+        /* Zvětšeno o 50% z 120px */
+        font-size: 1.2em;
+        /* Zvětšeno o 50% z 0.8em */
+        padding: 7.5px;
+        /* Zvětšeno o 50% z 5px */
     }
 
     .webhook-container button,
     #change-webhook {
-        padding: 5px 8px;
-        font-size: 0.8em;
-        min-width: 80px;
+        padding: 7.5px 12px;
+        /* Zvětšeno o 50% z 5px 8px */
+        font-size: 1.2em;
+        /* Zvětšeno o 50% z 0.8em */
+        min-width: 120px;
+        /* Zvětšeno o 50% z 80px */
         margin-top: 4px;
     }
 
     .status {
-        font-size: 14px;
+        font-size: 21px;
+        /* Zvětšeno o 50% z 14px */
     }
 
     .hint {
-        font-size: 10px;
+        font-size: 15px;
+        /* Zvětšeno o 50% z 10px */
     }
 }

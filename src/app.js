@@ -67,6 +67,9 @@ recognition.continuous = false;
 let isProcessing = false;
 let latestRequestTimestamp = 0;
 
+// Detekce mobilního zařízení
+const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
 recognition.onerror = (event) => {
     console.error('❌ Chyba při hlasovém rozpoznávání:', event.error);
     alert(`Chyba při rozpoznávání hlasu: ${event.error}. Zkontrolujte povolení mikrofonu.`);
@@ -110,7 +113,7 @@ document.getElementById('start-speech').addEventListener('click', () => {
     recognition.start();
     const micContainer = document.querySelector('.microphone-container');
     micContainer.classList.add('recording');
-    console.log('🎙️ Třída .recording přidána na .microphone-container'); // Debug log
+    console.log('🎙️ Třída .recording přidána na .microphone-container');
     isProcessing = true;
 
     const micIcon = document.getElementById('microphoneIcon');
@@ -124,18 +127,24 @@ document.getElementById('start-speech').addEventListener('click', () => {
         if (micIcon) {
             micIcon.classList.add('pulsate');
         }
-        try {
-            beepSound.play();
-        } catch (err) {
-            console.log("Nepodařilo se přehrát zvuk: " + err);
+        // Přehrání zvuku pouze na desktopu
+        if (!isMobile) {
+            try {
+                beepSound.play();
+            } catch (err) {
+                console.log("Nepodařilo se přehrát zvuk: " + err);
+            }
         }
     };
 
     recognition.onspeechend = function () {
-        try {
-            beepSound.play();
-        } catch (err) {
-            console.log("Nepodařilo se přehrát zvuk na konci: " + err);
+        // Přehrání zvuku pouze na desktopu
+        if (!isMobile) {
+            try {
+                beepSound.play();
+            } catch (err) {
+                console.log("Nepodařilo se přehrát zvuk na konci: " + err);
+            }
         }
         recognition.stop();
         recording = false;
