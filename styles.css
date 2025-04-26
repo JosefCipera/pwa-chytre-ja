@@ -164,23 +164,22 @@ html {
 }
 
 #output {
-    width: 45%;
-    /* Zúženo na polovinu z 90% */
-    min-height: 60px;
     background-color: rgba(200, 200, 200, 0.2);
-    color: #333;
-    padding: 15px 10px;
+    padding: 10px;
     position: relative;
     top: 0;
-    border-left: 5px solid #888;
-    text-align: left;
-    font-size: 1.1em;
+    border-left: 5px solid #005EA6;
     box-sizing: border-box;
     margin-left: 20px;
     margin-right: 20px;
     margin-top: 10px;
-    word-wrap: break-word;
     border-radius: 5px;
+    display: inline-flex;
+    /* Zachováno pro dynamickou šířku */
+    align-items: center;
+    /* Vertikální vystředění obsahu */
+    min-width: 30%;
+    max-width: 60%;
 }
 
 #output:empty {
@@ -189,82 +188,86 @@ html {
 }
 
 #output.default-text {
-    width: 45%;
-    /* Zúženo na polovinu z 90% */
-    min-height: 60px;
-    background-color: rgba(0, 0, 255, 0.1);
-    border-left-color: #333;
-    padding: 15px 10px;
+    background-color: rgba(0, 94, 166, 0.1);
+    border-left-color: #005EA6;
+    padding: 10px;
     position: relative;
     top: 0;
-    text-align: left;
-    font-size: 1.1em;
     box-sizing: border-box;
     margin-left: 20px;
     margin-right: 20px;
     margin-top: 10px;
-    word-wrap: break-word;
     border-radius: 5px;
+    display: inline-flex;
+    /* Zachováno pro dynamickou šířku */
+    align-items: center;
+    /* Vertikální vystředění obsahu */
+    min-width: 30%;
+    max-width: 60%;
 }
 
-#output:empty::before {
-    content: none;
-}
-
-.notification-urgent {
-    border-left-color: red !important;
-    background-color: rgba(255, 0, 0, 0.1) !important;
-    font-size: 1.1em !important;
-}
-
-.notification-informative {
-    border-left-color: blue !important;
-    background-color: rgba(0, 0, 255, 0.1) !important;
-    font-size: 1.1em !important;
-}
-
-.notification-ok {
-    border-left-color: green !important;
-    background-color: rgba(0, 255, 0, 0.1) !important;
-    font-size: 1.1em !important;
-}
-
-.notification-warning {
-    border-left-color: orange !important;
-    background-color: rgba(255, 165, 0, 0.1) !important;
-    font-size: 1.1em !important;
-}
-
-#output::before {
-    content: "";
-    display: inline-block;
-    margin-right: 5px;
+.output-text {
+    color: #005EA6;
+    text-align: left;
     font-size: 1.1em;
+    word-wrap: break-word;
+    width: 100%;
+    line-height: 1.5em;
+    /* Zajistí konzistentní výšku řádku */
 }
 
-#output.notification-ok::before {
-    content: "✓";
-    color: green;
+/* Modrý styl notifikace */
+.notification-informative {
+    border-left-color: #005EA6 !important;
+    background-color: rgba(0, 94, 166, 0.1) !important;
 }
 
-#output.notification-informative::before {
-    content: "ℹ";
-    color: blue;
+.notification-informative .output-text {
+    color: #005EA6 !important;
+    font-size: 1.1em !important;
 }
 
+/* Červený styl notifikace (urgent) */
+.notification-urgent {
+    border-left-color: #D83B01 !important;
+    background-color: rgba(216, 59, 1, 0.1) !important;
+}
+
+.notification-urgent .output-text {
+    color: #D83B01 !important;
+    font-size: 1.1em !important;
+}
+
+/* Zelený styl notifikace (ok) */
+.notification-ok {
+    border-left-color: #107C10 !important;
+    background-color: rgba(16, 124, 16, 0.1) !important;
+}
+
+.notification-ok .output-text {
+    color: #107C10 !important;
+    font-size: 1.1em !important;
+}
+
+/* Oranžový styl notifikace (warning) */
+.notification-warning {
+    border-left-color: #F28C38 !important;
+    background-color: rgba(242, 140, 56, 0.1) !important;
+}
+
+.notification-warning .output-text {
+    color: #F28C38 !important;
+    font-size: 1.1em !important;
+}
+
+/* Odstraněny ikony (pseudo-elementy ::before) */
+#output::before,
+#output.notification-informative::before,
+#output.default-text::before,
+#output.notification-urgent::before,
+#output.notification-ok::before,
 #output.notification-warning::before {
-    content: "⚠";
-    color: orange;
-}
-
-#output.notification-urgent::before {
-    content: "✖";
-    color: red;
-}
-
-#output.default-text::before {
-    content: "ℹ";
-    color: blue;
+    content: none;
 }
 
 #install-button {
@@ -289,16 +292,18 @@ html {
 
     #output,
     #output.default-text {
-        min-height: 40px;
-        padding: 8px 6px;
+        padding: 6px;
         top: 0;
-        font-size: 1.35em;
         margin-left: 10px;
         margin-right: 10px;
         margin-top: 5px;
-        width: 45%;
-        /* Zúženo na polovinu z 90% */
-        word-wrap: break-word;
+        min-width: 50%;
+        max-width: 80%;
+    }
+
+    .output-text {
+        font-size: 1.35em;
+        line-height: 1.5em;
     }
 
     .status {
@@ -324,14 +329,16 @@ html {
 
     #output,
     #output.default-text {
-        min-height: 35px;
-        padding: 6px 4px;
+        padding: 4px;
         top: 0;
-        font-size: 1.275em;
         margin-top: 5px;
-        width: 45%;
-        /* Zúženo na polovinu z 90% */
-        word-wrap: break-word;
+        min-width: 50%;
+        max-width: 80%;
+    }
+
+    .output-text {
+        font-size: 1.275em;
+        line-height: 1.5em;
     }
 
     .status {

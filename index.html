@@ -22,13 +22,15 @@
       </div>
     </div>
     <div class="bottom-half">
-      <div id="output" class="default-text"></div>
-      <!-- Odstraněny prvky pro zadávání webhook URL -->
+      <div id="output" class="default-text">
+        <span class="output-text">Řekněte příkaz, např. "Zobraz vytížení", "Přehrát video školení", nebo "Spusť audio
+          návod".</span>
+      </div>
     </div>
   </div>
   <button id="install-button" style="display: none;"></button>
   <div id="installPWA"></div>
-  <script type="module" src="./src/app.js"></script>
+  <script type="module" src="src/app.js"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </body>

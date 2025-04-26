@@ -1,17 +1,19 @@
 import * as Auth from "./utils/auth.js";
 
 const outputElement = document.getElementById('output');
+let outputTextElement;
 let isDefaultTextVisible = true;
 let recording = false;
 let currentNotificationIndex = 0;
 let notificationTimeout;
+let defaultMicIconSrc; // Inicializace přesunuta do DOMContentLoaded
 
 // Pevně nastavená webhook URL
 const WEBHOOK_URL = 'https://hook.eu1.make.com/4jibyt5oj7j96mnuaiow2mnofgpfhomo'; // Nahraďte skutečnou URL
 
 // Funkce pro zobrazení výchozího textu
 function showDefaultText() {
-    outputElement.textContent = 'Řekněte příkaz, např. "Zobraz vytížení", "Přehrát video školení", nebo "Spusť audio návod".';
+    outputTextElement.textContent = 'Řekněte příkaz, např. "Zobraz vytížení", "Přehrát video školení", nebo "Spusť audio návod".';
     outputElement.className = 'default-text';
     outputElement.style.display = 'block';
     isDefaultTextVisible = true;
@@ -20,7 +22,7 @@ function showDefaultText() {
 // Funkce pro zobrazení notifikace
 function showNotification(notification) {
     clearTimeout(notificationTimeout);
-    outputElement.textContent = notification.message;
+    outputTextElement.textContent = notification.message;
     outputElement.className = '';
 
     const severityClass = notification.severity ? `notification-${notification.severity}` : 'notification-normal';
@@ -29,7 +31,7 @@ function showNotification(notification) {
     if (notification.severity === 'ok' || notification.severity === 'informative') {
         outputElement.classList.add('fade-out');
         notificationTimeout = setTimeout(() => {
-            outputElement.textContent = '';
+            outputTextElement.textContent = '';
             outputElement.className = '';
             outputElement.style.display = 'none';
             showDefaultText();
@@ -47,12 +49,14 @@ function showNotification(notification) {
     isDefaultTextVisible = false;
 }
 
-// Registrace Service Workeru
+// Registrace Service Workeru - zakomentováno pro testování
+/*
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./service-worker.js")
         .then(() => console.log("Service Worker zaregistrován!"))
         .catch((err) => console.log("Service Worker error:", err));
 }
+*/
 
 // Kontrola podpory SpeechRecognition
 if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)) {
@@ -71,6 +75,9 @@ let latestRequestTimestamp = 0;
 
 // Detekce mobilního zařízení
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+// Zakomentováno pro testování
+// const beepSound = new Audio('beep.mp3');
 
 recognition.onerror = (event) => {
     console.error('❌ Chyba při hlasovém rozpoznávání:', event.error);
@@ -98,64 +105,81 @@ recognition.onend = () => {
     }
 };
 
-const beepSound = new Audio('beep.mp3');
-const defaultMicIconSrc = document.getElementById('microphoneIcon')?.src || '';
-
 document.addEventListener('DOMContentLoaded', () => {
-    const micIcon = document.getElementById('microphoneIcon');
-    if (micIcon) {
-        micIcon.addEventListener('click', () => {
-            if (isProcessing) {
-                console.log('⏳ Jiný požadavek se již zpracovává. Počkejte prosím.');
-                return;
-            }
-            console.log('🎤 Klik na mikrofon – spouštím hlasové rozpoznávání...');
-            if (!recognition) {
-                console.error('❌ SpeechRecognition není inicializováno.');
-                alert('Hlasové rozpoznávání není k dispozici. Zkuste obnovit stránku nebo zkontrolovat prohlížeč.');
-                return;
-            }
-            recognition.start();
-            const micContainer = document.querySelector('.microphone-container');
-            micContainer.classList.add('recording');
-            console.log('🎙️ Třída .recording přidána na .microphone-container');
-            isProcessing = true;
-
-            const recordingIconSrc = 'images/microphone-transparent-192.png';
-
-            recognition.onstart = function () {
-                recording = true;
-                if (micIcon && recordingIconSrc) {
-                    micIcon.src = recordingIconSrc;
-                }
-                if (micIcon) {
-                    micIcon.classList.add('pulsate');
-                }
-                // Přehrání zvuku pouze na desktopu
-                if (!isMobile) {
-                    try {
-                        beepSound.play();
-                    } catch (err) {
-                        console.log("Nepodařilo se přehrát zvuk: " + err);
-                    }
-                }
-            };
-
-            recognition.onspeechend = function () {
-                // Přehrání zvuku pouze na desktopu
-                if (!isMobile) {
-                    try {
-                        beepSound.play();
-                    } catch (err) {
-                        console.log("Nepodařilo se přehrát zvuk na konci: " + err);
-                    }
-                }
-                recognition.stop();
-                recording = false;
-                resetMicIcon();
-            };
-        });
+    // Inicializace outputTextElement až po načtení DOM
+    outputTextElement = outputElement.querySelector('.output-text');
+    if (!outputTextElement) {
+        console.error('❌ Prvek .output-text nebyl nalezen.');
+        return;
     }
+
+    // Inicializace defaultMicIconSrc až po načtení DOM
+    const micIcon = document.getElementById('microphoneIcon');
+    defaultMicIconSrc = micIcon?.src || '';
+    if (!micIcon) {
+        console.error('❌ Prvek #microphoneIcon nebyl nalezen.');
+        return;
+    }
+
+    // Přidání event listeneru s logováním
+    micIcon.addEventListener('click', () => {
+        console.log('🎤 Klik na mikrofon detekován!'); // Log pro ověření
+        if (isProcessing) {
+            console.log('⏳ Jiný požadavek se již zpracovává. Počkejte prosím.');
+            return;
+        }
+        console.log('🎤 Spouštím hlasové rozpoznávání...');
+        if (!recognition) {
+            console.error('❌ SpeechRecognition není inicializováno.');
+            alert('Hlasové rozpoznávání není k dispozici. Zkuste obnovit stránku nebo zkontrolovat prohlížeč.');
+            return;
+        }
+        recognition.start();
+        const micContainer = document.querySelector('.microphone-container');
+        micContainer.classList.add('recording');
+        console.log('🎙️ Třída .recording přidána na .microphone-container');
+        isProcessing = true;
+
+        const recordingIconSrc = 'images/microphone-transparent-192.png';
+
+        recognition.onstart = function () {
+            recording = true;
+            if (micIcon && recordingIconSrc) {
+                micIcon.src = recordingIconSrc;
+            }
+            if (micIcon) {
+                micIcon.classList.add('pulsate');
+            }
+            // Přehrání zvuku pouze na desktopu - zakomentováno pro testování
+            /*
+            if (!isMobile) {
+                try {
+                    beepSound.play();
+                } catch (err) {
+                    console.log("Nepodařilo se přehrát zvuk: " + err);
+                }
+            }
+            */
+        };
+
+        recognition.onspeechend = function () {
+            // Přehrání zvuku pouze na desktopu - zakomentováno pro testování
+            /*
+            if (!isMobile) {
+                try {
+                    beepSound.play();
+                } catch (err) {
+                    console.log("Nepodařilo se přehrát zvuk na konci: " + err);
+                }
+            }
+            */
+            recognition.stop();
+            recording = false;
+            resetMicIcon();
+        };
+    });
+
+    console.log('✅ Event listener pro mikrofon byl přiřazen.'); // Log pro ověření
 
     showDefaultText();
 });
@@ -163,13 +187,14 @@ document.addEventListener('DOMContentLoaded', () => {
 recognition.onresult = (event) => {
     const command = event.results[0][0].transcript.trim().toLowerCase();
     console.log(`🎙️ Rozpoznaný příkaz: ${command}`);
-    document.getElementById('output').innerText = `Rozpoznáno: ${command}`;
+    outputTextElement.textContent = `Rozpoznáno: ${command}`;
     recognition.stop();
     handleCommand(command);
 };
 
 async function handleCommand(command) {
     const output = document.getElementById('output');
+    const outputText = output.querySelector('.output-text');
     try {
         const response = await fetch(WEBHOOK_URL, {
             method: 'POST',
@@ -182,7 +207,7 @@ async function handleCommand(command) {
 
         if (!text) {
             console.log("ℹ️ Žádná odpověď z Make (např. notification).");
-            output.innerText = `Příkaz '${command}' zpracován, žádná akce.`;
+            outputText.textContent = `Příkaz '${command}' zpracován, žádná akce.`;
             resetMicIcon();
             showDefaultText();
             return;
@@ -203,22 +228,22 @@ async function handleCommand(command) {
             }
             if (Array.isArray(result.url)) {
                 console.log("📋 Seznam URL detekován:", result.url);
-                output.innerText = `Nalezeno více URL: ${result.url.join(', ')}`;
+                outputText.textContent = `Nalezeno více URL: ${result.url.join(', ')}`;
             } else if (typeof result.url === "string" && result.url) {
                 console.log("🚀 Přesměrování na jednu URL:", result.url);
-                output.innerText = `Přesměrování na ${result.url}...`;
+                outputText.textContent = `Přesměrování na ${result.url}...`;
                 window.location.href = result.url;
             } else {
                 console.log("ℹ️ Žádná platná URL v odpovědi:", result);
-                output.innerText = `Příkaz '${command}' zpracován, žádná akce.`;
+                outputText.textContent = `Příkaz '${command}' zpracován, žádná akce.`;
             }
         } catch (error) {
             console.error("❌ Chyba při parsování JSON odpovědi:", error, "Odpověď:", text);
-            output.innerText = "⚠️ Chyba při zpracování odpovědi.";
+            outputText.textContent = "⚠️ Chyba při zpracování odpovědi.";
         }
     } catch (error) {
         console.error("❌ Chyba při připojení k Make:", error);
-        output.innerText = "⚠️ Chyba při připojení k Make.";
+        outputText.textContent = "⚠️ Chyba při připojení k Make.";
     } finally {
         resetMicIcon();
     }
@@ -244,10 +269,11 @@ function resetMicIcon() {
 
 function displayContent(url) {
     const output = document.getElementById('output');
-    output.innerText = `Načítám obsah: ${url}`;
+    const outputText = output.querySelector('.output-text');
+    outputText.textContent = `Načítám obsah: ${url}`;
 
     if (!url || typeof url !== 'string') {
-        output.innerHTML = '<span class="status">Soubor nenalezen</span><br><span class="hint">Řekněte příkaz, např. "Zobraz vytížení", "Přehrát video školení", nebo "Spusť audio návod".</span>';
+        output.innerHTML = '<span class="output-text"><span class="status">Soubor nenalezen</span><br><span class="hint">Řekněte příkaz, např. "Zobraz vytížení", "Přehrát video školení", nebo "Spusť audio návod".</span></span>';
         return;
     }
 
@@ -256,7 +282,7 @@ function displayContent(url) {
         audio.controls = true;
         audio.src = url;
         audio.onerror = () => {
-            output.innerHTML = '<span class="status">Soubor nenalezen</span><br><span class="hint">Řekněte příkaz, např. "Zobraz vytížení", "Přehrát video školení", nebo "Spusť audio návod".</span>';
+            output.innerHTML = '<span class="output-text"><span class="status">Soubor nenalezen</span><br><span class="hint">Řekněte příkaz, např. "Zobraz vytížení", "Přehrát video školení", nebo "Spusť audio návod".</span></span>';
         };
         audio.onloadedmetadata = () => {
             output.innerHTML = '';
@@ -318,12 +344,12 @@ function displayContent(url) {
         }
         if (mediaElement) {
             mediaElement.onerror = () => {
-                output.innerHTML = '<span class="status">Soubor nenalezen</span><br><span class="hint">Řekněte příkaz, např. "Zobraz vytížení", "Přehrát video školení", nebo "Spusť audio návod".</span>';
+                output.innerHTML = '<span class="output-text"><span class="status">Soubor nenalezen</span><br><span class="hint">Řekněte příkaz, např. "Zobraz vytížení", "Přehrát video školení", nebo "Spusť audio návod".</span></span>';
             };
             output.innerHTML = '';
             output.appendChild(mediaElement);
         } else {
-            output.innerHTML = '<span class="status">Soubor nenalezen</span><br><span class="hint">Řekněte příkaz, např. "Zobraz vytížení", "Přehrát video školení", nebo "Spusť audio návod".</span>';
+            output.innerHTML = '<span class="output-text"><span class="status">Soubor nenalezen</span><br><span class="hint">Řekněte příkaz, např. "Zobraz vytížení", "Přehrát video školení", nebo "Spusť audio návod".</span></span>';
         }
     } else if (url.includes('.pdf') || url.includes('.xls') || url.includes('.xlsx') || url.includes('.ppt') || url.includes('.pptx') || url.includes('.doc') || url.includes('.docx')) {
         const iframe = document.createElement('iframe');
@@ -331,7 +357,7 @@ function displayContent(url) {
         iframe.height = '500px';
         iframe.src = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
         iframe.onerror = () => {
-            output.innerHTML = '<span class="status">Soubor nenalezen</span><br><span class="hint">Řekněte příkaz, např. "Zobraz vytížení", "Přehrát video školení", nebo "Spusť audio návod".</span>';
+            output.innerHTML = '<span class="output-text"><span class="status">Soubor nenalezen</span><br><span class="hint">Řekněte příkaz, např. "Zobraz vytížení", "Přehrát video školení", nebo "Spusť audio návod".</span></span>';
         };
         output.innerHTML = '';
         output.appendChild(iframe);
