@@ -9,37 +9,40 @@
   <link rel="manifest" href="./manifest.json">
   <link rel="stylesheet" href="./styles.css">
   <link rel="icon" type="image/png" href="./images/avatarka_bílé_pozadí.png">
+  <link rel="preload" href="./styles.css" as="style"> <!-- Přednačítání CSS -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script src="./src/app.js" type="module"></script>
+  <script src="./src/app.js" type="module" defer></script>
 </head>
 
 <body>
   <button id="install-button" style="opacity: 0;">📲 Instalovat PWA</button>
   <div id="microphone" style="display: none;">🎤</div>
-  <div class="container">
+  <div class="container" style="opacity: 0; transition: opacity 0.3s ease-in;">
     <div class="top-half">
       <div class="microphone-container">
         <img src="./images/microphone-transparent-192.png" alt="Microphone" id="start-speech" class="mic-icon">
+        <!-- Vlny pro animaci -->
+        <div class="wave wave1"></div>
+        <div class="wave wave2"></div>
+        <div class="wave wave3"></div>
       </div>
     </div>
 
     <div class="bottom-half">
-      <div id="output">Řekněte příkaz, např. 'Zobraz vytížení', 'Přehrát video školení', nebo 'Spusť audio
-        návod'.</div>
-      <!-- Přesunuté webhook prvky
-      <div id="webhook-setup" class="webhook-container" style="display: none;">
-        <input type="text" id="webhook-url" placeholder="Zadejte Webhook URL">
-        <button id="set-webhook-button">Nastavit</button>
-      </div>
-      <button id="change-webhook" style="display: none;">Změnit URL</button>
-    -->
+      <div id="output">Řekněte příkaz, např. 'Zobraz vytížení', 'Přehrát video školení', nebo 'Spusť audio návod'.</div>
       <div id="webhook-setup" class="webhook-container" style="display: none;">
         <input type="text" id="webhook-url" placeholder="Zadejte webhook URL">
         <button id="set-webhook-button">Nastavit URL</button>
       </div>
       <button id="change-webhook" style="display: none;">Změnit URL</button>
-      <!-- <button id="installPWA" style="display: none;">📲 Nainstalovat aplikaci</button> -->
     </div>
+    <button id="installPWA" style="display: none;">📲 Nainstalovat aplikaci</button>
+  </div>
+  <!-- Inline skript pro okamžité zobrazení obsahu -->
+  <script>
+    document.querySelector('.container').style.opacity = '1';
+  </script>
+  <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'936043f14da7bf7d',t:'MTc0NTYwOTUzNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
 </body>
 
 </html>
