@@ -6,11 +6,14 @@ let recording = false;
 let currentNotificationIndex = 0;
 let notificationTimeout;
 
+// Pevně nastavená webhook URL
+const WEBHOOK_URL = 'https://hook.eu1.make.com/4jibyt5oj7j96mnuaiow2mnofgpfhomo'; // Nahraďte skutečnou URL
+
 // Funkce pro zobrazení výchozího textu
 function showDefaultText() {
-    outputElement.textContent = 'Řekněte příkaz...';
+    outputElement.textContent = 'Řekněte příkaz, např. "Zobraz vytížení", "Přehrát video školení", nebo "Spusť audio návod".';
     outputElement.className = 'default-text';
-    outputElement.style.display = 'flex';
+    outputElement.style.display = 'block';
     isDefaultTextVisible = true;
 }
 
@@ -55,7 +58,6 @@ if ("serviceWorker" in navigator) {
 if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)) {
     console.error('❌ Hlasové rozpoznávání není podporováno.');
     alert('Hlasové rozpoznávání není podporováno. Zkuste to v Chrome nebo na jiném zařízení.');
-    document.getElementById('start-speech').disabled = true;
     throw new Error('SpeechRecognition not supported');
 }
 
@@ -99,57 +101,63 @@ recognition.onend = () => {
 const beepSound = new Audio('beep.mp3');
 const defaultMicIconSrc = document.getElementById('microphoneIcon')?.src || '';
 
-document.getElementById('start-speech').addEventListener('click', () => {
-    if (isProcessing) {
-        console.log('⏳ Jiný požadavek se již zpracovává. Počkejte prosím.');
-        return;
-    }
-    console.log('🎤 Poklep na mikrofon – spouštím hlasové rozpoznávání...');
-    if (!recognition) {
-        console.error('❌ SpeechRecognition není inicializováno.');
-        alert('Hlasové rozpoznávání není k dispozici. Zkuste obnovit stránku nebo zkontrolovat prohlížeč.');
-        return;
-    }
-    recognition.start();
-    const micContainer = document.querySelector('.microphone-container');
-    micContainer.classList.add('recording');
-    console.log('🎙️ Třída .recording přidána na .microphone-container');
-    isProcessing = true;
-
+document.addEventListener('DOMContentLoaded', () => {
     const micIcon = document.getElementById('microphoneIcon');
-    const recordingIconSrc = 'images/microphone-recording.png';
-
-    recognition.onstart = function () {
-        recording = true;
-        if (micIcon && recordingIconSrc) {
-            micIcon.src = recordingIconSrc;
-        }
-        if (micIcon) {
-            micIcon.classList.add('pulsate');
-        }
-        // Přehrání zvuku pouze na desktopu
-        if (!isMobile) {
-            try {
-                beepSound.play();
-            } catch (err) {
-                console.log("Nepodařilo se přehrát zvuk: " + err);
+    if (micIcon) {
+        micIcon.addEventListener('click', () => {
+            if (isProcessing) {
+                console.log('⏳ Jiný požadavek se již zpracovává. Počkejte prosím.');
+                return;
             }
-        }
-    };
-
-    recognition.onspeechend = function () {
-        // Přehrání zvuku pouze na desktopu
-        if (!isMobile) {
-            try {
-                beepSound.play();
-            } catch (err) {
-                console.log("Nepodařilo se přehrát zvuk na konci: " + err);
+            console.log('🎤 Klik na mikrofon – spouštím hlasové rozpoznávání...');
+            if (!recognition) {
+                console.error('❌ SpeechRecognition není inicializováno.');
+                alert('Hlasové rozpoznávání není k dispozici. Zkuste obnovit stránku nebo zkontrolovat prohlížeč.');
+                return;
             }
-        }
-        recognition.stop();
-        recording = false;
-        resetMicIcon();
-    };
+            recognition.start();
+            const micContainer = document.querySelector('.microphone-container');
+            micContainer.classList.add('recording');
+            console.log('🎙️ Třída .recording přidána na .microphone-container');
+            isProcessing = true;
+
+            const recordingIconSrc = 'images/microphone-transparent-192.png';
+
+            recognition.onstart = function () {
+                recording = true;
+                if (micIcon && recordingIconSrc) {
+                    micIcon.src = recordingIconSrc;
+                }
+                if (micIcon) {
+                    micIcon.classList.add('pulsate');
+                }
+                // Přehrání zvuku pouze na desktopu
+                if (!isMobile) {
+                    try {
+                        beepSound.play();
+                    } catch (err) {
+                        console.log("Nepodařilo se přehrát zvuk: " + err);
+                    }
+                }
+            };
+
+            recognition.onspeechend = function () {
+                // Přehrání zvuku pouze na desktopu
+                if (!isMobile) {
+                    try {
+                        beepSound.play();
+                    } catch (err) {
+                        console.log("Nepodařilo se přehrát zvuk na konci: " + err);
+                    }
+                }
+                recognition.stop();
+                recording = false;
+                resetMicIcon();
+            };
+        });
+    }
+
+    showDefaultText();
 });
 
 recognition.onresult = (event) => {
@@ -160,48 +168,10 @@ recognition.onresult = (event) => {
     handleCommand(command);
 };
 
-const startSpeech = document.getElementById('start-speech');
-const output = document.getElementById('output');
-
-function setWebhookUrl() {
-    const webhookUrl = document.getElementById('webhook-url').value;
-    const webhookSetup = document.getElementById('webhook-setup');
-    const changeWebhook = document.getElementById('change-webhook');
-
-    if (webhookUrl) {
-        localStorage.setItem('webhookUrl', webhookUrl);
-        output.innerText = 'Webhook URL nastaven: ' + webhookUrl;
-        webhookSetup.style.display = 'none';
-        changeWebhook.style.display = 'block';
-        showDefaultText();
-    } else {
-        output.innerText = '⚠️ Zadejte platnou URL.';
-        showDefaultText();
-    }
-}
-
-function showWebhookSetup() {
-    const webhookSetup = document.getElementById('webhook-setup');
-    const changeWebhook = document.getElementById('change-webhook');
-    console.log('📢 Zobrazuji webhook setup...');
-    webhookSetup.style.display = 'flex';
-    changeWebhook.style.display = 'none';
-    document.getElementById('webhook-url').value = localStorage.getItem('webhookUrl') || '';
-}
-
 async function handleCommand(command) {
-    const webhookUrl = localStorage.getItem('webhookUrl') || '';
     const output = document.getElementById('output');
-    if (!webhookUrl) {
-        output.innerText = '⚠️ Nastavte webhook URL.';
-        console.error('Webhook URL není nastaven');
-        resetMicIcon();
-        showDefaultText();
-        return;
-    }
-
     try {
-        const response = await fetch(webhookUrl, {
+        const response = await fetch(WEBHOOK_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ command: command })
@@ -271,30 +241,6 @@ function resetMicIcon() {
     recording = false;
     isProcessing = false;
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    const webhookSetup = document.getElementById('webhook-setup');
-    const changeWebhook = document.getElementById('change-webhook');
-    const setWebhookButton = document.getElementById('set-webhook-button');
-
-    if (localStorage.getItem('webhookUrl')) {
-        webhookSetup.style.display = 'none';
-        changeWebhook.style.display = 'block';
-        console.log('🔗 Webhook URL je nastaven – zobrazuji tlačítko "Změnit URL"');
-    } else {
-        webhookSetup.style.display = 'flex';
-        changeWebhook.style.display = 'none';
-        console.log('🔗 Webhook URL není nastaven – zobrazuji sekci pro nastavení URL');
-    }
-
-    setWebhookButton.addEventListener('click', setWebhookUrl);
-    changeWebhook.addEventListener('click', () => {
-        console.log('🔄 Kliknuto na Změnit URL');
-        showWebhookSetup();
-    });
-
-    showDefaultText();
-});
 
 function displayContent(url) {
     const output = document.getElementById('output');

@@ -164,8 +164,8 @@ html {
 }
 
 #output {
-    width: fit-content;
-    max-width: 90%;
+    width: 45%;
+    /* Zúženo na polovinu z 90% */
     min-height: 60px;
     background-color: rgba(200, 200, 200, 0.2);
     color: #333;
@@ -179,10 +179,7 @@ html {
     margin-left: 20px;
     margin-right: 20px;
     margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.5s;
+    word-wrap: break-word;
     border-radius: 5px;
 }
 
@@ -192,8 +189,8 @@ html {
 }
 
 #output.default-text {
-    width: fit-content;
-    max-width: 90%;
+    width: 45%;
+    /* Zúženo na polovinu z 90% */
     min-height: 60px;
     background-color: rgba(0, 0, 255, 0.1);
     border-left-color: #333;
@@ -206,10 +203,7 @@ html {
     margin-left: 20px;
     margin-right: 20px;
     margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.5s;
+    word-wrap: break-word;
     border-radius: 5px;
 }
 
@@ -273,41 +267,6 @@ html {
     color: blue;
 }
 
-.webhook-container {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-    justify-content: center;
-    width: fit-content;
-    max-width: 90%;
-}
-
-#webhook-url {
-    padding: 8px;
-    font-size: 1em;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 200px;
-}
-
-.webhook-container button,
-#change-webhook {
-    padding: 8px 16px;
-    font-size: 1em;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px;
-    min-width: 120px;
-}
-
-.webhook-container button:hover,
-#change-webhook:hover {
-    background-color: #0056b3;
-}
-
 #install-button {
     display: none;
 }
@@ -320,7 +279,6 @@ html {
 @media (max-width: 768px) {
     .mic-icon {
         width: 180px;
-        /* Zvětšeno o 50% z 120px */
     }
 
     .wave {
@@ -335,46 +293,20 @@ html {
         padding: 8px 6px;
         top: 0;
         font-size: 1.35em;
-        /* Zvětšeno o 50% z 0.9em */
         margin-left: 10px;
         margin-right: 10px;
         margin-top: 5px;
-    }
-
-    .webhook-container {
-        gap: 6px;
-        margin-top: 5px;
-        flex-wrap: wrap;
-    }
-
-    #webhook-url {
-        width: 210px;
-        /* Zvětšeno o 50% z 140px */
-        font-size: 1.275em;
-        /* Zvětšeno o 50% z 0.85em */
-        padding: 9px;
-        /* Zvětšeno o 50% z 6px */
-    }
-
-    .webhook-container button,
-    #change-webhook {
-        padding: 9px 15px;
-        /* Zvětšeno o 50% z 6px 10px */
-        font-size: 1.275em;
-        /* Zvětšeno o 50% z 0.85em */
-        min-width: 135px;
-        /* Zvětšeno o 50% z 90px */
-        margin-top: 5px;
+        width: 45%;
+        /* Zúženo na polovinu z 90% */
+        word-wrap: break-word;
     }
 
     .status {
         font-size: 24px;
-        /* Zvětšeno o 50% z 16px */
     }
 
     .hint {
         font-size: 18px;
-        /* Zvětšeno o 50% z 12px */
     }
 }
 
@@ -382,7 +314,6 @@ html {
 @media (max-width: 480px) {
     .mic-icon {
         width: 150px;
-        /* Zvětšeno o 50% z 100px */
     }
 
     .wave {
@@ -397,43 +328,17 @@ html {
         padding: 6px 4px;
         top: 0;
         font-size: 1.275em;
-        /* Zvětšeno o 50% z 0.85em */
         margin-top: 5px;
-    }
-
-    .webhook-container {
-        gap: 5px;
-        margin-top: 4px;
-        flex-wrap: wrap;
-    }
-
-    #webhook-url {
-        width: 180px;
-        /* Zvětšeno o 50% z 120px */
-        font-size: 1.2em;
-        /* Zvětšeno o 50% z 0.8em */
-        padding: 7.5px;
-        /* Zvětšeno o 50% z 5px */
-    }
-
-    .webhook-container button,
-    #change-webhook {
-        padding: 7.5px 12px;
-        /* Zvětšeno o 50% z 5px 8px */
-        font-size: 1.2em;
-        /* Zvětšeno o 50% z 0.8em */
-        min-width: 120px;
-        /* Zvětšeno o 50% z 80px */
-        margin-top: 4px;
+        width: 45%;
+        /* Zúženo na polovinu z 90% */
+        word-wrap: break-word;
     }
 
     .status {
         font-size: 21px;
-        /* Zvětšeno o 50% z 14px */
     }
 
     .hint {
         font-size: 15px;
-        /* Zvětšeno o 50% z 10px */
     }
 }
