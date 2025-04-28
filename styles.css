@@ -27,31 +27,50 @@ html {
 /* Obecné styly pro dashboard a iframe */
 .dashboard {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 10px;
+    align-items: center;
+    justify-content: center;
 }
 
 .dashboard iframe {
     width: 100%;
-    max-width: 1000px;
-    /* Omezíme šířku, aby nebyl "placatej" */
+    max-width: 1200px;
     height: 700px;
-    /* Zvýšíme výšku pro lepší zobrazení grafů */
     min-height: 500px;
     border: none;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin: 0 auto;
-    /* Vycentrujeme */
 }
 
 @media (max-width: 768px) {
+    .mic-icon {
+        width: 180px;
+    }
+
+    .container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        max-width: none !important;
+        box-sizing: border-box;
+    }
+
+    .dashboard {
+        flex-direction: column;
+        gap: 5px;
+        height: auto;
+        /* Zajistíme, že dashboard zabere potřebnou výšku */
+    }
+
     .dashboard iframe {
         max-width: 100%;
-        /* Na mobilu plná šířka */
-        height: 600px;
-        /* Přizpůsobíme výšku pro mobil */
-        min-height: 400px;
+        height: 1000px;
+        /* Zvýšíme výšku, aby se vešly grafy pod sebou */
+        min-height: 800px;
         border-radius: 4px;
     }
 }
