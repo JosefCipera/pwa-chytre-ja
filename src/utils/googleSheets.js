@@ -1,4 +1,5 @@
-import { GOOGLE_SHEETS_API_KEY, spreadsheetId, SHEET_NAME } from "./config.js"; // Upraven import
+import { spreadsheetId, SHEET_NAME } from "./config.js";
+import { getAccessToken } from "./auth.js";
 
 console.log("✅ Načtené ID tabulky:", spreadsheetId);
 console.log("✅ Načtený název listu:", SHEET_NAME);
@@ -6,15 +7,21 @@ console.log("✅ Načtený název listu:", SHEET_NAME);
 export async function updateSheetData(updatedData, range) {
     console.log("🔄 Aktualizuji Google Sheet...", { updatedData, range });
 
+    const accessToken = getAccessToken();
+    if (!accessToken) {
+        throw new Error("❌ Access token není dostupný. Prosím, přihlaste se.");
+    }
+
     try {
-        console.log("📌 URL pro aktualizaci:", `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?valueInputOption=RAW&key=${GOOGLE_SHEETS_API_KEY}`);
+        console.log("📌 URL pro aktualizaci:", `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?valueInputOption=RAW`);
 
         const response = await fetch(
-            `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?valueInputOption=RAW&key=${GOOGLE_SHEETS_API_KEY}`,
+            `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?valueInputOption=RAW`,
             {
                 method: "PUT",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${accessToken}`
                 },
                 body: JSON.stringify({ values: updatedData })
             }
@@ -37,15 +44,22 @@ export async function updateSheetData(updatedData, range) {
 
 export async function fetchSheetData(spreadsheetId, range) {
     console.log("📥 Načítám data z Google Sheets...", spreadsheetId, range);
-    console.log("📌 Odesílám požadavek na API:", `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${GOOGLE_SHEETS_API_KEY}`);
+
+    const accessToken = getAccessToken();
+    if (!accessToken) {
+        throw new Error("❌ Access token není dostupný. Prosím, přihlaste se.");
+    }
 
     try {
+        console.log("📌 Odesílám požadavek na API:", `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}`);
+
         const response = await fetch(
-            `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${GOOGLE_SHEETS_API_KEY}`,
+            `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}`,
             {
                 method: "GET",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${accessToken}`
                 }
             }
         );

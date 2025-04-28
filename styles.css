@@ -140,7 +140,8 @@ html {
 }
 
 .fade-out {
-    animation: fadeOut 0.5s forwards;
+    animation: fadeOut 2s forwards;
+    /* Fade-out trvá 2 sekundy */
 }
 
 @keyframes fadeOut {
@@ -154,7 +155,8 @@ html {
 }
 
 .blink {
-    animation: blinker 2s linear infinite;
+    animation: blinker 2s linear 3;
+    /* 3 cykly po 2s = 6s */
 }
 
 @keyframes blinker {
@@ -164,6 +166,11 @@ html {
 }
 
 #output {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    min-height: 50px;
+    /* Příklad – uprav podle svého designu */
+    width: 100%;
     background-color: rgba(200, 200, 200, 0.2);
     padding: 10px;
     position: relative;
@@ -175,11 +182,35 @@ html {
     margin-top: 10px;
     border-radius: 5px;
     display: inline-flex;
-    /* Zachováno pro dynamickou šířku */
     align-items: center;
-    /* Vertikální vystředění obsahu */
     min-width: 30%;
     max-width: 60%;
+}
+
+#output.visible {
+    opacity: 1;
+    /* Zobrazený stav (fade-up) */
+}
+
+#output.hidden {
+    opacity: 0;
+    /* Skrytý stav */
+}
+
+.blink {
+    animation: blink-animation 1s step-end infinite;
+}
+
+@keyframes blink-animation {
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+    /* Plynulý fade-out */
 }
 
 #output:empty {
@@ -199,9 +230,7 @@ html {
     margin-top: 10px;
     border-radius: 5px;
     display: inline-flex;
-    /* Zachováno pro dynamickou šířku */
     align-items: center;
-    /* Vertikální vystředění obsahu */
     min-width: 30%;
     max-width: 60%;
 }
@@ -213,7 +242,6 @@ html {
     word-wrap: break-word;
     width: 100%;
     line-height: 1.5em;
-    /* Zajistí konzistentní výšku řádku */
 }
 
 /* Modrý styl notifikace */
