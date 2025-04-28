@@ -296,13 +296,15 @@ async function handleCommand(command) {
         }
 
         if (result.url) {
-            if (Array.isArray(result.url)) {
-                console.log("📋 Seznam URL detekován:", result.url);
-                outputText.textContent = `Nalezeno více URL: ${result.url.join(', ')}`;
-            } else if (typeof result.url === "string") {
-                console.log("🚀 Přesměrování na jednu URL:", result.url);
-                outputTextElement.textContent = `Přesměrování na ${result.url}...`;
-                window.location.href = result.url;
+            if (typeof result.url === "string") {
+                if (result.url.includes('lookerstudio.google.com')) {
+                    console.log("🚀 Přesměrování na Looker report:", result.url);
+                    window.location.href = `looker-results.html?reportUrl=${encodeURIComponent(result.url)}`;
+                } else {
+                    console.log("🚀 Přesměrování na externí URL:", result.url);
+                    outputTextElement.textContent = `Přesměrování na ${result.url}...`;
+                    window.location.href = result.url;
+                }
             } else {
                 console.log("ℹ️ Žádná platná URL v odpovědi:", result);
                 outputTextElement.textContent = `Žádná platná URL v odpovědi.`;
