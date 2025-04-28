@@ -3,14 +3,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const reportUrl = urlParams.get('reportUrl');
     const dashboard = document.getElementById('looker-dashboard');
 
+    console.log("🔗 Načtený reportUrl:", reportUrl);
+
     if (reportUrl) {
         const iframe = document.createElement('iframe');
         iframe.src = reportUrl;
         iframe.frameBorder = '0';
         iframe.style.border = '0';
         iframe.setAttribute('allowfullscreen', '');
+        iframe.setAttribute('sandbox', 'allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox');
+        iframe.onerror = () => console.error("❌ Chyba při načítání iframe");
         dashboard.appendChild(iframe);
+        console.log("✅ Iframe vložen:", iframe.src);
     } else {
         dashboard.innerHTML = '<p>Chyba: Nebyl zadán odkaz na report.</p>';
+        console.error("❌ Žádný reportUrl v URL parametrech");
     }
 });
