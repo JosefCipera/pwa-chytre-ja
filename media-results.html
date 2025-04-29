@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media Výsledky</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+      text-align: center;
+    }
+
+    .media-container {
+      margin: 20px 0;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .back-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="content" class="media-container"></div>
+  <a href="index.html" class="back-button">Zpět</a>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const mediaUrl = urlParams.get('mediaUrl');
+    const contentDiv = document.getElementById('content');
+    if (!mediaUrl) { contentDiv.textContent = 'Chyba: URL média nenalezena.'; return; }
+    if (mediaUrl.includes('soundcloud.com')) {
+      contentDiv.innerHTML = `<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="${mediaUrl}"></iframe>`;
+    } else if (mediaUrl.includes('spotify.com')) {
+      const embedUrl = mediaUrl.replace('/track/', '/embed/track/');
+      contentDiv.innerHTML = `<iframe src="${embedUrl}" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>`;
+    } else if (mediaUrl.includes('youtube.com') || mediaUrl.includes('youtu.be')) {
+      const videoId = mediaUrl.includes('youtu.be') ? mediaUrl.split('/').pop() : mediaUrl.split('v=')[1].split('&')[0];
+      contentDiv.innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    } else if (mediaUrl.endsWith('.mp3')) {
+      contentDiv.innerHTML = `<audio controls><source src="${mediaUrl}" type="audio/mpeg">Váš prohlížeč nepodporuje audio.</audio>`;
+    } else {
+      contentDiv.innerHTML = `Nepodporovaný formát média: <a href="${mediaUrl}" target="_blank">Otevřít odkaz</a>`;
+    }
+  </script>
+</body>
+
+</html>
