@@ -116,48 +116,37 @@
     };
 
     async function handleCommand(command) {
-      console.log("🎤 Odesílám povel na Make:", command);
-
-      const webhookUrl = "https://hook.eu1.make.com/17gn7hrtmnfgsykl52dcn2ekx15nvh1f"; // Aktualizuj URL
-
       try {
-        const response = await fetch(webhookUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ Povel: command })
+        console.log('Posílaná data:', { command: command });
+
+        // Dočasně simulujeme odpověď pro testování
+        /*
+        const response = await fetch('https://hook.eu1.make.com/4jibyt5oj7j96mnuaiow2mnofgpfhomo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ command: command }),
         });
+        if (!response.ok) { throw new Error(`Chyba HTTP: ${response.status}`); }
+        const data = await response.json();
+        */
 
-        console.log("🔍 HTTP status:", response.status);
+        // Simulovaná odpověď
+        const data = {
+          response_type: 'audio', // nebo 'video' pro testování
+          response_data: 'https://soundcloud.com/artist/track' // Příklad audio URL
+          // Pro video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+        };
 
-        if (!response.ok) {
-          throw new Error(`Chyba při odesílání na Make: ${response.status}`);
+        // Zpracování odpovědi
+        if (data.response_type === 'url') {
+          window.location.href = `looker-results.html?reportUrl=${encodeURIComponent(data.response_data)}`;
+        } else if (data.response_type === 'audio' || data.response_type === 'video') {
+          window.location.href = `media-results.html?mediaUrl=${encodeURIComponent(data.response_data)}`;
+        } else {
+          console.log('Není podporovaný typ odpovědi:', data.response_type);
         }
-
-        const text = await response.text();
-        console.log("📜 Surová odpověď:", text);
-
-        try {
-          const result = JSON.parse(text);
-          console.log("✅ Zpracovaná odpověď (JSON):", result);
-
-          if (Array.isArray(result.url)) {
-            console.log("📋 Seznam URL detekován:", result.url);
-            // Zde můžeš zobrazit seznam, pokud chceš uživateli nabídnout více možností
-          } else if (typeof result.url === "string") {
-            console.log("🚀 Přesměrování na jednu URL:", result.url);
-            window.location.href = result.url; // Přesměrování na URL
-          } else {
-            console.error("❌ Odpověď z Make neobsahuje platnou URL:", result);
-            document.getElementById('output').innerText = "⚠️ Chybná odpověď z Make.";
-          }
-        } catch (error) {
-          console.error("❌ Chyba při parsování JSON odpovědi:", error, "Odpověď:", text);
-          document.getElementById('output').innerText = "⚠️ Chyba při zpracování odpovědi.";
-        }
-
       } catch (error) {
-        console.error("❌ Chyba při komunikaci s Make:", error);
-        document.getElementById('output').innerText = "⚠️ Chyba při připojení.";
+        console.error('❌ Chyba HTTP:', error.message);
       }
     }
 
