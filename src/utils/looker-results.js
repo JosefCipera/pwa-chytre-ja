@@ -10,12 +10,17 @@ document.addEventListener('DOMContentLoaded', () => {
         iframe.src = reportUrl;
         iframe.frameBorder = '0';
         iframe.style.border = '0';
-        iframe.style.width = '100%'; // Explicitní šířka
-        iframe.style.height = '100%'; // Explicitní výška
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
         iframe.setAttribute('allowfullscreen', '');
         iframe.setAttribute('sandbox', 'allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox');
-        iframe.onerror = () => console.error("❌ Chyba při načítání iframe na mobilu");
-        iframe.onload = () => console.log("✅ Iframe načten na mobilu");
+        iframe.onerror = () => {
+            console.error("❌ Chyba při načítání iframe na mobilu");
+            dashboard.innerHTML = '<p>Chyba při načítání grafů.</p>';
+        };
+        iframe.onload = () => {
+            console.log("✅ Iframe načten na mobilu");
+        };
         dashboard.appendChild(iframe);
         console.log("✅ Iframe vložen:", iframe.src);
     } else {

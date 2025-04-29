@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media Výsledky</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      max-width: 100%;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    iframe,
+    img,
+    audio {
+      width: 100%;
+      border: none;
+      margin-top: 20px;
+    }
+
+    audio {
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .back-button,
+    .fallback-link {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .back-button:hover,
+    .fallback-link:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div id="content"></div>
+    <a href="index.html" class="back-button">Zpět</a>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const type = urlParams.get('type');
+    const contentUrl = decodeURIComponent(urlParams.get('url'));
+
+    const contentDiv = document.getElementById('content');
+
+    if (type && contentUrl) {
+      // Pokud URL obsahuje lookerstudio.google.com, nepoužijeme iframe
+      if (contentUrl.includes('lookerstudio.google.com')) {
+        contentDiv.innerHTML = `Looker Studio nelze zobrazit přímo zde kvůli omezením. <a href="${contentUrl}" target="_blank" class="fallback-link">Otevřít Looker Studio</a>`;
+      } else if (type === 'gif') {
+        const img = document.createElement('img');
+        img.src = contentUrl;
+        img.alt = 'GIF obsah';
+        contentDiv.appendChild(img);
+      } else if (type === 'audio') {
+        if (contentUrl.includes('soundcloud.com')) {
+          const iframe = document.createElement('iframe');
+          iframe.src = `https://w.soundcloud.com/player/?url=${encodeURIComponent(contentUrl)}&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`;
+          iframe.width = '100%';
+          iframe.height = '166px';
+          iframe.frameBorder = '0';
+          iframe.allow = 'autoplay';
+          contentDiv.appendChild(iframe);
+        } else if (contentUrl.includes('spotify.com')) {
+          const iframe = document.createElement('iframe');
+          iframe.src = contentUrl.replace('open.spotify.com/', 'open.spotify.com/embed/');
+          iframe.width = '100%';
+          iframe.height = '152px';
+          iframe.frameBorder = '0';
+          iframe.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+          contentDiv.appendChild(iframe);
+        } else if (contentUrl.includes('apple.com')) {
+          const iframe = document.createElement('iframe');
+          iframe.src = contentUrl;
+          iframe.width = '100%';
+          iframe.height = '200px';
+          iframe.frameBorder = '0';
+          iframe.allow = 'autoplay';
+          contentDiv.appendChild(iframe);
+        } else if (contentUrl.endsWith('.mp3') || contentUrl.endsWith('.wav')) {
+          const audio = document.createElement('audio');
+          audio.controls = true;
+          const source = document.createElement('source');
+          source.src = contentUrl;
+          source.type = contentUrl.endsWith('.mp3') ? 'audio/mpeg' : 'audio/wav';
+          audio.appendChild(source);
+          audio.innerHTML += 'Váš prohlížeč nepodporuje přehrávání audia.';
+          contentDiv.appendChild(audio);
+        } else {
+          contentDiv.innerHTML = `Audio není podporováno přímo. <a href="${contentUrl}" target="_blank" class="fallback-link">Otevřít odkaz</a>`;
+        }
+      } else {
+        let iframeHeight = '400px';
+        let iframeSrc = contentUrl;
+
+        if (type === 'video') {
+          iframeHeight = '315px';
+        } else if (type === 'document' || type === 'url') {
+          iframeHeight = '600px';
+        } else if (type === 'excel') {
+          iframeHeight = '600px';
+        } else if (type === 'pdf') {
+          iframeHeight = '600px';
+          iframeSrc = `https://docs.google.com/viewer?url=${encodeURIComponent(contentUrl)}&embedded=true`;
+        }
+
+        const iframe = document.createElement('iframe');
+        iframe.src = iframeSrc;
+        iframe.width = '100%';
+        iframe.height = iframeHeight;
+        iframe.frameBorder = '0';
+        iframe.allow = 'autoplay';
+        contentDiv.appendChild(iframe);
+      }
+    } else {
+      contentDiv.textContent = 'Chyba: Obsah nenalezen.';
+    }
+  </script>
+</body>
+
+</html>

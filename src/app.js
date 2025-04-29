@@ -50,6 +50,94 @@ let WEBHOOK_URL;
     console.log("🔗 Webhook URL načten:", WEBHOOK_URL);
 })();
 
+// SpeechRecognition API
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+recognition.lang = 'cs-CZ';
+recognition.interimResults = false;
+recognition.maxAlternatives = 1;
+
+recognition.onresult = (event) => {
+    const command = event.results[0][0].transcript;
+    processCommand(command);
+};
+
+recognition.onerror = (event) => {
+    console.error("❌ Chyba při rozpoznávání hlasu:", event.error);
+    showMessage("Chyba při rozpoznávání hlasu. Zkuste to znovu.");
+};
+
+function startListening() {
+    recognition.start();
+    console.log("🎙️ Poslech spuštěn...");
+}
+
+function stopListening() {
+    recognition.stop();
+    console.log("🎙️ Poslech zastaven.");
+}
+
+function processCommand(command) {
+    console.log("🎙️ Rozpoznaný příkaz:", command);
+
+    if (!command || typeof command !== 'string' || command.trim() === '') {
+        console.error("❌ Nevalidní příkaz:", command);
+        showMessage("Příkaz není platný. Zkuste to znovu.");
+        return;
+    }
+
+    const normalizedCommand = command.trim();
+    const payload = { command: normalizedCommand };
+    console.log("📤 Odesílaná data na Make.com:", payload);
+
+    fetch('https://hook.eu1.make.com/4jibyt5oj7j96mnuaiow2mnofgpfhomo', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`❌ Chyba HTTP: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("✅ Odpověď od Make.com:", data);
+
+            const { response_type, response_data } = data;
+
+            if (response_type && response_data) {
+                // Podporované typy médií
+                const supportedTypes = ["audio", "video", "url", "document", "gif", "excel", "pdf"];
+                if (supportedTypes.includes(response_type)) {
+                    const encodedUrl = encodeURIComponent(response_data);
+                    window.location.href = `media-results.html?type=${response_type}&url=${encodedUrl}`;
+                } else if (normalizedCommand.includes("vypni mikrofon")) {
+                    stopListening();
+                } else if (normalizedCommand.includes("zapni mikrofon")) {
+                    startListening();
+                } else {
+                    showMessage("Nerozpoznaný typ odpovědi. Zkuste to znovu.");
+                }
+            } else {
+                showMessage("Odpověď od Make.com není úplná. Zkuste to znovu.");
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            showMessage("Chyba při zpracování příkazu. Zkuste to znovu.");
+        });
+}
+
+function showMessage(message) {
+    const messageDiv = document.getElementById('message');
+    messageDiv.textContent = message;
+    setTimeout(() => {
+        messageDiv.textContent = '';
+    }, 3000);
+}
+
 // Pevně nastavená webhook URL
 // const WEBHOOK_URL = 'https://hook.eu1.make.com/4jibyt5oj7j96mnuaiow2mnofgpfhomo';
 
@@ -136,11 +224,6 @@ if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)) 
     alert('Hlasové rozpoznávání není podporováno. Zkuste to v Chrome nebo na jiném zařízení.');
     throw new Error('SpeechRecognition not supported');
 }
-
-const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-recognition.lang = 'cs-CZ';
-recognition.interimResults = false;
-recognition.continuous = false;
 
 let isProcessing = false;
 let latestRequestTimestamp = 0;
