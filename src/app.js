@@ -309,107 +309,142 @@ recognition.onresult = (event) => {
 };
 
 async function handleCommand(command) {
+    const webhookUrl = localStorage.getItem('webhookUrl') || '';
     const output = document.getElementById('output');
-    const outputText = output.querySelector('.output-text');
-    try {
-        // Normalizace příkazu
-        let normalizedCommand = command.toLowerCase();
-        normalizedCommand = normalizedCommand.replace(/zobraz |spusť |přehraj /g, '');
-        console.log(`🔧 Normalizovaný příkaz: ${normalizedCommand}`);
+    if (!webhookUrl) {
+        output.style.display = 'flex';
+        output.innerText = '⚠️ Nastavte webhook URL.';
+        console.error('Webhook URL není nastaven');
+        resetMicIcon();
+        return;
+    }
 
-        const response = await fetch(WEBHOOK_URL, {
+    if (command.toLowerCase().includes("kontrola dat")) {
+        console.log("🔍 Spouštím kontrolu dat...");
+        try {
+            const data = await fetchSheetData(spreadsheetId, `${SHEET_NAME}!A:D`);
+            if (!data || !data.values) {
+                console.log("❌ Data nenalezena, zobrazuji notifikaci...");
+                showNotificationFromMake("Nepodařilo se načíst data", "urgent", 5000);
+                resetMicIcon();
+                return;
+            }
+
+            console.log("📊 Načtená data:", data.values);
+            const headers = data.values[0];
+            const rows = data.values.slice(1);
+
+            const errors = [];
+            for (let index = 0; index < rows.length; index++) {
+                const row = rows[index];
+                const rowIndex = index + 2;
+                const quantityIndex = headers.indexOf("Množství");
+                const quantity = parseInt(row[quantityIndex], 10);
+                let status;
+
+                if (isNaN(quantity) || quantity <= 0) {
+                    errors.push(`Řádek ${rowIndex}: Množství musí být větší než 0`);
+                    status = "Množství";
+                } else {
+                    status = "ok";
+                }
+
+                console.log(`📝 Aktualizuji řádek ${rowIndex} s hodnotou: ${status}`);
+                try {
+                    await updateSheetData([[status]], `${SHEET_NAME}!D${rowIndex}:D${rowIndex}`);
+                    console.log(`✅ Úspěšně aktualizován řádek ${rowIndex}`);
+                } catch (error) {
+                    console.error(`❌ Selhání aktualizace řádku ${rowIndex}:`, error.message);
+                    errors.push(`Řádek ${rowIndex}: Selhání aktualizace: ${error.message}`);
+                }
+            }
+
+            if (errors.length > 0) {
+                console.log("⚠️ Chyby nalezeny, zobrazuji notifikaci...");
+                showNotificationFromMake("Kontrola dat: Chyby nalezeny", "warning", 5000);
+                displayValidationErrors(errors);
+            } else {
+                console.log("✅ Kontrola úspěšná, zobrazuji notifikaci...");
+                showNotificationFromMake("Kontrola dat úspěšná", "ok", 3000);
+            }
+        } catch (error) {
+            console.error("❌ Chyba při kontrole dat:", error.message);
+            showNotificationFromMake(`Chyba při kontrole dat: ${error.message}`, "urgent", 5000);
+        } finally {
+            resetMicIcon();
+        }
+        return;
+    }
+
+    try {
+        const response = await fetch(webhookUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ command: normalizedCommand })
+            body: JSON.stringify({ command: command })
         });
-
-        if (!response.ok) {
-            console.error(`❌ Chyba HTTP: ${response.status} ${response.statusText}`);
-            if (response.status === 500) {
-                showNotification({
-                    message: "Bohužel došlo k chybě na serveru Make. Zkuste to znovu později.",
-                    severity: "warning",
-                    duration: 6000
-                });
-            } else {
-                showNotification({
-                    message: "Nepodařilo se zpracovat příkaz. Zkuste to znovu.",
-                    severity: "warning",
-                    duration: 6000
-                });
-            }
-            return;
-        }
 
         const text = await response.text();
         console.log("📜 Surová odpověď:", text);
 
-        let result;
+        if (!text) {
+            console.log("ℹ️ Žádná odpověď z Make (např. notification).");
+            output.style.display = 'flex';
+            output.innerText = `Příkaz '${command}' zpracován, žádná akce.`;
+            resetMicIcon();
+            return;
+        }
+
         try {
-            // Přímo parsujeme JSON bez decodeURIComponent a escape
-            if (text && text.trim().startsWith('{') && text.trim().endsWith('}')) {
-                result = JSON.parse(text);
-            } else {
-                console.error("❌ Odpověď není validní JSON:", text);
+            const result = JSON.parse(text);
+            console.log("✅ Zpracovaná odpověď (JSON):", result);
+            if (result.message) {
+                console.log("🔔 Notifikace detekována:", result.message);
                 showNotification({
-                    message: "Příkaz nerozpoznán. Zkuste jiný příkaz.",
-                    severity: "warning",
-                    duration: 6000
+                    message: result.message,
+                    severity: result.severity || "normal",
+                    duration: result.duration || 3000
                 });
+                resetMicIcon();
                 return;
+            }
+
+            // Detailní logování pro ladění
+            console.log("🔍 Typ response_type:", result.response_type);
+            console.log("🔍 response_data:", result.response_data);
+            console.log("🔍 Je response_data string?", typeof result.response_data === "string");
+            console.log("🔍 Je response_data pole?", Array.isArray(result.response_data));
+
+            const url = result.response_data;
+            if (result.response_type === "url" && Array.isArray(url)) {
+                console.log("📋 Seznam URL detekován:", url);
+                output.style.display = 'flex';
+                output.innerText = `Nalezeno více URL: ${url.join(', ')}`;
+            } else if (result.response_type === "url" && typeof url === "string" && url) {
+                console.log("🚀 Přesměrování na jednu URL:", url);
+                output.style.display = 'flex';
+                output.innerText = `Přesměrování na ${url}...`;
+                if (url.includes("lookerstudio.google.com")) {
+                    window.location.href = `looker-results.html?reportUrl=${encodeURIComponent(url)}`;
+                } else {
+                    window.location.href = url;
+                }
+            } else if (result.response_type === "audio" || result.response_type === "video") {
+                console.log("🎥 Detekován mediální obsah:", url);
+                window.location.href = `media-results.html?mediaUrl=${encodeURIComponent(url)}`;
+            } else {
+                console.log("ℹ️ Neznámý typ odpovědi nebo chybějící URL:", result);
+                output.style.display = 'flex';
+                output.innerText = `Příkaz '${command}' nebyl rozpoznán serverem. Zkuste jiný příkaz.`;
             }
         } catch (error) {
             console.error("❌ Chyba při parsování JSON odpovědi:", error, "Odpověď:", text);
-            showNotification({
-                message: "Příkaz nerozpoznán. Zkuste jiný příkaz.",
-                severity: "warning",
-                duration: 6000
-            });
-            return;
+            output.style.display = 'flex';
+            output.innerText = "⚠️ Chyba při zpracování odpovědi.";
         }
-
-        if (result.message) {
-            console.log("🔔 Notifikace detekována:", result.message);
-            showNotification({
-                message: result.message,
-                severity: result.severity || "normal",
-                duration: result.duration || 8000
-            });
-            return;
-        }
-
-        if (result.url) {
-            if (typeof result.url === "string") {
-                if (result.url.includes('lookerstudio.google.com')) {
-                    console.log("🚀 Přesměrování na Looker report:", result.url);
-                    window.location.href = `looker-results.html?reportUrl=${encodeURIComponent(result.url)}`;
-                } else {
-                    console.log("🚀 Přesměrování na externí URL:", result.url);
-                    outputTextElement.textContent = `Přesměrování na ${result.url}...`;
-                    window.location.href = result.url;
-                }
-            } else {
-                console.log("ℹ️ Žádná platná URL v odpovědi:", result);
-                outputTextElement.textContent = `Žádná platná URL v odpovědi.`;
-                showDefaultText();
-            }
-            return;
-        }
-
-        // Pokud je odpověď prázdná ({}), příkaz nebyl nalezen
-        console.log("ℹ️ Příkaz nenalezen:", result);
-        showNotification({
-            message: "Příkaz nerozpoznán. Zkuste jiný příkaz.",
-            severity: "warning",
-            duration: 6000
-        });
     } catch (error) {
         console.error("❌ Chyba při připojení k Make:", error);
-        showNotification({
-            message: "Nepodařilo se připojit k serveru Make. Zkuste to znovu později.",
-            severity: "warning",
-            duration: 6000
-        });
+        output.style.display = 'flex';
+        output.innerText = "⚠️ Chyba při připojení k Make.";
     } finally {
         resetMicIcon();
     }
