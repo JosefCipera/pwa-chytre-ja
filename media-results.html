@@ -4,137 +4,149 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Media Výsledky</title>
+  <title>Přehrávání médií</title>
+  <link rel="stylesheet" href="styles.css">
   <style>
     body {
       font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
       margin: 0;
-      padding: 20px;
-      background-color: #f4f4f4;
+      background-color: #f0f0f0;
     }
 
-    .container {
+    #media-container {
+      margin-top: 20px;
       max-width: 100%;
-      margin: 0 auto;
-      text-align: center;
     }
 
-    iframe,
-    img,
-    audio {
-      width: 100%;
-      border: none;
+    #media-error {
+      color: red;
       margin-top: 20px;
     }
 
-    audio {
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .back-button,
-    .fallback-link {
-      display: inline-block;
+    #back-button {
       margin-top: 20px;
       padding: 10px 20px;
       background-color: #007bff;
       color: white;
-      text-decoration: none;
+      border: none;
       border-radius: 5px;
+      cursor: pointer;
     }
 
-    .back-button:hover,
-    .fallback-link:hover {
+    #back-button:hover {
       background-color: #0056b3;
+    }
+
+    iframe {
+      width: 560px;
+      height: 315px;
+      max-width: 100%;
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <div id="content"></div>
-    <a href="index.html" class="back-button">Zpět</a>
-  </div>
+  <h1>Přehrávání médií</h1>
+  <div id="media-container"></div>
+  <div id="media-error"></div>
+  <button id="back-button">Zpět</button>
 
   <script>
+    const mediaContainer = document.getElementById('media-container');
+    const mediaError = document.getElementById('media-error');
+    const backButton = document.getElementById('back-button');
+
+    // Načtení mediaUrl z URL parametrů
     const urlParams = new URLSearchParams(window.location.search);
-    const type = urlParams.get('type');
-    const contentUrl = decodeURIComponent(urlParams.get('url'));
+    let mediaUrl = urlParams.get('mediaUrl');
 
-    const contentDiv = document.getElementById('content');
+    if (mediaUrl) {
+      console.log("🎵 Načtená URL:", mediaUrl);
 
-    if (type && contentUrl) {
-      // Pokud URL obsahuje lookerstudio.google.com, nepoužijeme iframe
-      if (contentUrl.includes('lookerstudio.google.com')) {
-        contentDiv.innerHTML = `Looker Studio nelze zobrazit přímo zde kvůli omezením. <a href="${contentUrl}" target="_blank" class="fallback-link">Otevřít Looker Studio</a>`;
-      } else if (type === 'gif') {
-        const img = document.createElement('img');
-        img.src = contentUrl;
-        img.alt = 'GIF obsah';
-        contentDiv.appendChild(img);
-      } else if (type === 'audio') {
-        if (contentUrl.includes('soundcloud.com')) {
-          const iframe = document.createElement('iframe');
-          iframe.src = `https://w.soundcloud.com/player/?url=${encodeURIComponent(contentUrl)}&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`;
-          iframe.width = '100%';
-          iframe.height = '166px';
-          iframe.frameBorder = '0';
-          iframe.allow = 'autoplay';
-          contentDiv.appendChild(iframe);
-        } else if (contentUrl.includes('spotify.com')) {
-          const iframe = document.createElement('iframe');
-          iframe.src = contentUrl.replace('open.spotify.com/', 'open.spotify.com/embed/');
-          iframe.width = '100%';
-          iframe.height = '152px';
-          iframe.frameBorder = '0';
-          iframe.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
-          contentDiv.appendChild(iframe);
-        } else if (contentUrl.includes('apple.com')) {
-          const iframe = document.createElement('iframe');
-          iframe.src = contentUrl;
-          iframe.width = '100%';
-          iframe.height = '200px';
-          iframe.frameBorder = '0';
-          iframe.allow = 'autoplay';
-          contentDiv.appendChild(iframe);
-        } else if (contentUrl.endsWith('.mp3') || contentUrl.endsWith('.wav')) {
-          const audio = document.createElement('audio');
-          audio.controls = true;
-          const source = document.createElement('source');
-          source.src = contentUrl;
-          source.type = contentUrl.endsWith('.mp3') ? 'audio/mpeg' : 'audio/wav';
-          audio.appendChild(source);
-          audio.innerHTML += 'Váš prohlížeč nepodporuje přehrávání audia.';
-          contentDiv.appendChild(audio);
+      // Kontrola Google Drive odkazu a převod na přímý odkaz
+      if (mediaUrl.includes('drive.google.com') && mediaUrl.includes('/view')) {
+        const fileIdMatch = mediaUrl.match(/\/d\/(.+?)\//);
+        if (fileIdMatch && fileIdMatch[1]) {
+          const fileId = fileIdMatch[1];
+          mediaUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+          console.log("🔄 Převedený Google Drive odkaz:", mediaUrl);
         } else {
-          contentDiv.innerHTML = `Audio není podporováno přímo. <a href="${contentUrl}" target="_blank" class="fallback-link">Otevřít odkaz</a>`;
+          mediaError.textContent = 'Chyba: Neplatný Google Drive odkaz.';
+          mediaUrl = null;
         }
-      } else {
-        let iframeHeight = '400px';
-        let iframeSrc = contentUrl;
+      }
 
-        if (type === 'video') {
-          iframeHeight = '315px';
-        } else if (type === 'document' || type === 'url') {
-          iframeHeight = '600px';
-        } else if (type === 'excel') {
-          iframeHeight = '600px';
-        } else if (type === 'pdf') {
-          iframeHeight = '600px';
-          iframeSrc = `https://docs.google.com/viewer?url=${encodeURIComponent(contentUrl)}&embedded=true`;
+      // Kontrola Dropbox odkazu a převod na přímý odkaz
+      if (mediaUrl && mediaUrl.includes('dropbox.com')) {
+        if (!mediaUrl.includes('raw=1')) {
+          mediaUrl = mediaUrl.replace(/dl=0/, 'raw=1');
+          console.log("🔄 Převedený Dropbox odkaz:", mediaUrl);
         }
+      }
 
-        const iframe = document.createElement('iframe');
-        iframe.src = iframeSrc;
-        iframe.width = '100%';
-        iframe.height = iframeHeight;
-        iframe.frameBorder = '0';
-        iframe.allow = 'autoplay';
-        contentDiv.appendChild(iframe);
+      // Pokud máme platnou URL, pokračujeme
+      if (mediaUrl) {
+        // Kontrola YouTube odkazu (pro video)
+        if (mediaUrl.includes('youtube.com') || mediaUrl.includes('youtu.be')) {
+          let videoId = '';
+          if (mediaUrl.includes('youtube.com')) {
+            const urlParams = new URLSearchParams(new URL(mediaUrl).search);
+            videoId = urlParams.get('v');
+          } else if (mediaUrl.includes('youtu.be')) {
+            videoId = mediaUrl.split('youtu.be/')[1].split('?')[0];
+          }
+
+          if (videoId) {
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.youtube.com/embed/${videoId}`;
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            iframe.allowFullscreen = true;
+            mediaContainer.appendChild(iframe);
+          } else {
+            mediaError.textContent = 'Chyba: Neplatný YouTube odkaz.';
+          }
+        }
+        // Kontrola SoundCloud odkazu (pro audio)
+        else if (mediaUrl.includes('soundcloud.com')) {
+          fetch(`https://soundcloud.com/oembed?format=json&url=${encodeURIComponent(mediaUrl)}`)
+            .then(response => response.json())
+            .then(data => {
+              if (data.html) {
+                mediaContainer.innerHTML = data.html;
+              } else {
+                throw new Error('SoundCloud oEmbed API nevrátilo HTML.');
+              }
+            })
+            .catch(error => {
+              console.error('❌ Chyba při načítání SoundCloud přehrávače:', error);
+              mediaError.textContent = 'Chyba při načítání audia. Zkuste to znovu.';
+            });
+        }
+        // Ostatní zdroje (přímé .mp3 odkazy)
+        else {
+          const audioElement = document.createElement('audio');
+          audioElement.controls = true;
+          audioElement.src = mediaUrl;
+          audioElement.onerror = () => {
+            console.error('❌ Chyba při přehrávání audia:', mediaUrl);
+            mediaError.textContent = 'Nepodařilo se přehrát audio. Formát není podporován.';
+          };
+          mediaContainer.appendChild(audioElement);
+        }
       }
     } else {
-      contentDiv.textContent = 'Chyba: Obsah nenalezen.';
+      mediaError.textContent = 'Chyba: Obsah nenalezen.';
     }
+
+    // Tlačítko Zpět
+    backButton.addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
   </script>
 </body>
 
