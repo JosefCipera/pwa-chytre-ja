@@ -4,49 +4,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Looker Studio Výsledky</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background-color: #f4f4f4;
-      text-align: center;
-    }
-
-    .back-button {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-    }
-
-    .back-button:hover {
-      background-color: #0056b3;
-    }
-  </style>
+  <title>Výstupy z Lookeru</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-  <div id="content"></div>
-  <a href="index.html" class="back-button">Zpět</a>
-
-  <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const reportUrl = urlParams.get('reportUrl');
-
-    const contentDiv = document.getElementById('content');
-
-    if (reportUrl) {
-      contentDiv.innerHTML = `Looker Studio se otevře v novém okně. <a href="${reportUrl}" target="_blank">Otevřít Looker Studio</a>`;
-      window.open(reportUrl, '_blank');
-    } else {
-      contentDiv.textContent = 'Chyba: URL reportu nenalezena.';
-    }
-  </script>
+  <div class="container">
+    <div class="dashboard" id="looker-dashboard">
+      <!-- Iframe bude vložen dynamicky -->
+    </div>
+  </div>
+  <script src="./src/utils/looker-results.js"></script>
 </body>
 
 </html>

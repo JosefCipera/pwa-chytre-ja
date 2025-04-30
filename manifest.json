@@ -1,11 +1,17 @@
 {
-  "name": "Voice Commands PWA",
-  "short_name": "VoicePWA",
+  "name": "Chytré já",
+  "short_name": "Chytré já",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#4CAF50",
   "icons": [
+    {
+      "src": "./images/microphone-transparent-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
     {
       "src": "./images/avatarka_bílé_pozadí.png",
       "sizes": "192x192",
