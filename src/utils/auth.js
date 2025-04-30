@@ -1,80 +1,67 @@
-import { checkProductionData } from "../modules/dataCheck.js";
+// src/utils/auth.js
+import { CLIENT_ID, SCOPES } from "./config.js";
 
-// export const updateRange = "'Data'!A1:Q3"; // ✅ Správný list
-
+let tokenClient;
 let accessToken = null;
-const SCOPES = "https://www.googleapis.com/auth/spreadsheets";
-import { CLIENT_ID } from "./config.js"; // ✅ Import CLIENT_ID z config.js
-
-let tokenClient; // 🟢 Deklarujeme globálně, ale inicializujeme až v `initGoogleAuth()`
 
 export function initGoogleAuth() {
-    console.log("🔄 Inicializuji Google OAuth...");
-
-    tokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: CLIENT_ID,
-        scope: "https://www.googleapis.com/auth/spreadsheets", // ✅ Oprávnění pro zápis do Sheets
-        callback: (response) => {
-            if (response.error) {
-                console.error("❌ Chyba přihlášení:", response);
-                return;
-            }
-            console.log("✅ Přihlášeno, token získán:", response.access_token);
-            localStorage.setItem("accessToken", response.access_token);
-            checkProductionData(); // ✅ Po získání tokenu spustíme kontrolu dat
-        }
-    });
-}
-
-// 🔄 Funkce pro vynucení nového tokenu
-function refreshAccessToken() {
-    console.log("🔄 Žádám o nový přístupový token...");
-    tokenClient.requestAccessToken({
-        // prompt: "consent", // 🟢 Nutí uživatele schválit oprávnění znovu
-        prompt: "none", // uživatel nemusí schvalovat oprávnění
-        callback: (response) => {
-            if (response.error) {
-                console.error("❌ Chyba při získání nového tokenu:", response);
-                return;
-            }
-            console.log("✅ Nový token získán:", response.access_token);
-            localStorage.setItem("accessToken", response.access_token);
-            checkProductionData(); // 🟢 Po získání tokenu spustíme kontrolu dat
-        }
-    });
-}
-
-// 🔍 Funkce pro ověření tokenu a spuštění "kontrola dat"
-function signInAndRunCheck() {
-    console.log("🔄 Spouštím signInAndRunCheck()...");
-
-    const token = getAccessToken();
-
-    if (token) {
-        console.log("🔑 Přístupový token již existuje:", token);
-
-        // 🟢 Ověříme platnost tokenu
-        fetch("https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=" + token)
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    console.warn("⚠️ Token je neplatný, obnovuji...");
-                    refreshAccessToken(); // 🔄 Pokud je token neplatný, získáme nový
-                } else {
-                    console.log("✅ Token je platný, pokračuji...");
-                    checkProductionData(); // ✅ Pokud je token platný, spustíme kontrolu dat
+    console.log("🔄 Inicializuji Google Identity Services...");
+    try {
+        tokenClient = google.accounts.oauth2.initTokenClient({
+            client_id: CLIENT_ID,
+            scope: SCOPES,
+            callback: (response) => {
+                if (response.error) {
+                    console.error("❌ Chyba při inicializaci GIS:", response.error);
+                    throw new Error(response.error);
                 }
-            })
-            .catch(error => console.error("❌ Chyba při ověřování tokenu:", error));
-    } else {
-        console.log("⚠️ Žádný token, žádám o nový...");
-        refreshAccessToken();
+                accessToken = response.access_token;
+                console.log("✅ Přístupový token získán:", accessToken);
+            },
+        });
+        console.log("✅ GIS inicializováno");
+    } catch (error) {
+        console.error("❌ Chyba při inicializaci GIS:", error);
+        throw error;
     }
 }
 
-// 🟢 Funkce pro získání tokenu z localStorage
-export function getAccessToken() {
-    return localStorage.getItem("accessToken") || null;
+export function requestAccessToken() {
+    console.log("🔑 Požaduji přístupový token...");
+    if (!tokenClient) {
+        throw new Error("GIS není inicializováno");
+    }
+    tokenClient.requestAccessToken();
 }
 
-export { signInAndRunCheck, refreshAccessToken };
+export function getAccessToken() {
+    console.log("🔑 Získávám přístupový token...");
+    if (!accessToken) {
+        console.log("⚠️ Token není dostupný, požaduji nový...");
+        requestAccessToken();
+        return null; // Token bude nastaven asynchronně v callbacku
+    }
+    console.log("✅ Přístupový token vrácen:", accessToken);
+    return accessToken;
+}
+
+export async function signInAndRunCheck() {
+    console.log("🔍 Spouštím přihlášení a kontrolu...");
+    try {
+        requestAccessToken();
+        // Počkáme, až bude token dostupný (asynchronní callback)
+        const token = await new Promise((resolve) => {
+            const checkToken = setInterval(() => {
+                if (accessToken) {
+                    clearInterval(checkToken);
+                    resolve(accessToken);
+                }
+            }, 100);
+        });
+        console.log("✅ Přihlášení a kontrola úspěšná, token:", token);
+        return token;
+    } catch (error) {
+        console.error("❌ Chyba při přihlášení a kontrole:", error);
+        throw error;
+    }
+}
