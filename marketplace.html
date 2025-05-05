@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Agent Platform</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+  <header>
+    <h1>Smart Agent Platform</h1>
+    <p>Vaše centrum pro chytré agenty</p>
+  </header>
+
+  <section class="chytre-ja-section">
+    <h2>AI Agenti</h2>
+    <p>Inteligentní agenty pro automatizaci a optimalizaci vašich procesů.</p>
+  </section>
+
+  <main>
+    <section class="marketplace-grid">
+      <article class="marketplace-item">
+        <img src="./images/avatarka.png" alt="Finance">
+        <h3>Finance</h3>
+        <p>Specialista na finanční analýzy a rozpočty. Postaveno na Chytrém já.</p>
+        <button onclick="launchAgent('finance')">Spusť agenta</button>
+      </article>
+      <article class="marketplace-item">
+        <img src="./images/avatar.png" alt="Výroba">
+        <h3>Výroba</h3>
+        <p>Zaměřeno na plánování výroby a optimalizaci procesů. Postaveno na Chytrém já.</p>
+        <button onclick="launchAgent('vyroba')">Spusť agenta</button>
+      </article>
+      <article class="marketplace-item">
+        <img src="./images/avatarka.png" alt="Stratég">
+        <h3>Stratég</h3>
+        <p>Expert na strategické plánování a rozhodování. Postaveno na Chytrém já.</p>
+        <button onclick="launchAgent('strateg')">Spusť agenta</button>
+      </article>
+      <article class="marketplace-item">
+        <img src="./images/avatar.png" alt="Marketing">
+        <h3>Marketing</h3>
+        <p>Zaměřeno na marketingové kampaně a analýzu trhu. Postaveno na Chytrém já.</p>
+        <button onclick="launchAgent('marketing')">Spusť agenta</button>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Smart Agent Platform. Všechna práva vyhrazena.</p>
+  </footer>
+
+  <script>
+    function launchAgent(agentType) {
+      const chytreJaUrl = "https://app.iting.cz/index.html";
+      // Otevře Chytré já v nové kartě na celou obrazovku
+      window.open(`${chytreJaUrl}?agent=${encodeURIComponent(agentType)}`, '_blank');
+    }
+  </script>
+</body>
+
+</html>
