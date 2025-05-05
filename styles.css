@@ -44,37 +44,209 @@ html {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 768px) {
-    .mic-icon {
-        width: 180px;
-    }
-
-    .container {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        max-width: none !important;
-        box-sizing: border-box;
-    }
-
-    .dashboard {
-        flex-direction: column;
-        gap: 5px;
-        height: auto;
-        /* Zajistíme, že dashboard zabere potřebnou výšku */
-    }
-
-    .dashboard iframe {
-        max-width: 100%;
-        height: 1000px;
-        /* Zvýšíme výšku, aby se vešly grafy pod sebou */
-        min-height: 800px;
-        border-radius: 4px;
-    }
+/* Hlavička */
+header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+header h1 {
+    font-size: 2rem;
+}
+
+header p {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin-top: 0.5rem;
+}
+
+/* Sekce Chytré já (použita pro AI Agenti) */
+.chytre-ja-section {
+    background-color: #e6f0fa;
+    border-radius: 8px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    max-width: 1200px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.chytre-ja-section h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.chytre-ja-section p {
+    font-size: 1.1rem;
+    color: #666;
+}
+
+/* Hlavní obsah */
+main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.marketplace-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.marketplace-item {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.marketplace-item:hover {
+    transform: translateY(-5px);
+}
+
+.marketplace-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.marketplace-item h3 {
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+    color: #2c3e50;
+}
+
+.marketplace-item p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.marketplace-item button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.marketplace-item button:hover {
+    background-color: #2980b9;
+}
+
+/* Agent section (pro detailní stránky) */
+.agent-section {
+    background-color: #e6f0fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.agent-section h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.agent-section p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.input-section {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.input-section input {
+    padding: 0.5rem;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.input-section button {
+    padding: 0.5rem 1rem;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.input-section button:hover {
+    background-color: #2980b9;
+}
+
+.dynamic-content {
+    margin-top: 1rem;
+    text-align: left;
+}
+
+.dynamic-content h3 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.dynamic-content ul {
+    list-style-type: disc;
+    padding-left: 2rem;
+}
+
+.dynamic-content li {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.dynamic-content a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.dynamic-content a:hover {
+    text-decoration: underline;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 1rem;
+    color: #3498db;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* Patička */
+footer {
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Styly z PWA (zachovány a upraveny) */
 .top-half {
     flex: 1;
     display: flex;
@@ -106,7 +278,8 @@ html {
 }
 
 .mic-icon {
-    width: 250px;
+    width: 125px;
+    /* Poloviční velikost (původně 250px) */
     height: auto;
     cursor: pointer;
     transition: opacity 0.3s;
@@ -123,11 +296,11 @@ html {
     opacity: 0.7;
 }
 
-/* Styly pro vlny */
 .wave {
     position: absolute;
-    width: 250px;
-    height: 250px;
+    width: 125px;
+    /* Přizpůsobeno velikosti mikrofonu */
+    height: 125px;
     border: 4px solid rgba(0, 87, 255, 0.6);
     border-radius: 50%;
     opacity: 0;
@@ -135,7 +308,6 @@ html {
     z-index: 0;
 }
 
-/* Animace se spustí, když má .microphone-container třídu .recording */
 .microphone-container.recording .wave1 {
     animation: wave 2s infinite ease-out;
 }
@@ -161,15 +333,17 @@ html {
 }
 
 .status {
-    font-size: 24px;
-    color: #4444ff;
+    font-size: 18px;
+    /* Menší font (původně 24px) */
+    color: #005EA6;
+    /* Tmavší modrá pro soulad s notifikacemi */
     font-weight: normal;
     display: block;
     margin-bottom: 10px;
 }
 
 .hint {
-    font-size: 18px;
+    font-size: 15px;
     color: #333;
     display: block;
 }
@@ -192,7 +366,6 @@ html {
 
 .fade-out {
     animation: fadeOut 2s forwards;
-    /* Fade-out trvá 2 sekundy */
 }
 
 @keyframes fadeOut {
@@ -207,7 +380,6 @@ html {
 
 .blink {
     animation: blinker 2s linear 3;
-    /* 3 cykly po 2s = 6s */
 }
 
 @keyframes blinker {
@@ -220,7 +392,6 @@ html {
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
     min-height: 50px;
-    /* Příklad – uprav podle svého designu */
     width: 100%;
     background-color: rgba(200, 200, 200, 0.2);
     padding: 10px;
@@ -240,28 +411,10 @@ html {
 
 #output.visible {
     opacity: 1;
-    /* Zobrazený stav (fade-up) */
 }
 
 #output.hidden {
     opacity: 0;
-    /* Skrytý stav */
-}
-
-.blink {
-    animation: blink-animation 1s step-end infinite;
-}
-
-@keyframes blink-animation {
-    50% {
-        opacity: 0.5;
-    }
-}
-
-.fade-out {
-    opacity: 0;
-    transition: opacity 2s ease-in-out;
-    /* Plynulý fade-out */
 }
 
 #output:empty {
@@ -295,7 +448,6 @@ html {
     line-height: 1.5em;
 }
 
-/* Modrý styl notifikace */
 .notification-informative {
     border-left-color: #005EA6 !important;
     background-color: rgba(0, 94, 166, 0.1) !important;
@@ -306,7 +458,6 @@ html {
     font-size: 1.1em !important;
 }
 
-/* Červený styl notifikace (urgent) */
 .notification-urgent {
     border-left-color: #D83B01 !important;
     background-color: rgba(216, 59, 1, 0.1) !important;
@@ -317,7 +468,6 @@ html {
     font-size: 1.1em !important;
 }
 
-/* Zelený styl notifikace (ok) */
 .notification-ok {
     border-left-color: #107C10 !important;
     background-color: rgba(16, 124, 16, 0.1) !important;
@@ -328,7 +478,6 @@ html {
     font-size: 1.1em !important;
 }
 
-/* Oranžový styl notifikace (warning) */
 .notification-warning {
     border-left-color: #F28C38 !important;
     background-color: rgba(242, 140, 56, 0.1) !important;
@@ -339,7 +488,6 @@ html {
     font-size: 1.1em !important;
 }
 
-/* Odstraněny ikony (pseudo-elementy ::before) */
 #output::before,
 #output.notification-informative::before,
 #output.default-text::before,
@@ -357,10 +505,11 @@ html {
     display: none;
 }
 
-/* Media queries pro mobilní zařízení */
+/* Media queries */
 @media (max-width: 768px) {
     .mic-icon {
-        width: 180px;
+        width: 90px;
+        /* Přizpůsobeno pro menší obrazovky */
     }
 
     .container {
@@ -374,57 +523,43 @@ html {
     }
 
     .dashboard {
+        flex-direction: column;
         gap: 5px;
-        /* Menší mezery na mobilu */
+        height: auto;
     }
 
     .dashboard iframe {
-        height: 300px;
-        /* Menší výška pro mobil */
+        max-width: 100%;
+        height: 1000px;
+        min-height: 800px;
         border-radius: 4px;
-        /* Menší zaoblení na mobilu */
     }
 
-    .wave {
-        width: 180px;
-        height: 180px;
-        border: 3px solid rgba(0, 87, 255, 0.6);
+    .chytre-ja-section h2 {
+        font-size: 1.5rem;
     }
 
-    #output,
-    #output.default-text {
-        padding: 6px;
-        top: 0;
-        margin-left: 10px;
-        margin-right: 10px;
-        margin-top: 5px;
-        min-width: 50%;
-        max-width: 80%;
+    .marketplace-grid {
+        grid-template-columns: 1fr;
     }
 
-    .output-text {
-        font-size: 1.35em;
-        line-height: 1.5em;
+    .agent-section h2 {
+        font-size: 1.5rem;
     }
 
-    .status {
-        font-size: 24px;
-    }
-
-    .hint {
-        font-size: 18px;
+    .dynamic-content h3 {
+        font-size: 1.2rem;
     }
 }
 
-/* Extra malé obrazovky (např. starší telefony) */
 @media (max-width: 480px) {
     .mic-icon {
-        width: 150px;
+        width: 75px;
     }
 
     .wave {
-        width: 150px;
-        height: 150px;
+        width: 75px;
+        height: 75px;
         border: 2px solid rgba(0, 87, 255, 0.6);
     }
 
@@ -443,10 +578,10 @@ html {
     }
 
     .status {
-        font-size: 21px;
+        font-size: 15px;
     }
 
     .hint {
-        font-size: 15px;
+        font-size: 13px;
     }
 }
