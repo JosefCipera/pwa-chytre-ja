@@ -426,26 +426,20 @@ footer {
     background-color: rgba(0, 94, 166, 0.1);
     border-left-color: #005EA6;
     padding: 10px;
-    position: relative;
-    top: 0;
-    box-sizing: border-box;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-top: 10px;
+    margin: 10px auto;
     border-radius: 5px;
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    min-width: 30%;
-    max-width: 60%;
+    justify-content: center;
 }
 
 .output-text {
     color: #005EA6;
-    text-align: left;
+    text-align: center;
     font-size: 1.1em;
     word-wrap: break-word;
     width: 100%;
-    line-height: 1.5em;
+    line-height: 1.2em;
 }
 
 .notification-informative {
