@@ -148,7 +148,7 @@ function showMessage(message) {
     outputElement.style.opacity = '0';
 
     // Změníme text a třídy
-    outputTextElement.textContent = 'Řekněte příkaz, např. "Zobraz vytížení", "Přehrát video školení", nebo "Spusť audio návod".';
+    outputTextElement.textContent = 'Řekněte ten příkaz, např. "Zobraz vytížení", "Přehrát video školení", nebo "Spusť audio návod".';
     outputElement.className = 'default-text';
 
     // Plynule zobrazíme prvek
