@@ -298,9 +298,9 @@ footer {
 
 .wave {
     position: absolute;
-    width: 125px;
+    width: 225px;
     /* Přizpůsobeno velikosti mikrofonu */
-    height: 125px;
+    height: 225px;
     border: 4px solid rgba(0, 87, 255, 0.6);
     border-radius: 50%;
     opacity: 0;
