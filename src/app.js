@@ -208,7 +208,7 @@ function showDefaultText() {
     outputElement.classList.add('hidden');
 
     // Změníme text a třídy
-    outputTextElement.textContent = 'Řekněte příkaz, např. "Zobraz vytížení", "Přehrát video školení", nebo "Spusť audio návod".';
+    outputTextElement.textContent = 'Řekněte v app příkaz, např. "Zobraz vytížení", "Přehrát video školení", nebo "Spusť audio návod".';
     outputElement.className = 'default-text';
 
     // Zobrazíme prvek přidáním třídy 'visible'
