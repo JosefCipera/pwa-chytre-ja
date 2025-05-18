@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartAgent Platform - Ukázka</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .top-half,
+        .bottom-half {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .top-half {
+            background: linear-gradient(135deg, #002395, #d7141a);
+            /* Česká modrá a červená */
+            color: white;
+        }
+
+        .bottom-half {
+            background-color: #ffffff;
+            color: #002395;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin: 0.5em 0;
+        }
+
+        p {
+            font-size: 1.2em;
+        }
+
+        .agent-buttons {
+            margin: 20px 0;
+        }
+
+        .agent-btn {
+            background-color: #ffffff;
+            color: #002395;
+            border: 2px solid #002395;
+            padding: 10px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .agent-btn:hover {
+            background-color: #002395;
+            color: #ffffff;
+        }
+
+        .mic-icon {
+            width: 80px;
+            height: 80px;
+            transition: transform 0.2s;
+        }
+
+        .mic-icon:hover {
+            transform: scale(1.1);
+        }
+
+        #micButton {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="top-half">
+            <h1>SmartAgent Platform</h1>
+            <p>Platforma pro malé a střední podniky v ČR</p>
+            <div class="agent-buttons">
+                <button class="agent-btn">Poptávka</button>
+                <button class="agent-btn">Nákup</button>
+                <button class="agent-btn">Logistika</button>
+            </div>
+            <button id="micButton">
+                <!-- Nahradíš svou ikonou mikrofonu, tady je placeholder -->
+                <svg class="mic-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff">
+                    <path
+                        d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9v6c0 .55.45 1 1 1s1-.45 1-1V5c0-.55-.45-1-1-1s-1 .45-1 1zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.47 6 6.93V21h2v-2.07c3.39-.46 6-3.4 6-6.93h-2z" />
+                </svg>
+            </button>
+        </div>
+        <div class="bottom-half">
+            <p id="outputText">Řekněte příkaz, např. ‚poptávka‘</p>
+        </div>
+    </div>
+</body>
+
+</html>

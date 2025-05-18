@@ -31,10 +31,10 @@ async function loadWebhook() {
             console.error("❌ Chyba při načítání webhooku:", error);
             showNotification({
                 message: "Webhook není k dispozici, kontaktujte správce.",
-                severity: "warning",
+                severity: "ok",
                 duration: 6000
             });
-            return null; // Nebo můžeš vyhodit chybu a zastavit apku
+            return null;
         }
     }
     return webhookUrl;
@@ -113,6 +113,8 @@ function processCommand(command) {
                 if (supportedTypes.includes(response_type)) {
                     const encodedUrl = encodeURIComponent(response_data);
                     window.location.href = `media-results.html?type=${response_type}&url=${encodedUrl}`;
+                } else if (response_type === "notification") {
+                    showNotification(response_data); // Zpracování notifikace
                 } else if (normalizedCommand.includes("vypni mikrofon")) {
                     stopListening();
                 } else if (normalizedCommand.includes("zapni mikrofon")) {
@@ -138,41 +140,16 @@ function showMessage(message) {
     }, 3000);
 }
 
-// Pevně nastavená webhook URL
-// const WEBHOOK_URL = 'https://hook.eu1.make.com/4jibyt5oj7j96mnuaiow2mnofgpfhomo';
-
-// Funkce pro zobrazení výchozího textu
-/*function showDefaultText() {
-    // Skryjeme prvek před změnou
-    outputElement.style.transition = 'opacity 0.2s ease-in-out';
-    outputElement.style.opacity = '0';
-
-    // Změníme text a třídy
-    outputTextElement.textContent = 'Řekněte ten příkaz, např. "Zobraz vytížení", "Přehrát video školení", nebo "Spusť audio návod".';
-    outputElement.className = 'default-text';
-
-    // Plynule zobrazíme prvek
-    outputElement.style.display = 'block';
-    setTimeout(() => {
-        outputElement.style.opacity = '1';
-    }, 10);
-
-    isDefaultTextVisible = true;
-}*/
-// Funkce pro zobrazení notifikace
 function showNotification(notification) {
     clearTimeout(notificationTimeout);
 
-    // Připravíme nový text a třídy
     const severityClass = notification.severity ? `notification-${notification.severity}` : 'notification-normal';
     const totalDuration = notification.duration || 8000;
     const fadeOutStart = totalDuration - 2000;
 
-    // Odebereme staré třídy a přidáme třídu pro skrytí (fade-out)
     outputElement.classList.remove('visible');
     outputElement.classList.add('hidden');
 
-    // Změníme text a třídy (zatímco je prvek skrytý)
     outputTextElement.textContent = notification.message;
     outputElement.className = severityClass;
 
@@ -180,17 +157,14 @@ function showNotification(notification) {
         outputElement.classList.add('blink');
     }
 
-    // Zobrazíme prvek přidáním třídy 'visible' (fade-up se řídí CSS)
     outputElement.classList.remove('hidden');
     outputElement.classList.add('visible');
 
-    // Spustíme fade-out animaci
     setTimeout(() => {
         outputElement.classList.remove('visible');
         outputElement.classList.add('fade-out');
     }, fadeOutStart);
 
-    // Po skončení animace vrátíme výchozí stav
     notificationTimeout = setTimeout(() => {
         outputElement.classList.remove('blink', 'fade-out', 'visible');
         outputTextElement.textContent = '';
@@ -203,22 +177,18 @@ function showNotification(notification) {
 }
 
 function showDefaultText() {
-    // Skryjeme prvek před změnou
     outputElement.classList.remove('visible');
     outputElement.classList.add('hidden');
 
-    // Změníme text a třídy
     outputTextElement.textContent = 'Řekněte v app příkaz, např. "Zobraz vytížení", "Přehrát video školení", nebo "Spusť audio návod".';
     outputElement.className = 'default-text';
 
-    // Zobrazíme prvek přidáním třídy 'visible'
     outputElement.classList.remove('hidden');
     outputElement.classList.add('visible');
 
     isDefaultTextVisible = true;
 }
 
-// Kontrola podpory SpeechRecognition
 if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)) {
     console.error('❌ Hlasové rozpoznávání není podporováno.');
     alert('Hlasové rozpoznávání není podporováno. Zkuste to v Chrome nebo na jiném zařízení.');
@@ -228,7 +198,6 @@ if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)) 
 let isProcessing = false;
 let latestRequestTimestamp = 0;
 
-// Detekce mobilního zařízení
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
 recognition.onerror = (event) => {
@@ -342,7 +311,6 @@ async function handleCommand(command) {
             return;
         }
 
-        // Zkontrolujeme, zda je odpověď platný JSON
         let result;
         try {
             result = JSON.parse(text);
@@ -351,6 +319,12 @@ async function handleCommand(command) {
             console.error("❌ Chyba při parsování JSON odpovědi:", error, "Odpověď:", text);
             output.style.display = 'flex';
             output.innerText = `⚠️ Server vrátil chybu: ${text}`;
+            resetMicIcon();
+            return;
+        }
+
+        if (result.response_type === "notification" && result.response_data) {
+            showNotification(result.response_data);
             resetMicIcon();
             return;
         }

@@ -11,12 +11,12 @@
 <body>
   <header>
     <h1>Smart Agent Platform</h1>
-    <p>Vaše centrum pro chytré agenty</p>
+    <p>Centrum specializovaných agentů</p>
   </header>
 
   <section class="chytre-ja-section">
-    <h2>AI Agenti</h2>
-    <p>Inteligentní agenty pro automatizaci a optimalizaci vašich procesů.</p>
+    <h2>Chytré já</h2>
+    <p>Univerzální aplikace, na jejímž základě stojí všichni AI agenti</p>
   </section>
 
   <main>
@@ -40,7 +40,7 @@
         <button onclick="launchAgent('strateg')">Spusť agenta</button>
       </article>
       <article class="marketplace-item">
-        <img src="./images/avatar.png" alt="Marketing">
+        <img src="./images/avatar-bratr.png" alt="Marketing">
         <h3>Marketing</h3>
         <p>Zaměřeno na marketingové kampaně a analýzu trhu. Postaveno na Chytrém já.</p>
         <button onclick="launchAgent('marketing')">Spusť agenta</button>
@@ -54,7 +54,7 @@
 
   <script>
     function launchAgent(agentType) {
-      const chytreJaUrl = "https://app.iting.cz/index.html";
+      const chytreJaUrl = "/index.html";
       // Otevře Chytré já v nové kartě na celou obrazovku
       window.open(`${chytreJaUrl}?agent=${encodeURIComponent(agentType)}`, '_blank');
     }

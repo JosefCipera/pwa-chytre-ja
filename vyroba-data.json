@@ -1,0 +1,29 @@
+{
+  "videos": [
+    {
+      "title": "Úvod do plánování výroby",
+      "url": "https://www.youtube.com/watch?v=example1",
+      "description": "Základní principy plánování výroby s agentem."
+    },
+    {
+      "title": "Optimalizace procesů",
+      "url": "https://www.youtube.com/watch?v=example2",
+      "description": "Jak agent zlepšuje efektivitu výroby."
+    }
+  ],
+  "trainings": [
+    {
+      "title": "Školení: TOC v praxi",
+      "url": "https://example.com/training-toc",
+      "description": "Detailní kurz o Theory of Constraints."
+    }
+  ],
+  "planning": [
+    {
+      "title": "Plánování výroby – návod",
+      "url": "https://example.com/planning-guide",
+      "description": "Krok za krokem k efektivnímu plánování."
+    }
+  ],
+  "additionalInfo": "Agent Výroba podporuje i analýzu dat v reálném čase."
+}

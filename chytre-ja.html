@@ -5,8 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Přehrávání médií</title>
-  <link rel="stylesheet" href="styles.css"
-    onerror="console.warn('⚠ Chyba při načítání styles.css - 404 Not Found, pokračuji bez stylů.');">
+  <link rel="stylesheet" href="styles.css">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -29,20 +28,17 @@
       margin-top: 20px;
     }
 
-    #back-button,
-    #youtube-link {
-      margin-top: 10px;
+    #back-button {
+      margin-top: 20px;
       padding: 10px 20px;
       background-color: #007bff;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      text-decoration: none;
     }
 
-    #back-button:hover,
-    #youtube-link:hover {
+    #back-button:hover {
       background-color: #0056b3;
     }
 
@@ -59,26 +55,19 @@
   <div id="media-container"></div>
   <div id="media-error"></div>
   <button id="back-button">Zpět</button>
-  <a id="youtube-link" style="display: none;" href="">Otevřít na YouTube</a>
 
   <script>
     const mediaContainer = document.getElementById('media-container');
     const mediaError = document.getElementById('media-error');
     const backButton = document.getElementById('back-button');
-    const youtubeLink = document.getElementById('youtube-link');
 
-    // Načtení mediaUrl z URL parametrů a dekódování
+    // Načtení mediaUrl z URL parametrů
     const urlParams = new URLSearchParams(window.location.search);
     let mediaUrl = urlParams.get('mediaUrl');
-    if (mediaUrl) {
-      mediaUrl = decodeURIComponent(mediaUrl);
-      console.log("🎵 Dekódovaná URL:", mediaUrl);
-    } else {
-      console.error("❌ MediaUrl není definováno v URL parametrech.");
-      mediaError.textContent = 'Chyba: Obsah nenalezen.';
-    }
 
     if (mediaUrl) {
+      console.log("🎵 Načtená URL:", mediaUrl);
+
       // Kontrola Google Drive odkazu a převod na přímý odkaz
       if (mediaUrl.includes('drive.google.com') && mediaUrl.includes('/view')) {
         const fileIdMatch = mediaUrl.match(/\/d\/(.+?)\//);
@@ -104,78 +93,22 @@
       if (mediaUrl) {
         // Kontrola YouTube odkazu (pro video)
         if (mediaUrl.includes('youtube.com') || mediaUrl.includes('youtu.be')) {
-          console.log("📺 Zjištěn YouTube odkaz:", mediaUrl);
           let videoId = '';
           if (mediaUrl.includes('youtube.com')) {
             const urlParams = new URLSearchParams(new URL(mediaUrl).search);
             videoId = urlParams.get('v');
-            console.log("📺 YouTube ID (z youtube.com):", videoId);
           } else if (mediaUrl.includes('youtu.be')) {
             videoId = mediaUrl.split('youtu.be/')[1].split('?')[0];
-            console.log("📺 YouTube ID (z youtu.be):", videoId);
           }
 
           if (videoId) {
             const iframe = document.createElement('iframe');
-            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1`;
+            iframe.src = `https://www.youtube.com/embed/${videoId}`;
             iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
             iframe.allowFullscreen = true;
-            iframe.onerror = () => {
-              console.error("❌ Chyba při načítání YouTube videa:", mediaUrl);
-              mediaError.textContent = 'Nepodařilo se načíst video.';
-            };
-            iframe.onload = () => {
-              console.log("✅ YouTube iframe načten:", iframe.src);
-              try {
-                new YT.Player(iframe, {
-                  events: {
-                    'onReady': (event) => {
-                      console.log("🎬 YouTube Player připraven, zkouším přehrát...");
-                      event.target.playVideo();
-                    },
-                    'onError': (event) => {
-                      console.error("❌ Chyba YouTube Player:", event.data);
-                      if (event.data === 150) {
-                        mediaError.textContent = 'Přehrávání není povoleno – video nemá povolené embedování. Otevři na YouTube:';
-                        youtubeLink.href = `https://www.youtube.com/watch?v=${videoId}`;
-                        youtubeLink.style.display = 'block';
-                      } else {
-                        mediaError.textContent = 'Chyba při přehrávání videa.';
-                      }
-                    }
-                  }
-                });
-              } catch (e) {
-                console.error("❌ Chyba při inicializaci YouTube Player:", e);
-                mediaError.textContent = 'Chyba při načítání přehrávače.';
-              }
-            };
             mediaContainer.appendChild(iframe);
           } else {
             mediaError.textContent = 'Chyba: Neplatný YouTube odkaz.';
-            console.error("❌ Neplatný YouTube odkaz:", mediaUrl);
-          }
-        }
-        // Kontrola Vimeo odkazu (pro video)
-        else if (mediaUrl.includes('vimeo.com')) {
-          console.log("📹 Zjištěn Vimeo odkaz:", mediaUrl);
-          const vimeoId = mediaUrl.split('/').pop();
-          if (vimeoId) {
-            const iframe = document.createElement('iframe');
-            iframe.src = `https://player.vimeo.com/video/${vimeoId}?autoplay=1`;
-            iframe.allow = 'autoplay; encrypted-media; fullscreen';
-            iframe.allowFullscreen = true;
-            iframe.onerror = () => {
-              console.error("❌ Chyba při načítání Vimeo videa:", mediaUrl);
-              mediaError.textContent = 'Nepodařilo se načíst video.';
-            };
-            iframe.onload = () => {
-              console.log("✅ Vimeo iframe načten:", iframe.src);
-            };
-            mediaContainer.appendChild(iframe);
-          } else {
-            mediaError.textContent = 'Chyba: Neplatný Vimeo odkaz.';
-            console.error("❌ Neplatný Vimeo odkaz:", mediaUrl);
           }
         }
         // Kontrola SoundCloud odkazu (pro audio)
@@ -215,7 +148,6 @@
       window.location.href = 'index.html';
     });
   </script>
-  <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 
 </html>

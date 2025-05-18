@@ -4,17 +4,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Výstupy z Lookeru</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Zobrazení Looker Studio Reportu</title>
+  <link rel="stylesheet" href="styles.css"
+    onerror="console.warn('⚠ Chyba při načítání styles.css - 404 Not Found, pokračuji bez stylů.');">
 </head>
 
-<body>
-  <div class="container">
-    <div class="dashboard" id="looker-dashboard">
-      <!-- Iframe bude vložen dynamicky -->
-    </div>
+<body id="looker-results">
+  <div class="content">
+    <iframe id="looker-iframe"></iframe>
+    <button id="back-button">Zpět</button>
   </div>
-  <script src="./src/utils/looker-results.js"></script>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const reportUrl = urlParams.get('reportUrl');
+    const iframe = document.getElementById('looker-iframe');
+
+    if (reportUrl) {
+      iframe.src = decodeURIComponent(reportUrl);
+    } else {
+      document.body.innerHTML = '<p>Chyba: URL reportu nenalezeno.</p>';
+    }
+
+    document.getElementById('back-button').addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+  </script>
 </body>
 
 </html>
