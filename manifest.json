@@ -13,12 +13,12 @@
       "purpose": "any maskable"
     },
     {
-      "src": "./images/avatarka_bílé_pozadí.png",
+      "src": "./images/finance_192_bílé-pozadí.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "./images/avatarka_bílé_pozadí.png",
+      "src": "./images/finance_512_bílé-pozadí.png.png",
       "sizes": "512x512",
       "type": "image/png"
     }

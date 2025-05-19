@@ -1,30 +1,23 @@
 import { signInAndRunCheck } from "./auth.js";
-import { updateRange } from "./config.js"; // ✅ Import globální proměnné
+import { loadWebhook } from "./config.js";
 
-const commands = {
-    "kontrola dat": () => {
-        console.log("🎤 Rozpoznán hlasový povel: Kontrola dat");
-        signInAndRunCheck(); // ✅ Spustí přihlášení a kontrolu dat
-    }
-};
+const commands = {};
 
 export { commands };
 
-export let commandList = {};  // Správně exportujeme seznam povelů
+export let commandList = {};
 
 export async function fetchCommands(command) {
     console.trace("🕵️‍♂️ fetchCommands() bylo zavoláno s:", command);
 
-    // ✅ Pokud je rozpoznán příkaz "kontrola dat", spustíme signInAndRunCheck()
-    if (command.toLowerCase() === "kontrola dat") {
-        console.log("✅ Spouštím signInAndRunCheck() pro kontrolu dat...");
-        signInAndRunCheck(); // 🔥 Spustí přihlášení a kontrolu tabulky
-        return;
+    const webhookUrl = await loadWebhook();
+    console.log("🔗 Použitý webhook:", webhookUrl);
+    if (!webhookUrl) {
+        console.error("❌ Webhook není nastaven.");
+        return null;
     }
 
     console.log("🎤 Načítám URL pro příkaz:", command);
-
-    const webhookUrl = "https://hook.eu1.make.com/17gn7hrtmnfgsykl52dcn2ekx15nvh1f"; // Aktualizuj URL
 
     try {
         const response = await fetch(webhookUrl, {
@@ -32,7 +25,6 @@ export async function fetchCommands(command) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ Povel: command })
         });
-
         console.log("🔍 HTTP status:", response.status);
 
         if (!response.ok) {
@@ -42,50 +34,31 @@ export async function fetchCommands(command) {
         const text = await response.text();
         console.log("📜 Surová odpověď:", text);
 
+        let result;
         try {
-            const result = JSON.parse(text);
+            result = JSON.parse(text);
             console.log("✅ Přijatá odpověď:", result);
-
-            // Pracujeme jen s jednou URL, seznam není potřeba
-            if (result.url) {
-                console.log("🚀 Přesměrování na:", result.url);
-                window.location.href = result.url; // Přesměrování přímo na URL
-            } else {
-                console.error("❌ Chyba: Make nevrátil URL:", result);
-                document.getElementById('output').innerText = "⚠️ Odpověď z Make neobsahuje URL.";
-            }
         } catch (error) {
             console.error("❌ Chyba při parsování JSON odpovědi:", error, "Odpověď:", text);
-            document.getElementById('output').innerText = "⚠️ Chyba při zpracování odpovědi.";
+            document.getElementById('output').innerText = "⚠️ Neplatná odpověď od Make: Očekáván JSON, přijato '" + text + "'.";
+            return null;
         }
 
+        return result;
     } catch (error) {
         console.error("❌ Chyba při komunikaci s Make:", error);
         document.getElementById('output').innerText = "⚠️ Chyba při připojení.";
+        return null;
     }
 }
-
 
 export async function executeCommand(command) {
     console.log(`🔎 Odesílám příkaz do Make: ${command}`);
 
     if (!command || command.trim() === "") {
         console.log("⚠️ Prázdný příkaz, neodesílám na Make.");
-        return;
+        return null;
     }
 
-    const recognizedUrl = document.getElementById("recognized-url");
-
-    // Pošleme povel do Make a získáme odpověď
-    const url = await fetchCommands(command);
-
-    if (url) {
-        console.log(`🚀 Přesměrování na: ${url}`);
-        window.location.href = url;
-    } else {
-        console.log("⚠️ Make nevrátil žádnou URL.");
-    }
+    return await fetchCommands(command);
 }
-
-
-
