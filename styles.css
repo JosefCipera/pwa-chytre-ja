@@ -505,6 +505,105 @@ footer {
     display: none;
 }
 
+/* Styly specifické pro vyroba.html */
+body.vyroba .container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+}
+
+body.vyroba .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+body.vyroba .header img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+body.vyroba .header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+body.vyroba .agent-section {
+    margin: 20px 0;
+}
+
+body.vyroba .agent-section p {
+    margin-bottom: 20px;
+}
+
+body.vyroba .microphone-container {
+    margin: 20px 0;
+}
+
+body.vyroba .microphone-container img {
+    height: 100px;
+    display: block;
+    margin: 0 auto 10px;
+}
+
+body.vyroba .microphone-container p {
+    margin: 5px 0;
+}
+
+body.vyroba .input-section {
+    margin: 20px 0;
+}
+
+body.vyroba .input-section input {
+    display: block;
+    padding: 5px;
+    width: 200px;
+    margin: 0 auto 10px;
+}
+
+body.vyroba .input-section button {
+    display: block;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: 0 auto;
+}
+
+body.vyroba .input-section button:hover {
+    background-color: #0056b3;
+}
+
+body.vyroba #output {
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    display: none;
+}
+
+body.vyroba .back-button {
+    display: block;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body.vyroba .back-button:hover {
+    background-color: #0056b3;
+}
+
 /* Media queries */
 @media (max-width: 768px) {
     .mic-icon {

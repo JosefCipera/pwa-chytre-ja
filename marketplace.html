@@ -5,48 +5,50 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Agent Platform</title>
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
   <header>
     <h1>Smart Agent Platform</h1>
-    <p>Demo centrum specializovaných agentů</p>
+    <h2>Centrum specializovaných agentů</h2>
   </header>
 
   <section class="chytre-ja-section">
-    <h2>Superagent Chytré já</h2>
-    <p>Inteligentní koordinátor, ovládající specializované AI agenty, přizpůsobené vašim potřebám.</p>
-    <p> </p>
+    <h2>Chytré já - váš osobní AI agent</h2>
+    <p>Chytré já je inteligentní koordinátor, který umožňuje ovládat specializované AI agenty přizpůsobené vašim
+      potřebám. Každý specializovaný agent je navržen pro specifické požadavky vaší firmy a vašeho odvětví.</p>
+    <p>Vyberte si agenty, které potřebujete (např. jen Finance). Jedna aplikace - nekonečné možnosti.</p>
   </section>
 
   <main>
-    <section class="marketplace-grid">
-      <article class="marketplace-item">
-        <img src="./images/finance-192.png" alt="Finance">
+    <div class="marketplace-grid">
+      <!-- Příklady pro ostatní agenty -->
+      <div class="marketplace-item" data-agent="finance">
+        <img src="images/finance-192.png" alt="Finance Agent">
         <h3>AI agent Finance</h3>
         <p>Specialista na finanční řízení a podporu rozhodování.</p>
-        <button onclick="launchAgent('finance')">Spusť agenta</button>
-      </article>
-      <article class="marketplace-item">
-        <img src="./images/výroba-192.png" alt="Výroba">
+        <button onclick="launchAgent('finance.html')">Spusť agenta</button>
+      </div>
+      <div class="marketplace-item" data-agent="vyroba">
+        <img src="images/vyroba-192.png" alt="Výroba Agent">
         <h3>AI agent Výroba</h3>
         <p>Zaměřen na průtokové plánování a řízení výroby a optimalizaci procesů.</p>
-        <button onclick="launchAgent('vyroba')">Spusť agenta</button>
-      </article>
-      <article class="marketplace-item">
-        <img src="./images/marketing-192.png" alt="Marketing">
+        <button onclick="launchAgent('vyroba.html')">Spusť agenta</button>
+      </div>
+      <div class="marketplace-item" data-agent="marketing">
+        <img src="images/marketing-192.png" alt="Marketing Agent">
         <h3>AI agent Marketing</h3>
-        <p>Expert na hodnotovou nabídku, marketingové kampaně a analýzu trhu. </p>
-        <button onclick="launchAgent('marketing')">Spusť agenta</button>
-      </article>
-      <article class="marketplace-item">
-        <img src="./images/strategie-192.png" alt="Stratég">
+        <p>Expert na hodnotovou nabídku, marketingové kampaně a analýzu trhu.</p>
+        <button onclick="launchAgent('marketing.html')">Spusť agenta</button>
+      </div>
+      <div class="marketplace-item" data-agent="strateg">
+        <img src="images/strateg-192.png" alt="Stratég Agent">
         <h3>AI agent Stratég</h3>
         <p>Specialista na inovativní byznys modely a strategie.</p>
-        <button onclick="launchAgent('strateg')">Spusť agenta</button>
-      </article>
-    </section>
+        <button onclick="launchAgent('strateg.html')">Spusť agenta</button>
+      </div>
+    </div>
   </main>
 
   <footer>
@@ -54,10 +56,9 @@
   </footer>
 
   <script>
-    function launchAgent(agentType) {
-      const chytreJaUrl = "/index.html";
-      // Otevře Chytré já v nové kartě na celou obrazovku
-      window.open(`${chytreJaUrl}?agent=${encodeURIComponent(agentType)}`, '_blank');
+    function launchAgent(agentUrl) {
+      const chytreJaUrl = "/" + agentUrl;
+      window.open(`${chytreJaUrl}`, '_blank');
     }
   </script>
 </body>

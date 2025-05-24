@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Výroba</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <main>
+        <section class="agent-section">
+            <h2>AI Agent Stratég </h2>
+            <p>Posoudí ziskovost vašeho byznys modelu.</p>
+
+            <div class="voice-section">
+                <div class="microphone-container">
+                    <img src="/images/microphone-transparent-192.png" alt="Microphone" class="mic-icon" id="micIcon">
+                    <div class="wave wave1"></div>
+                    <div class="wave wave2"></div>
+                    <div class="wave wave3"></div>
+                </div>
+            </div>
+            <div class="voice-status" id="status">Klikněte na mikrofon a mluvte</div>
+
+            <div class="input-section">
+                <input type="text" id="userInput" placeholder="Napište byznys model.">
+                <button onclick="processCommand()">Provést příkaz</button>
+            </div>
+
+            <div id="output" class="hidden"></div>
+            <div class="dynamic-content" id="dynamicContent"></div>
+
+            <button onclick="goBackToMarketplace()" class="back-link">Zpět na Marketplace</button>
+        </section>
+    </main>
+
+    <script>
+        const webhookUrl = "https://hook.eu1.make.com/4jibyt5oj7j96mnuaiow2mnofgpfhomo";
+        const micIcon = document.getElementById('micIcon');
+        const microphoneContainer = document.querySelector('.microphone-container');
+        const statusElement = document.getElementById('status');
+        const outputElement = document.getElementById('output');
+        const contentDiv = document.getElementById("dynamicContent");
+
+        function showOutput(message, type = 'informative') {
+            if (outputElement) {
+                outputElement.className = `notification-${type} visible`;
+                outputElement.innerHTML = `<span class="output-text">${message}</span>`;
+                setTimeout(() => {
+                    outputElement.classList.remove('visible');
+                    outputElement.classList.add('hidden');
+                }, 3000);
+            }
+        }
+
+        function processCommand() {
+            const userInput = document.getElementById("userInput").value.toLowerCase();
+            callSuperAgent(userInput);
+        }
+
+        function callSuperAgent(command) {
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ command: command, agent: "výroba" })
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error(`HTTP chyba: ${response.status}`);
+                    return response.text();
+                })
+                .then(text => {
+                    const result = JSON.parse(text);
+                    if (result.response_type === "agent") {
+                        const data = result.response_data;
+                        if (typeof data === "string") {
+                            contentDiv.innerHTML = `<p>${data}</p>`;
+                            showOutput("Odpověď zpracována.", "ok");
+                        } else if (data.url) {
+                            window.open(data.url, "_blank");
+                            showOutput("Odkaz otevřen.", "ok");
+                        } else if (data.video) {
+                            window.open(data.video, "_blank");
+                            showOutput("Video otevřeno.", "ok");
+                        }
+                    } else if (result.response_type === "url") {
+                        window.open(`/iframe.html?url=${encodeURIComponent(result.response_data)}&title=${encodeURIComponent('Šablona')}`, "_blank");
+                        showOutput("Odkaz otevřen.", "ok");
+                    } else if (result.response_type === "video") {
+                        window.open(result.response_data, "_blank");
+                        showOutput("Video otevřeno.", "ok");
+                    } else if (result.response_type === "notification") {
+                        const data = result.response_data;
+                        showOutput(data.message, data.severity);
+                    } else {
+                        showOutput("Příkaz nebyl rozpoznán.", "urgent");
+                    }
+                })
+                .catch(error => {
+                    showOutput("Chyba při zpracování příkazu: " + error.message, "urgent");
+                });
+        }
+
+        let recognition;
+        function startVoiceRecognition() {
+            if (!('webkitSpeechRecognition' in window)) {
+                showOutput("Hlasové rozpoznávání není podporováno v tomto prohlížeči.", "urgent");
+                return;
+            }
+
+            recognition = new webkitSpeechRecognition();
+            recognition.lang = 'cs-CZ';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.onstart = () => {
+                microphoneContainer.classList.add('recording');
+                micIcon.classList.add('recording');
+                statusElement.textContent = "Poslouchám...";
+                statusElement.classList.add('pulsate');
+            };
+
+            recognition.onresult = (event) => {
+                const speechResult = event.results[0][0].transcript.toLowerCase();
+                showOutput(`Rozpoznáno: ${speechResult}`, "informative");
+                callSuperAgent(speechResult);
+            };
+
+            recognition.onerror = (event) => {
+                showOutput("Chyba při hlasovém rozpoznávání: " + event.error, "urgent");
+                microphoneContainer.classList.remove('recording');
+                micIcon.classList.remove('recording');
+                statusElement.textContent = "Klikněte pro hlasové ovládání";
+                statusElement.classList.remove('pulsate');
+            };
+
+            recognition.onend = () => {
+                microphoneContainer.classList.remove('recording');
+                micIcon.classList.remove('recording');
+                statusElement.textContent = "Klikněte pro hlasové ovládání";
+                statusElement.classList.remove('pulsate');
+                showOutput("Hlasové rozpoznávání ukončeno.", "informative");
+            };
+
+            recognition.start();
+        }
+
+        micIcon.addEventListener('click', startVoiceRecognition);
+
+        // Podpora pro Enter
+        document.getElementById("userInput").addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                processCommand();
+            }
+        });
+    </script>
+    <script>
+        function processManualCommand() {
+            const commandInput = document.getElementById('commandInput').value.trim();
+            if (commandInput) {
+                processCommand(commandInput);
+            }
+        }
+
+        function goBackToMarketplace() {
+            window.close(); // Zkusí zavřít aktuální okno
+            // Pokud okno nelze zavřít (např. otevřeno manuálně), přesměruje na marketplace
+            if (window.opener && !window.closed) {
+                window.opener.location.href = '/marketplace.html';
+            }
+        }
+    </script>
+</body>
+
+</html>

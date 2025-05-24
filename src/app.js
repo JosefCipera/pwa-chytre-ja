@@ -18,7 +18,7 @@ async function loadWebhook() {
             const data = await response.json();
             const webhookRow = data.values.find(row => row[0] === "Webhook");
             if (!webhookRow || !webhookRow[1]) {
-                throw new Error("Webhook URL nenalezeno v tabulce");
+                throw new Error("nenalezeno v tabulce");
             }
             webhookUrl = webhookRow[1];
             localStorage.setItem('webhookUrl', webhookUrl);

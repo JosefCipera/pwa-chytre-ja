@@ -11,8 +11,8 @@
 <body>
   <main>
     <section class="agent-section">
-      <h2>AI Agent Výroba </h2>
-      <p>Vytvoří výrobní plán, zjistí vytížení kapacit, včas upozorní na problémy.</p>
+      <h2>AI Agent Marketing </h2>
+      <p>Bezchybně zhodnotí přidanou hodnotu a vybírá ty nejlepší výrobky nebo služby.</p>
 
       <div class="voice-section">
         <div class="microphone-container">
@@ -22,10 +22,10 @@
           <div class="wave wave3"></div>
         </div>
       </div>
-      <div class="voice-status" id="status">Klikněte na mikrofon a mluvte</div>
+      <div class="voice-status" id="status">Klikněte pro hlasové ovládání</div>
 
       <div class="input-section">
-        <input type="text" id="userInput" placeholder="Napište např. výrobní plán, nebo vytížení kapacit">
+        <input type="text" id="userInput" placeholder="Napište procesní stabilita, nebo zpožděné zakázky.">
         <button onclick="processCommand()">Provést příkaz</button>
       </div>
 
@@ -37,7 +37,6 @@
   </main>
 
   <script>
-    // import webhookUrl from "./src/app.js"; // ✅ Import globální proměnné
     const webhookUrl = "https://hook.eu1.make.com/4jibyt5oj7j96mnuaiow2mnofgpfhomo";
     const micIcon = document.getElementById('micIcon');
     const microphoneContainer = document.querySelector('.microphone-container');
