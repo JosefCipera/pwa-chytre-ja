@@ -4,31 +4,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zobrazení Looker Studio Reportu</title>
-  <link rel="stylesheet" href="styles.css"
-    onerror="console.warn('⚠ Chyba při načítání styles.css - 404 Not Found, pokračuji bez stylů.');">
+  <title>Looker Studio Výsledky</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body id="looker-results">
   <div class="content">
-    <iframe id="looker-iframe"></iframe>
-    <button id="back-button">Zpět</button>
+    <iframe id="lookerIframe" width="100%" height="700px" frameborder="0" style="border:none;" allowfullscreen
+      allow="autoplay; fullscreen"></iframe>
+    <button id="back-button" onclick="playBackAudioAndRedirect()">Zpět</button>
+    <audio id="backAudio">
+      <source src="https://drive.google.com/uc?export=download&id=1-WBX8AQEmNUXdH554Dm71qDNLBd-WsCE" type="audio/mp3">
+      Tvůj prohlížeč nepodporuje audio element.
+    </audio>
   </div>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const reportUrl = urlParams.get('reportUrl');
-    const iframe = document.getElementById('looker-iframe');
-
-    if (reportUrl) {
-      iframe.src = decodeURIComponent(reportUrl);
-    } else {
-      document.body.innerHTML = '<p>Chyba: URL reportu nenalezeno.</p>';
-    }
-
-    document.getElementById('back-button').addEventListener('click', () => {
-      window.location.href = 'index.html';
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const reportUrl = urlParams.get('reportUrl');
+      if (reportUrl) {
+        const iframe = document.getElementById('lookerIframe');
+        iframe.src = decodeURIComponent(reportUrl);
+      }
     });
+
+    function playBackAudioAndRedirect() {
+      const audio = document.getElementById('backAudio');
+      if (audio) {
+        audio.play().catch(error => {
+          console.log("Chyba při přehrávání audia:", error);
+        });
+      }
+      // Zkrácená prodleva na 0,5 sekundy
+      setTimeout(() => {
+        window.location.href = '/index.html';
+      }, 1000);
+    }
   </script>
 </body>
 
