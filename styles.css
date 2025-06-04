@@ -283,11 +283,13 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 50px;
+    /* Posun níže v horní polovině */
 }
 
 .mic-icon {
-    width: 225px;
-    /* Poloviční velikost (původně 250px) */
+    width: 300px;
+    /* Zvětšené o třetinu (225px → 300px) */
     height: auto;
     cursor: pointer;
     transition: opacity 0.3s;
@@ -306,9 +308,9 @@ footer {
 
 .wave {
     position: absolute;
-    width: 225px;
-    /* Přizpůsobeno velikosti mikrofonu */
-    height: 225px;
+    width: 300px;
+    /* Přizpůsobeno nové velikosti mikrofonu */
+    height: 300px;
     border: 4px solid rgba(0, 87, 255, 0.6);
     border-radius: 50%;
     opacity: 0;
@@ -342,9 +344,7 @@ footer {
 
 .status {
     font-size: 18px;
-    /* Menší font (původně 24px) */
     color: #005EA6;
-    /* Tmavší modrá pro soulad s notifikacemi */
     font-weight: normal;
     display: block;
     margin-bottom: 10px;
@@ -398,7 +398,6 @@ footer {
 
 #output {
     margin-top: -20px;
-    /* Posun o 2 řádky výš (přibližně 32px) */
     text-align: center;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
@@ -607,8 +606,14 @@ body.vyroba .back-button:hover {
 /* Media queries */
 @media (max-width: 768px) {
     .mic-icon {
-        width: 90px;
-        /* Přizpůsobeno pro menší obrazovky */
+        width: 120px;
+        /* Zvětšené o třetinu (90px → 120px) */
+    }
+
+    .wave {
+        width: 120px;
+        height: 120px;
+        border: 2px solid rgba(0, 87, 255, 0.6);
     }
 
     .container {
@@ -653,26 +658,25 @@ body.vyroba .back-button:hover {
 
 @media (max-width: 480px) {
     .mic-icon {
-        width: 75px;
+        width: 100px;
+        /* Zvětšené o třetinu (75px → 100px) */
     }
 
     .wave {
-        width: 75px;
-        height: 75px;
+        width: 100px;
+        height: 100px;
         border: 2px solid rgba(0, 87, 255, 0.6);
     }
 
-    #output,
-    #output.default-text {
+    #output {
         padding: 4px;
         top: 0;
         margin-top: 5px;
-        min-width: 50%;
-        max-width: 80%;
+        min-width: 50px;
     }
 
     .output-text {
-        font-size: 1.275em;
+        font-size: 1.375em;
         line-height: 1.5em;
     }
 
@@ -688,9 +692,7 @@ body.vyroba .back-button:hover {
 /* Styly pro looker-results.html */
 body#looker-results {
     justify-content: flex-start;
-    /* Nahoru, ale s centrováním obsahu */
     padding: 0;
-    /* Odstranění nepotřebného odsazení */
 }
 
 body#looker-results .content {
@@ -699,26 +701,20 @@ body#looker-results .content {
     align-items: center;
     width: 100%;
     max-width: 1200px;
-    /* Omezení šířky */
     margin: 0 auto;
-    /* Přesné centrování */
     padding: 20px;
-    /* Malý odstup uvnitř */
 }
 
 iframe {
     width: 100%;
     height: 700px;
-    /* Zachována výška */
     border: none;
     overflow-y: auto;
-    /* Scroll pro příliš dlouhý obsah */
 }
 
 #back-button {
     margin-top: 20px;
     margin-bottom: 20px;
-    /* Odsazení odspodu */
     padding: 10px 20px;
     background-color: #007bff;
     color: white;
@@ -726,7 +722,6 @@ iframe {
     border-radius: 5px;
     cursor: pointer;
     align-self: center;
-    /* Centrování tlačítka */
 }
 
 #back-button:hover {
@@ -736,12 +731,10 @@ iframe {
 @media (max-width: 768px) {
     body#looker-results .content {
         padding: 10px;
-        /* Menší padding na mobilu */
     }
 
     iframe {
         height: 500px;
-        /* Ještě menší na mobilu */
     }
 
     #back-button {
