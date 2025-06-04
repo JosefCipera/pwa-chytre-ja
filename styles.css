@@ -9,9 +9,7 @@ body {
 }
 
 body#index #output {
-    /* Specificita pro index.html */
     margin-top: -40px !important;
-    /* Ještě větší posun nahoru */
     text-align: center;
     transition: opacity 0.2s ease-in-out;
 }
@@ -32,7 +30,6 @@ html {
     box-sizing: border-box;
 }
 
-/* Obecné styly pro dashboard a iframe */
 .dashboard {
     display: flex;
     flex-direction: row;
@@ -52,7 +49,6 @@ html {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Hlavička */
 header {
     background-color: #2c3e50;
     color: white;
@@ -71,7 +67,6 @@ header p {
     margin-top: 0.5rem;
 }
 
-/* Sekce Chytré já (použita pro AI Agenti) */
 .chytre-ja-section {
     background-color: #e6f0fa;
     border-radius: 8px;
@@ -93,7 +88,6 @@ header p {
     color: #666;
 }
 
-/* Hlavní obsah */
 main {
     max-width: 1200px;
     margin: 2rem auto;
@@ -107,7 +101,8 @@ main {
 }
 
 .marketplace-item {
-    background-color: white;
+    background-color: #e6f0fa;
+    /* Změněno na modrou */
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 1rem;
@@ -151,7 +146,6 @@ main {
     background-color: #2980b9;
 }
 
-/* Agent section (pro detailní stránky) */
 .agent-section {
     background-color: #e6f0fa;
     border-radius: 8px;
@@ -175,15 +169,27 @@ main {
 .input-section {
     margin-top: 1rem;
     display: flex;
+    flex-direction: column;
+    /* Změněno na sloupec, aby input byl nahoře */
     gap: 0.5rem;
-    justify-content: center;
+    align-items: center;
 }
 
 .input-section input {
-    padding: 0.5rem;
-    width: 200px;
+    padding: 0.8rem;
+    /* Zvětšený padding */
+    width: 300px;
+    /* Zvětšená šířka */
+    font-size: 1.2rem;
+    /* Zvětšené písmo */
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+.input-section .buttons-container {
+    /* Nový kontejner pro tlačítka */
+    display: flex;
+    gap: 0.5rem;
 }
 
 .input-section button {
@@ -243,7 +249,6 @@ main {
     text-decoration: underline;
 }
 
-/* Patička */
 footer {
     background-color: #2c3e50;
     color: white;
@@ -254,10 +259,11 @@ footer {
     width: 100%;
 }
 
-/* Styly z PWA (zachovány a upraveny) */
 .top-half {
     flex: 1;
     display: flex;
+    flex-direction: column;
+    /* Změněno na sloupec pro pořadí */
     justify-content: center;
     align-items: center;
     max-width: none !important;
@@ -283,13 +289,12 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
-    /* Posun níže v horní polovině */
+    margin-top: 20px;
+    /* Menší posun, aby zůstal v horní polovině */
 }
 
 .mic-icon {
     width: 300px;
-    /* Zvětšené o třetinu (225px → 300px) */
     height: auto;
     cursor: pointer;
     transition: opacity 0.3s;
@@ -309,7 +314,6 @@ footer {
 .wave {
     position: absolute;
     width: 300px;
-    /* Přizpůsobeno nové velikosti mikrofonu */
     height: 300px;
     border: 4px solid rgba(0, 87, 255, 0.6);
     border-radius: 50%;
@@ -504,7 +508,6 @@ footer {
     display: none;
 }
 
-/* Styly specifické pro vyroba.html */
 body.vyroba .container {
     max-width: 600px;
     margin: 0 auto;
@@ -557,9 +560,19 @@ body.vyroba .input-section {
 
 body.vyroba .input-section input {
     display: block;
-    padding: 5px;
-    width: 200px;
+    padding: 8px;
+    /* Zvětšený padding */
+    width: 300px;
+    /* Zvětšená šířka */
+    font-size: 1.2rem;
+    /* Zvětšené písmo */
     margin: 0 auto 10px;
+}
+
+body.vyroba .input-section .buttons-container {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
 }
 
 body.vyroba .input-section button {
@@ -569,7 +582,7 @@ body.vyroba .input-section button {
     color: white;
     border: none;
     cursor: pointer;
-    margin: 0 auto;
+    margin: 0;
 }
 
 body.vyroba .input-section button:hover {
@@ -603,16 +616,15 @@ body.vyroba .back-button:hover {
     background-color: #0056b3;
 }
 
-/* Media queries */
 @media (max-width: 768px) {
     .mic-icon {
-        width: 120px;
-        /* Zvětšené o třetinu (90px → 120px) */
+        width: 150px;
+        /* Ještě větší na mobilu */
     }
 
     .wave {
-        width: 120px;
-        height: 120px;
+        width: 150px;
+        height: 150px;
         border: 2px solid rgba(0, 87, 255, 0.6);
     }
 
@@ -654,17 +666,23 @@ body.vyroba .back-button:hover {
     .dynamic-content h3 {
         font-size: 1.2rem;
     }
+
+    .input-section input {
+        width: 90%;
+        /* Responzivní šířka na mobilu */
+        max-width: 300px;
+    }
 }
 
 @media (max-width: 480px) {
     .mic-icon {
-        width: 100px;
-        /* Zvětšené o třetinu (75px → 100px) */
+        width: 120px;
+        /* Ještě větší na menším mobilu */
     }
 
     .wave {
-        width: 100px;
-        height: 100px;
+        width: 120px;
+        height: 120px;
         border: 2px solid rgba(0, 87, 255, 0.6);
     }
 
@@ -689,7 +707,6 @@ body.vyroba .back-button:hover {
     }
 }
 
-/* Styly pro looker-results.html */
 body#looker-results {
     justify-content: flex-start;
     padding: 0;
