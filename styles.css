@@ -25,8 +25,7 @@ body {
     position: relative;
     z-index: 1;
     display: block;
-    margin: 0 auto;
-    /* Centrování */
+    /* Zajistí pevnou šířku */
 }
 
 .mic-icon.recording {
@@ -45,6 +44,11 @@ body {
     top: 50%;
     left: 50%;
     transform-origin: center;
+    /* Centruje transformaci */
+    margin-top: -50%;
+    /* Polovina výšky pro správné zarovnání */
+    margin-left: -50%;
+    /* Polovina šířky pro správné zarovnání */
 }
 
 .microphone-container {
@@ -54,6 +58,11 @@ body {
     align-items: center;
     margin: 20px 0;
     flex: 1;
+    max-width: 225px;
+    /* Omezení šířky kontejneru */
+    margin-left: auto;
+    margin-right: auto;
+    /* Centrování kontejneru */
 }
 
 .microphone-container.recording .wave1 {
@@ -91,6 +100,11 @@ body {
     .wave {
         border-width: 2px;
     }
+
+    .microphone-container {
+        max-width: 150px;
+        /* Přizpůsobení šířky */
+    }
 }
 
 /* Svislá orientace */
@@ -104,6 +118,11 @@ body {
     .wave {
         border-width: 4px;
     }
+
+    .microphone-container {
+        max-width: 225px;
+        /* Přizpůsobení šířky */
+    }
 }
 
 /* Ležatá orientace */
@@ -116,6 +135,11 @@ body {
 
     .wave {
         border-width: 2px;
+    }
+
+    .microphone-container {
+        max-width: 120px;
+        /* Přizpůsobení šířky */
     }
 }
 
