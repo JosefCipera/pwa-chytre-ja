@@ -11,8 +11,9 @@ body {
 
 .mic-icon {
     width: 225px;
-    /* Výchozí hodnota pro desktop */
+    /* Výchozí šířka pro desktop */
     height: auto;
+    /* Zachování poměru stran */
     cursor: pointer;
     transition: opacity 0.3s;
     background: transparent;
@@ -25,7 +26,8 @@ body {
     position: relative;
     z-index: 1;
     display: block;
-    /* Zajistí pevnou šířku */
+    margin: 0 auto;
+    /* Centrování */
 }
 
 .mic-icon.recording {
@@ -44,11 +46,10 @@ body {
     top: 50%;
     left: 50%;
     transform-origin: center;
-    /* Centruje transformaci */
     margin-top: -50%;
-    /* Polovina výšky pro správné zarovnání */
+    /* Polovina výšky pro centrování */
     margin-left: -50%;
-    /* Polovina šířky pro správné zarovnání */
+    /* Polovina šířky pro centrování */
 }
 
 .microphone-container {
@@ -59,10 +60,10 @@ body {
     margin: 20px 0;
     flex: 1;
     max-width: 225px;
-    /* Omezení šířky kontejneru */
+    /* Omezení šířky */
     margin-left: auto;
     margin-right: auto;
-    /* Centrování kontejneru */
+    /* Centrování */
 }
 
 .microphone-container.recording .wave1 {
@@ -107,10 +108,15 @@ body {
     }
 }
 
-/* Svislá orientace */
+/* Svislá orientace - roztažení na výšku */
 @media (orientation: portrait) and (max-width: 768px) {
     .mic-icon {
-        width: 225px;
+        width: 100%;
+        /* Plná šířka */
+        height: 50vh;
+        /* Polovina výšky obrazovky */
+        max-height: 225px;
+        /* Omezení maximální výšky */
         border-color: blue;
         /* Debug */
     }
@@ -120,12 +126,12 @@ body {
     }
 
     .microphone-container {
-        max-width: 225px;
-        /* Přizpůsobení šířky */
+        max-width: 100%;
+        /* Plná šířka kontejneru */
     }
 }
 
-/* Ležatá orientace */
+/* Ležatá orientace - zmenšení */
 @media (orientation: landscape) and (max-width: 768px) {
     .mic-icon {
         width: 120px;
