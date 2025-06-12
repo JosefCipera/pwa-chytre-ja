@@ -108,13 +108,13 @@ body {
     }
 }
 
-/* Svislá orientace - pevná šířka */
+/* Svislá orientace - zvětšení na výšku */
 @media (orientation: portrait) and (max-width: 768px) {
     .mic-icon {
         width: 225px;
         /* Pevná šířka */
-        height: auto;
-        /* Zachování poměru */
+        height: 300px;
+        /* Zvětšení na výšku */
         border-color: blue;
         /* Debug */
     }
@@ -129,10 +129,10 @@ body {
     }
 }
 
-/* Ležatá orientace - zmenšení */
+/* Ležatá orientace - další zmenšení */
 @media (orientation: landscape) and (max-width: 768px) {
     .mic-icon {
-        width: 100px;
+        width: 80px;
         /* Další zmenšení */
         border-color: yellow;
         /* Debug */
@@ -143,7 +143,7 @@ body {
     }
 
     .microphone-container {
-        max-width: 100px;
+        max-width: 80px;
         /* Pevná šířka */
     }
 }
