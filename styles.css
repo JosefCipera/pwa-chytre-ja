@@ -60,7 +60,7 @@ body {
     margin: 20px 0;
     flex: 1;
     max-width: 225px;
-    /* Omezení šířky */
+    /* Pevná šířka */
     margin-left: auto;
     margin-right: auto;
     /* Centrování */
@@ -104,19 +104,17 @@ body {
 
     .microphone-container {
         max-width: 150px;
-        /* Přizpůsobení šířky */
+        /* Pevná šířka */
     }
 }
 
-/* Svislá orientace - roztažení na výšku */
+/* Svislá orientace - pevná šířka */
 @media (orientation: portrait) and (max-width: 768px) {
     .mic-icon {
-        width: 100%;
-        /* Plná šířka */
-        height: 50vh;
-        /* Polovina výšky obrazovky */
-        max-height: 225px;
-        /* Omezení maximální výšky */
+        width: 225px;
+        /* Pevná šířka */
+        height: auto;
+        /* Zachování poměru */
         border-color: blue;
         /* Debug */
     }
@@ -126,15 +124,16 @@ body {
     }
 
     .microphone-container {
-        max-width: 100%;
-        /* Plná šířka kontejneru */
+        max-width: 225px;
+        /* Pevná šířka */
     }
 }
 
 /* Ležatá orientace - zmenšení */
 @media (orientation: landscape) and (max-width: 768px) {
     .mic-icon {
-        width: 120px;
+        width: 100px;
+        /* Další zmenšení */
         border-color: yellow;
         /* Debug */
     }
@@ -144,8 +143,8 @@ body {
     }
 
     .microphone-container {
-        max-width: 120px;
-        /* Přizpůsobení šířky */
+        max-width: 100px;
+        /* Pevná šířka */
     }
 }
 
