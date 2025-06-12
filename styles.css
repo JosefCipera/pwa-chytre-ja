@@ -8,11 +8,14 @@ body {
     box-sizing: border-box;
 }
 
-/* Debug barev pro ověření načtení */
+/* Upravený mikrofon s kontrolou proporcí */
 .mic-icon {
     width: 225px;
     /* Výchozí hodnota pro desktop */
     height: auto;
+    /* Zachování poměru stran */
+    max-width: 100%;
+    /* Zabrání přetečení */
     cursor: pointer;
     transition: opacity 0.3s;
     background: transparent;
@@ -24,6 +27,10 @@ body {
     opacity: 1;
     position: relative;
     z-index: 1;
+    display: block;
+    /* Zajistí správné zarovnání */
+    margin: 0 auto;
+    /* Centrování */
 }
 
 .mic-icon.recording {
@@ -32,13 +39,18 @@ body {
 
 .wave {
     position: absolute;
-    width: 225px;
-    height: 225px;
+    width: 100%;
+    /* Přizpůsobí se .mic-icon */
+    height: 100%;
+    /* Zachování kruhového tvaru */
     border: 4px solid rgba(0, 87, 255, 0.6);
     border-radius: 50%;
     opacity: 0;
     transform: scale(0);
     z-index: 0;
+    top: 50%;
+    left: 50%;
+    transform-origin: center;
 }
 
 /* Media query pro mobilní zařízení */
@@ -51,8 +63,6 @@ body {
     }
 
     .wave {
-        width: 150px;
-        height: 150px;
         border-width: 2px;
     }
 }
@@ -61,13 +71,12 @@ body {
 @media (orientation: portrait) and (max-width: 768px) {
     .mic-icon {
         width: 225px;
+        /* Zvětšení ve svislé orientaci */
         border-color: blue;
         /* Debug pro svislou orientaci */
     }
 
     .wave {
-        width: 225px;
-        height: 225px;
         border-width: 4px;
     }
 }
@@ -76,18 +85,17 @@ body {
 @media (orientation: landscape) and (max-width: 768px) {
     .mic-icon {
         width: 120px;
+        /* Zmenšení v ležaté orientaci */
         border-color: yellow;
         /* Debug pro ležatou orientaci */
     }
 
     .wave {
-        width: 120px;
-        height: 120px;
         border-width: 2px;
     }
 }
 
-/* Zbývající kód zůstává stejný, zkráceno pro přehlednost */
+/* Zbytek kódu zkrácen pro přehlednost */
 body#index #output {
     margin-top: -40px !important;
     text-align: center;
