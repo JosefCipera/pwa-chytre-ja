@@ -8,14 +8,12 @@ body {
     box-sizing: border-box;
 }
 
-/* Upravený mikrofon s kontrolou proporcí */
+/* Upravený mikrofon s vyšší prioritou */
 .mic-icon {
     width: 225px;
     /* Výchozí hodnota pro desktop */
     height: auto;
-    /* Zachování poměru stran */
     max-width: 100%;
-    /* Zabrání přetečení */
     cursor: pointer;
     transition: opacity 0.3s;
     background: transparent;
@@ -28,9 +26,7 @@ body {
     position: relative;
     z-index: 1;
     display: block;
-    /* Zajistí správné zarovnání */
     margin: 0 auto;
-    /* Centrování */
 }
 
 .mic-icon.recording {
@@ -40,9 +36,7 @@ body {
 .wave {
     position: absolute;
     width: 100%;
-    /* Přizpůsobí se .mic-icon */
     height: 100%;
-    /* Zachování kruhového tvaru */
     border: 4px solid rgba(0, 87, 255, 0.6);
     border-radius: 50%;
     opacity: 0;
@@ -53,10 +47,10 @@ body {
     transform-origin: center;
 }
 
-/* Media query pro mobilní zařízení */
+/* Obecné mobilní nastavení s nižší prioritou */
 @media (max-width: 768px) {
     .mic-icon {
-        width: 150px;
+        width: 150px !important;
         /* Výchozí hodnota pro menší obrazovky */
         border-color: green;
         /* Debug změna barvy */
@@ -67,12 +61,12 @@ body {
     }
 }
 
-/* Orientace - zvětšení ve svislé */
+/* Svislá orientace s vyšší prioritou */
 @media (orientation: portrait) and (max-width: 768px) {
     .mic-icon {
-        width: 225px;
+        width: 225px !important;
         /* Zvětšení ve svislé orientaci */
-        border-color: blue;
+        border-color: blue !important;
         /* Debug pro svislou orientaci */
     }
 
@@ -81,12 +75,12 @@ body {
     }
 }
 
-/* Orientace - zmenšení v ležaté */
+/* Ležatá orientace */
 @media (orientation: landscape) and (max-width: 768px) {
     .mic-icon {
-        width: 120px;
+        width: 120px !important;
         /* Zmenšení v ležaté orientaci */
-        border-color: yellow;
+        border-color: yellow !important;
         /* Debug pro ležatou orientaci */
     }
 
@@ -95,7 +89,7 @@ body {
     }
 }
 
-/* Zbytek kódu zkrácen pro přehlednost */
+/* Zbytek kódu zkrácen */
 body#index #output {
     margin-top: -40px !important;
     text-align: center;
