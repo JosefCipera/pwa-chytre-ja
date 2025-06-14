@@ -238,9 +238,14 @@ main {
 }
 
 .marketplace-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    display: flex;
+    flex-direction: row;
+    /* Výchozí rozložení vedle sebe pro desktop */
+    flex-wrap: wrap;
+    /* Umožní přechod na nový řádek, pokud je málo místa */
     gap: 1.5rem;
+    justify-content: center;
+    /* Centrování položek */
 }
 
 .marketplace-item {
@@ -250,6 +255,11 @@ main {
     padding: 1rem;
     text-align: center;
     transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 250px;
+    /* Pevná šířka pro konzistentní rozložení na desktopu */
 }
 
 .marketplace-item:hover {
@@ -282,6 +292,10 @@ main {
     cursor: pointer;
     margin-top: 0.5rem;
     transition: background-color 0.2s;
+    width: 100%;
+    /* Zajistí, že tlačítko využije dostupný prostor */
+    max-width: 200px;
+    /* Omezení šířky pro lepší vzhled */
 }
 
 .marketplace-item button:hover {
@@ -672,5 +686,30 @@ iframe {
 
     #back-button {
         margin-top: 10px;
+    }
+
+    .marketplace-grid {
+        flex-direction: column;
+        /* Pod sebou na mobilu */
+        align-items: center;
+        /* Centrování položek */
+        padding-bottom: 80px;
+        /* Prostor pod posledním agentem nad patičkou */
+    }
+
+    .marketplace-item {
+        width: 100%;
+        /* Plná šířka na mobilu */
+        padding: 0.5rem;
+        /* Menší padding pro úsporu místa */
+    }
+
+    .marketplace-item button {
+        display: block;
+        /* Zajistí zobrazení tlačítka */
+        width: 80%;
+        /* Přizpůsobení šířky na mobilu */
+        margin: 0.5rem auto;
+        /* Centrování */
     }
 }
