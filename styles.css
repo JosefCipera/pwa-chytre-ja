@@ -270,12 +270,12 @@ body {
 /* Landscape specific mobile adjustments (wider screens, limited height) */
 @media (orientation: landscape) and (max-width: 768px) {
     .microphone-container {
-        width: 10vw;
+        width: 8vw;
         /* Drastically reduced width for landscape */
-        max-width: 50px;
+        max-width: 40px;
         /* Even smaller max width for landscape */
-        max-height: 30vh;
-        /* Constrain by height */
+        max-height: 25vh;
+        /* Constrain by height (was 30vh) */
         margin-top: auto;
         /* Push to top of top-half */
         margin-bottom: 0.2vh;
@@ -288,9 +288,11 @@ body {
     }
 
     #output {
-        font-size: 0.6em;
-        /* Smallest font for landscape */
-        margin-top: 0.2vh;
+        font-size: 0.55em;
+        /* Smallest font for landscape (was 0.6em) */
+        line-height: 1em;
+        /* Tighter line height for more lines */
+        margin-top: 0.1vh;
         /* Very close to mic */
         margin-bottom: auto;
         /* Push text to bottom of bottom-half */
@@ -392,8 +394,8 @@ body#looker-results .content iframe {
     /* Specific adjustments for landscape Looker view */
     @media (orientation: landscape) {
         body#looker-results .content iframe {
-            height: calc(100vh - 80px);
-            /* Smaller height for landscape to fit button */
+            height: calc(100vh - 70px);
+            /* Adjusted height for landscape to fit button */
             min-height: 250px;
         }
     }
