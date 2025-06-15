@@ -24,7 +24,7 @@ body {
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    /* Removed justify-content: space-between; we'll use flex-grow and margins */
 }
 
 .top-half,
@@ -35,12 +35,9 @@ body {
     justify-content: center;
     /* Centers horizontally */
     align-items: center;
-    /* Centers vertically */
+    /* Centers vertically within their half */
     width: 100%;
-    padding-top: 5vh;
-    /* Add padding to push content down from top-half's edge */
-    padding-bottom: 5vh;
-    /* Add padding to push content up from bottom-half's edge */
+    /* Removed padding-top/bottom here, will use margins on content directly */
 }
 
 /* Microphone Container - holds the icon and waves */
@@ -50,16 +47,18 @@ body {
     justify-content: center;
     align-items: center;
     margin: 0 auto;
-    /* Center horizontally within its flex parent */
+    /* Center horizontally */
     width: 90%;
-    /* Start with a percentage of parent width */
+    /* Default responsive width */
     max-width: 280px;
     /* Max size for larger screens (desktop/tablet portrait) */
     aspect-ratio: 1 / 1;
     /* Maintain square aspect ratio */
-    /* Adjusting vertical position within top-half, relative to current content flow */
-    margin-top: 50px;
-    /* Example: pushes mic down a bit on desktop/portrait */
+    /* Adjusting vertical position within top-half */
+    margin-top: auto;
+    /* Push it to the bottom of top-half */
+    margin-bottom: 2vh;
+    /* Small margin below mic */
 }
 
 /* Microphone Icon - ensure it fills its container */
@@ -81,7 +80,6 @@ body {
     z-index: 1;
     display: block;
     border: none;
-    /* Removed debug border */
 }
 
 .mic-icon.recording {
@@ -99,11 +97,8 @@ body {
     transform: scale(0);
     z-index: 0;
     top: 0;
-    /* Align with container top */
     left: 0;
-    /* Align with container left */
     transform-origin: center center;
-    /* Ensure scaling from center */
 }
 
 /* Animations for waves */
@@ -135,28 +130,25 @@ body {
 #output {
     text-align: center;
     font-size: 1.1em;
-    /* Consistent with output-text */
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
     min-height: 50px;
-    /* Ensures space */
     width: 80%;
-    /* Responsive width */
     max-width: 600px;
-    /* Max width for readability */
     background-color: rgba(200, 200, 200, 0.2);
     padding: 10px;
-    margin: 10px auto;
-    /* Centers horizontally, provides vertical spacing */
+    margin: 0 auto;
+    /* Center horizontally */
+    /* Adjusting vertical position within bottom-half */
+    margin-top: 2vh;
+    /* Push it down from top of bottom-half */
+    margin-bottom: auto;
+    /* Push it up to the top of bottom-half */
     border-left: 5px solid #005EA6;
     border-radius: 5px;
     display: flex;
-    /* Use flex to center content inside */
     align-items: center;
     justify-content: center;
-    /* Adjusting vertical position within bottom-half */
-    margin-bottom: 50px;
-    /* Example: pushes text up a bit from bottom of bottom-half */
 }
 
 #output.visible {
@@ -171,8 +163,6 @@ body {
     display: none !important;
 }
 
-/* Hide if no content */
-
 .output-text {
     color: #005EA6;
     text-align: center;
@@ -182,7 +172,7 @@ body {
     line-height: 1.2em;
 }
 
-/* Notification styles */
+/* Notification styles (kept as is) */
 .notification-informative {
     border-left-color: #005EA6 !important;
     background-color: rgba(0, 94, 166, 0.1) !important;
@@ -242,109 +232,100 @@ body {
 @media (max-width: 768px) {
     .microphone-container {
         width: 60vw;
-        /* Take 60% of viewport width on general mobile */
+        /* General mobile width */
         max-width: 200px;
-        /* Limit size for tablets */
-        margin-top: 3vh;
-        /* Slightly less margin-top for mobile */
+        margin-top: auto;
+        /* Revert to auto to rely on bottom margin */
+        margin-bottom: 2vh;
+        /* Keep some space below mic */
     }
 
     #output {
-        font-size: 1em;
-        /* Adjust font size for readability on mobile */
-        margin-top: 10px;
-        /* Default margin for output on mobile */
-        margin-bottom: 3vh;
-        /* Push output up from bottom of screen */
+        font-size: 0.95em;
+        margin-top: 2vh;
+        /* Keep some space above output */
+        margin-bottom: auto;
+        /* Revert to auto to rely on top margin */
     }
 }
 
 /* Portrait specific mobile adjustments (narrower screens) */
 @media (orientation: portrait) and (max-width: 768px) {
     .microphone-container {
-        width: 75vw;
-        /* Slightly larger on portrait to make it feel "not too small" */
-        max-width: 280px;
-        /* Prevent it from stretching too wide on very wide phones/small tablets */
-        margin-top: 5vh;
-        /* Larger margin-top for portrait to push it down more */
+        width: 70vw;
+        /* Larger on portrait */
+        max-width: 250px;
+        margin-bottom: 1vh;
+        /* Move mic slightly closer to center */
     }
 
     #output {
-        margin-top: -30px;
-        /* Pull the output text significantly closer to the microphone */
-        margin-bottom: 5vh;
-        /* Keep some space from the bottom edge */
+        margin-top: 1vh;
+        /* Pull text closer to mic */
+        margin-bottom: 10vh;
+        /* Ensure space from bottom of screen */
     }
 }
 
 /* Landscape specific mobile adjustments (wider screens, limited height) */
 @media (orientation: landscape) and (max-width: 768px) {
     .microphone-container {
-        width: 20vw;
-        /* Further reduced width for landscape */
-        max-width: 100px;
-        /* Adjust max width for landscape */
-        max-height: 45vh;
-        /* Constrain by height to prevent it from being too big vertically (was 50vh) */
-        margin-top: 2vh;
-        /* Smaller top margin for landscape to save vertical space */
+        width: 15vw;
+        /* Significantly reduced width for landscape */
+        max-width: 80px;
+        /* Max width for landscape */
+        max-height: 40vh;
+        /* Constrain by height */
+        margin-top: auto;
+        /* Push to top of top-half */
+        margin-bottom: 0.5vh;
+        /* Very small margin below mic */
     }
 
     .mic-icon {
-        padding: 1px;
-        /* Even less padding to maximize icon size in smaller container */
+        padding: 0px;
+        /* No padding */
     }
 
     #output {
-        font-size: 0.75em;
-        /* Even smaller font on landscape for more space (was 0.8em) */
-        margin-top: 5px;
-        /* Adjust spacing, pull slightly closer */
-        margin-bottom: 2vh;
-        /* Keep some space from the bottom edge */
+        font-size: 0.7em;
+        /* Smallest font for landscape */
+        margin-top: 0.5vh;
+        /* Very close to mic */
+        margin-bottom: auto;
+        /* Push text to bottom of bottom-half */
     }
 }
 
 /* Adjustments for specific body classes to ensure responsiveness */
 body.vyroba .container {
     max-width: 100%;
-    /* Ensure it's not restricted by old fixed widths */
     padding: 10px;
-    /* Add some padding for mobile */
 }
 
 body.vyroba .microphone-container {
     max-width: 200px;
-    /* Set a reasonable max width for the icon in vyroba mode */
     width: 60vw;
-    /* Responsive width */
 }
 
 body.vyroba .input-section input {
     width: 80%;
-    /* Make input fields responsive */
     max-width: 300px;
-    /* Max width for readability */
 }
 
 body.vyroba .input-section .buttons-container {
     flex-wrap: wrap;
-    /* Allow buttons to wrap */
 }
 
 /* --- LOOKER DASHBOARD STYLES --- */
 body#looker-results {
-    justify-content: flex-start;
     padding: 0;
     display: flex;
-    /* Flexbox for main content + button */
     flex-direction: column;
-    /* Stack children vertically */
-    min-height: 100vh;
-    /* Ensure body takes at least full viewport height */
-    overflow-y: auto;
-    /* Allow scrolling for the entire body if content overflows */
+    height: 100vh;
+    /* Make body exactly 100% viewport height */
+    overflow-y: hidden;
+    /* Hide body overflow, let content manage its own scroll */
 }
 
 body#looker-results .content {
@@ -355,33 +336,30 @@ body#looker-results .content {
     max-width: 1200px;
     margin: 0 auto;
     padding: 10px;
-    /* Reduced padding for more space */
-    flex: 1;
-    /* Allow content to grow and take available space */
-    /* Removed overflow-y: auto here, as it's now on body */
+    flex-grow: 1;
+    /* Allow content to grow */
+    overflow-y: auto;
+    /* This is where the scrollbar for the iframe and content should appear */
+    height: 100%;
+    /* Explicitly set height for flex-grow to work as expected */
 }
 
 body#looker-results .content iframe {
     width: 100%;
     height: 100%;
-    /* Take 100% of parent's height (which is flex-grow: 1) */
+    /* Take 100% of parent's height (which is .content) */
     border: none;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin: 0 auto;
     /* Center horizontally */
     display: block;
-    /* Ensure margin auto works */
-    min-height: 400px;
-    /* Ensure a minimum height for smaller screens, if flex-grow doesn't give enough */
-    /* Let iframe itself handle its internal overflow */
+    /* Relying on .content's overflow-y: auto for scrolling */
 }
 
 #back-button {
     margin-top: 10px;
-    /* Reduced margin to bring it closer to iframe */
     margin-bottom: 10px;
-    /* Reduced margin to give more space */
     padding: 10px 20px;
     background-color: #007bff;
     color: white;
@@ -390,6 +368,8 @@ body#looker-results .content iframe {
     cursor: pointer;
     align-self: center;
     /* Center button within flex container */
+    flex-shrink: 0;
+    /* Prevent button from shrinking */
 }
 
 #back-button:hover {
@@ -399,22 +379,23 @@ body#looker-results .content iframe {
 @media (max-width: 768px) {
     body#looker-results .content {
         padding: 5px;
-        /* Even smaller padding on mobile for Looker */
     }
 
     body#looker-results .content iframe {
-        min-height: 300px;
-        /* Smaller min-height on mobile */
+        /* On mobile, use vh for height, allowing scroll if content is taller than viewport minus button/padding */
+        height: calc(100vh - 120px);
+        /* Adjust based on actual header/footer/button height on mobile */
+        min-height: 250px;
+        /* Minimum for very small screens */
     }
 
     #back-button {
         margin-top: 5px;
-        /* Smaller margin on mobile */
         margin-bottom: 5px;
     }
 }
 
-/* --- OTHER EXISTING STYLES (from your original styles.css, adjusted for box-sizing) --- */
+/* --- OTHER EXISTING STYLES (from your original styles.css) --- */
 header {
     background-color: #2c3e50;
     color: white;
@@ -467,7 +448,6 @@ main {
     gap: 1.5rem;
     justify-content: center;
     padding: 1rem;
-    /* Added padding to ensure content is not clipped by edges */
 }
 
 .marketplace-item {
