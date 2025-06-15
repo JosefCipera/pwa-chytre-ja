@@ -55,10 +55,10 @@ body {
     aspect-ratio: 1 / 1;
     /* Maintain square aspect ratio */
     /* Adjusting vertical position within top-half */
-    margin-top: auto;
-    /* Push it to the bottom of top-half */
-    margin-bottom: 2vh;
-    /* Small margin below mic */
+    margin-top: 5vh;
+    /* Push it down from top edge of top-half */
+    margin-bottom: auto;
+    /* Allow bottom-half to use more space */
 }
 
 /* Microphone Icon - ensure it fills its container */
@@ -136,6 +136,7 @@ body {
     width: 80%;
     max-width: 600px;
     background-color: rgba(200, 200, 200, 0.2);
+    /* Greyish background */
     padding: 10px;
     margin: 0 auto;
     /* Center horizontally */
@@ -165,6 +166,7 @@ body {
 
 .output-text {
     color: #005EA6;
+    /* Light blue color for the text */
     text-align: center;
     font-size: 1.1em;
     word-wrap: break-word;
@@ -234,10 +236,10 @@ body {
         width: 60vw;
         /* General mobile width */
         max-width: 200px;
-        margin-top: auto;
-        /* Revert to auto to rely on bottom margin */
-        margin-bottom: 2vh;
-        /* Keep some space below mic */
+        margin-top: 3vh;
+        /* Slightly less margin-top for mobile */
+        margin-bottom: auto;
+        /* Rely on auto to push content up */
     }
 
     #output {
@@ -245,7 +247,7 @@ body {
         margin-top: 2vh;
         /* Keep some space above output */
         margin-bottom: auto;
-        /* Revert to auto to rely on top margin */
+        /* Rely on auto to push content up */
     }
 }
 
@@ -255,14 +257,16 @@ body {
         width: 70vw;
         /* Larger on portrait */
         max-width: 250px;
+        margin-top: 5vh;
+        /* Larger margin-top for portrait to push it down more */
         margin-bottom: 1vh;
-        /* Move mic slightly closer to center */
+        /* Small margin below mic to bring text closer */
     }
 
     #output {
         margin-top: 1vh;
-        /* Pull text closer to mic */
-        margin-bottom: 10vh;
+        /* Pull text closer to mic (was -30px, now positive) */
+        margin-bottom: 5vh;
         /* Ensure space from bottom of screen */
     }
 }
@@ -270,12 +274,12 @@ body {
 /* Landscape specific mobile adjustments (wider screens, limited height) */
 @media (orientation: landscape) and (max-width: 768px) {
     .microphone-container {
-        width: 15vw;
+        width: 12vw;
         /* Significantly reduced width for landscape */
-        max-width: 80px;
+        max-width: 60px;
         /* Max width for landscape */
-        max-height: 40vh;
-        /* Constrain by height */
+        max-height: 35vh;
+        /* Constrain by height (was 40vh) */
         margin-top: auto;
         /* Push to top of top-half */
         margin-bottom: 0.5vh;
@@ -288,9 +292,9 @@ body {
     }
 
     #output {
-        font-size: 0.7em;
-        /* Smallest font for landscape */
-        margin-top: 0.5vh;
+        font-size: 0.65em;
+        /* Smallest font for landscape (was 0.7em) */
+        margin-top: 0.2vh;
         /* Very close to mic */
         margin-bottom: auto;
         /* Push text to bottom of bottom-half */
@@ -382,11 +386,11 @@ body#looker-results .content iframe {
     }
 
     body#looker-results .content iframe {
-        /* On mobile, use vh for height, allowing scroll if content is taller than viewport minus button/padding */
-        height: calc(100vh - 120px);
-        /* Adjust based on actual header/footer/button height on mobile */
-        min-height: 250px;
-        /* Minimum for very small screens */
+        /* On mobile, use calc for height, ensuring space for button and padding */
+        height: calc(100vh - 150px);
+        /* Adjusted height to account for button and margins */
+        min-height: 350px;
+        /* Minimum for very small screens (was 250px) */
     }
 
     #back-button {
