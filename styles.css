@@ -24,7 +24,6 @@ body {
     width: 100%;
     display: flex;
     flex-direction: column;
-    /* Removed justify-content: space-between; we'll use flex-grow and margins */
 }
 
 .top-half,
@@ -37,7 +36,6 @@ body {
     align-items: center;
     /* Centers vertically within their half */
     width: 100%;
-    /* Removed padding-top/bottom here, will use margins on content directly */
 }
 
 /* Microphone Container - holds the icon and waves */
@@ -54,7 +52,6 @@ body {
     /* Max size for larger screens (desktop/tablet portrait) */
     aspect-ratio: 1 / 1;
     /* Maintain square aspect ratio */
-    /* Adjusting vertical position within top-half */
     margin-top: 5vh;
     /* Push it down from top edge of top-half */
     margin-bottom: auto;
@@ -140,7 +137,6 @@ body {
     padding: 10px;
     margin: 0 auto;
     /* Center horizontally */
-    /* Adjusting vertical position within bottom-half */
     margin-top: 2vh;
     /* Push it down from top of bottom-half */
     margin-bottom: auto;
@@ -265,7 +261,7 @@ body {
 
     #output {
         margin-top: 1vh;
-        /* Pull text closer to mic (was -30px, now positive) */
+        /* Pull text closer to mic */
         margin-bottom: 5vh;
         /* Ensure space from bottom of screen */
     }
@@ -274,15 +270,15 @@ body {
 /* Landscape specific mobile adjustments (wider screens, limited height) */
 @media (orientation: landscape) and (max-width: 768px) {
     .microphone-container {
-        width: 12vw;
-        /* Significantly reduced width for landscape */
-        max-width: 60px;
-        /* Max width for landscape */
-        max-height: 35vh;
-        /* Constrain by height (was 40vh) */
+        width: 10vw;
+        /* Drastically reduced width for landscape */
+        max-width: 50px;
+        /* Even smaller max width for landscape */
+        max-height: 30vh;
+        /* Constrain by height */
         margin-top: auto;
         /* Push to top of top-half */
-        margin-bottom: 0.5vh;
+        margin-bottom: 0.2vh;
         /* Very small margin below mic */
     }
 
@@ -292,8 +288,8 @@ body {
     }
 
     #output {
-        font-size: 0.65em;
-        /* Smallest font for landscape (was 0.7em) */
+        font-size: 0.6em;
+        /* Smallest font for landscape */
         margin-top: 0.2vh;
         /* Very close to mic */
         margin-bottom: auto;
@@ -328,8 +324,8 @@ body#looker-results {
     flex-direction: column;
     height: 100vh;
     /* Make body exactly 100% viewport height */
-    overflow-y: hidden;
-    /* Hide body overflow, let content manage its own scroll */
+    overflow-y: auto;
+    /* Allow body to scroll if content overflows */
 }
 
 body#looker-results .content {
@@ -342,8 +338,8 @@ body#looker-results .content {
     padding: 10px;
     flex-grow: 1;
     /* Allow content to grow */
-    overflow-y: auto;
-    /* This is where the scrollbar for the iframe and content should appear */
+    overflow-y: hidden;
+    /* Hide content overflow, let body handle it */
     height: 100%;
     /* Explicitly set height for flex-grow to work as expected */
 }
@@ -351,14 +347,14 @@ body#looker-results .content {
 body#looker-results .content iframe {
     width: 100%;
     height: 100%;
-    /* Take 100% of parent's height (which is .content) */
+    /* Take 100% of parent's height (.content) */
     border: none;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin: 0 auto;
     /* Center horizontally */
     display: block;
-    /* Relying on .content's overflow-y: auto for scrolling */
+    /* Relying on body's overflow-y: auto for scrolling */
 }
 
 #back-button {
@@ -387,10 +383,19 @@ body#looker-results .content iframe {
 
     body#looker-results .content iframe {
         /* On mobile, use calc for height, ensuring space for button and padding */
-        height: calc(100vh - 150px);
-        /* Adjusted height to account for button and margins */
-        min-height: 350px;
-        /* Minimum for very small screens (was 250px) */
+        /* Adjusted for portrait to fit button */
+        height: calc(100vh - 120px);
+        min-height: 300px;
+        /* Minimum for very small screens */
+    }
+
+    /* Specific adjustments for landscape Looker view */
+    @media (orientation: landscape) {
+        body#looker-results .content iframe {
+            height: calc(100vh - 80px);
+            /* Smaller height for landscape to fit button */
+            min-height: 250px;
+        }
     }
 
     #back-button {
