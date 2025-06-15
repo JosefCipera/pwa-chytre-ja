@@ -1,39 +1,85 @@
+/* styles.css */
+
+/* General app layout */
+html,
 body {
     margin: 0;
-    height: 100vh;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    /* Prevents unwanted scrolling */
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    box-sizing: border-box;
+    /* Ensures padding/border included in element's total size */
+}
+
+.container {
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
-    overflow-x: hidden;
+    justify-content: space-between;
     box-sizing: border-box;
 }
 
+.top-half,
+.bottom-half {
+    flex: 1;
+    /* Distributes vertical space equally */
+    display: flex;
+    justify-content: center;
+    /* Centers horizontally */
+    align-items: center;
+    /* Centers vertically */
+    width: 100%;
+}
+
+/* Microphone Container - holds the icon and waves */
+.microphone-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    /* Reset margins as flex container handles alignment */
+    /* Set a responsive width for the container */
+    width: 90%;
+    /* Start with a percentage of parent width */
+    max-width: 280px;
+    /* Max size for larger screens (desktop/tablet portrait) */
+    aspect-ratio: 1 / 1;
+    /* Maintain square aspect ratio */
+}
+
+/* Microphone Icon - ensure it fills its container */
 .mic-icon {
-    width: 225px;
-    /* Výchozí šířka pro desktop */
-    height: auto;
-    /* Zachování poměru stran */
+    width: 100%;
+    /* Fills the .microphone-container */
+    height: 100%;
+    /* Fills the .microphone-container */
+    object-fit: contain;
+    /* Ensures the image scales down to fit without cropping */
     cursor: pointer;
     transition: opacity 0.3s;
     background: transparent;
-    border: 2px solid red;
-    /* Debug okraj */
     border-radius: 10px;
     padding: 5px;
+    /* Subtle padding inside border-radius */
     box-sizing: border-box;
     opacity: 1;
     position: relative;
     z-index: 1;
     display: block;
-    margin: 0 auto;
-    /* Centrování */
+    border: none;
+    /* Removed debug border */
 }
 
 .mic-icon.recording {
     opacity: 0.7;
 }
 
+/* Waves - ensure they scale with the container */
 .wave {
     position: absolute;
     width: 100%;
@@ -43,29 +89,15 @@ body {
     opacity: 0;
     transform: scale(0);
     z-index: 0;
-    top: 50%;
-    left: 50%;
-    transform-origin: center;
-    margin-top: -50%;
-    /* Polovina výšky pro centrování */
-    margin-left: -50%;
-    /* Polovina šířky pro centrování */
+    top: 0;
+    /* Align with container top */
+    left: 0;
+    /* Align with container left */
+    transform-origin: center center;
+    /* Ensure scaling from center */
 }
 
-.microphone-container {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
-    flex: 1;
-    max-width: 225px;
-    /* Pevná šířka */
-    margin-left: auto;
-    margin-right: auto;
-    /* Centrování */
-}
-
+/* Animations for waves */
 .microphone-container.recording .wave1 {
     animation: wave 2s infinite ease-out;
 }
@@ -90,162 +122,194 @@ body {
     }
 }
 
-/* Obecné mobilní nastavení */
-@media (max-width: 768px) {
-    .mic-icon {
-        width: 150px;
-        border-color: green;
-        /* Debug */
-    }
-
-    .wave {
-        border-width: 2px;
-    }
-
-    .microphone-container {
-        max-width: 150px;
-        /* Pevná šířka */
-    }
-}
-
-/* Svislá orientace - zvětšení na výšku */
-@media (orientation: portrait) and (max-width: 768px) {
-    .mic-icon {
-        width: 225px;
-        /* Pevná šířka */
-        height: 225px;
-        /* Stejná výška jako šířka */
-        border-color: blue;
-        /* Debug */
-    }
-
-    .wave {
-        border-width: 4px;
-    }
-
-    .microphone-container {
-        max-width: 225px;
-        /* Pevná šířka */
-    }
-}
-
-/* Ležatá orientace - zmenšení */
-@media (orientation: landscape) and (max-width: 768px) {
-    .mic-icon {
-        width: 70px;
-        /* Další zmenšení */
-        border-color: yellow;
-        /* Debug */
-    }
-
-    .wave {
-        border-width: 2px;
-    }
-
-    .microphone-container {
-        max-width: 70px;
-        /* Pevná šířka */
-        margin-bottom: 40px;
-        /* Zajistí prostor pro text dole */
-    }
-}
-
-/* Zbytek kódu zkrácen */
-body#index #output {
-    margin-top: -40px !important;
+/* Output text area */
+#output {
     text-align: center;
-    transition: opacity 0.2s ease-in-out;
-}
-
-html {
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-}
-
-.container {
-    width: 100%;
-    height: 100%;
+    font-size: 1.1em;
+    /* Consistent with output-text */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    min-height: 50px;
+    /* Ensures space */
+    width: 80%;
+    /* Responsive width */
+    max-width: 600px;
+    /* Max width for readability */
+    background-color: rgba(200, 200, 200, 0.2);
+    padding: 10px;
+    margin: 10px auto;
+    /* Centers horizontally, provides vertical spacing */
+    border-left: 5px solid #005EA6;
+    border-radius: 5px;
     display: flex;
-    flex-direction: column;
-    position: relative;
-    max-width: none !important;
-    box-sizing: border-box;
-}
-
-.dashboard {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 10px;
+    /* Use flex to center content inside */
     align-items: center;
     justify-content: center;
 }
 
-.dashboard iframe {
+#output.visible {
+    opacity: 1;
+}
+
+#output.hidden {
+    opacity: 0;
+}
+
+#output:empty {
+    display: none !important;
+}
+
+/* Hide if no content */
+
+.output-text {
+    color: #005EA6;
+    text-align: center;
+    font-size: 1.1em;
+    word-wrap: break-word;
     width: 100%;
-    max-width: 1200px;
-    height: 700px;
-    min-height: 500px;
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    line-height: 1.2em;
 }
 
-header {
-    background-color: #2c3e50;
-    color: white;
-    padding: 1rem;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+/* Notification styles */
+.notification-informative {
+    border-left-color: #005EA6 !important;
+    background-color: rgba(0, 94, 166, 0.1) !important;
 }
 
-header h1 {
-    font-size: 2rem;
+.notification-informative .output-text {
+    color: #005EA6 !important;
+    font-size: 1.1em !important;
 }
 
-header p {
-    font-size: 1rem;
-    opacity: 0.9;
-    margin-top: 0.5rem;
+.notification-urgent {
+    border-left-color: #D83B01 !important;
+    background-color: rgba(216, 59, 1, 0.1) !important;
 }
 
-.chytre-ja-section {
-    background-color: #e6f0fa;
-    border-radius: 8px;
-    margin: 2rem auto;
-    padding: 1.5rem;
-    max-width: 1200px;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+.notification-urgent .output-text {
+    color: #D83B01 !important;
+    font-size: 1.1em !important;
 }
 
-.chytre-ja-section h2 {
-    color: #2c3e50;
-    font-size: 2rem;
-    margin-bottom: 1rem;
+.notification-ok {
+    border-left-color: #107C10 !important;
+    background-color: rgba(16, 124, 16, 0.1) !important;
 }
 
-.chytre-ja-section p {
-    font-size: 1.1rem;
-    color: #666;
+.notification-ok .output-text {
+    color: #107C10 !important;
+    font-size: 1.1em !important;
 }
 
-main {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+.notification-warning {
+    border-left-color: #F28C38 !important;
+    background-color: rgba(242, 140, 56, 0.1) !important;
 }
 
+.notification-warning .output-text {
+    color: #F28C38 !important;
+    font-size: 1.1em !important;
+}
+
+#output::before,
+#output.notification-informative::before,
+#output.default-text::before,
+#output.notification-urgent::before,
+#output.notification-ok::before,
+#output.notification-warning::before {
+    content: none;
+}
+
+/* Install button/PWA elements */
+#install-button,
+#installPWA {
+    display: none;
+}
+
+/* General mobile adjustments */
+@media (max-width: 768px) {
+    .microphone-container {
+        width: 70vw;
+        /* Take 70% of viewport width */
+        max-width: 250px;
+        /* Prevent it from becoming too big on wider tablets in portrait */
+    }
+}
+
+/* Portrait specific mobile adjustments */
+@media (orientation: portrait) and (max-width: 768px) {
+    .microphone-container {
+        width: 70vw;
+        /* Larger on portrait to make it feel "not too small" */
+        max-width: 250px;
+        /* Keep it from stretching too wide on very wide phones/small tablets */
+        /* Removed fixed height here, aspect-ratio on container handles it */
+    }
+
+    .mic-icon {
+        padding: 5px;
+        /* Keep padding */
+    }
+}
+
+/* Landscape specific mobile adjustments */
+@media (orientation: landscape) and (max-width: 768px) {
+    .microphone-container {
+        width: 30vw;
+        /* Smaller on landscape, as height is limited */
+        max-width: 150px;
+        /* Ensure it doesn't get too wide on larger landscape screens */
+        max-height: 70vh;
+        /* Constrain by height to prevent it from being too big vertically */
+    }
+
+    .mic-icon {
+        padding: 2px;
+        /* Less padding to maximize icon size in smaller container */
+    }
+
+    #output {
+        font-size: 0.9em;
+        /* Smaller font on landscape for more space */
+        margin-top: 10px;
+        /* Adjust spacing */
+    }
+}
+
+/* Adjustments for specific body classes to ensure responsiveness */
+body.vyroba .container {
+    max-width: 100%;
+    /* Ensure it's not restricted by old fixed widths */
+    padding: 10px;
+    /* Add some padding for mobile */
+}
+
+body.vyroba .microphone-container {
+    max-width: 200px;
+    /* Set a reasonable max width for the icon in vyroba mode */
+    width: 60vw;
+    /* Responsive width */
+}
+
+body.vyroba .input-section input {
+    width: 80%;
+    /* Make input fields responsive */
+    max-width: 300px;
+    /* Max width for readability */
+}
+
+body.vyroba .input-section .buttons-container {
+    flex-wrap: wrap;
+    /* Allow buttons to wrap */
+}
+
+/* Other existing styles from your original styles.css are preserved below this point */
 .marketplace-grid {
     display: flex;
     flex-direction: row;
-    /* Výchozí rozložení vedle sebe pro desktop */
     flex-wrap: wrap;
-    /* Umožní přechod na nový řádek, pokud je málo místa */
     gap: 1.5rem;
     justify-content: center;
-    /* Centrování položek */
 }
 
 .marketplace-item {
@@ -259,7 +323,6 @@ main {
     flex-direction: column;
     align-items: center;
     width: 250px;
-    /* Pevná šířka pro konzistentní rozložení na desktopu */
 }
 
 .marketplace-item:hover {
@@ -293,9 +356,7 @@ main {
     margin-top: 0.5rem;
     transition: background-color 0.2s;
     width: 100%;
-    /* Zajistí, že tlačítko využije dostupný prostor */
     max-width: 200px;
-    /* Omezení šířky pro lepší vzhled */
 }
 
 .marketplace-item button:hover {
@@ -424,217 +485,261 @@ footer {
     display: block;
 }
 
-#output {
-    margin-top: -20px;
+body#index #output {
+    margin-top: -40px !important;
     text-align: center;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-    min-height: 50px;
-    width: 80%;
-    max-width: 600px;
-    background-color: rgba(200, 200, 200, 0.2);
-    padding: 10px;
-    margin: 10px auto;
-    border-left: 5px solid #005EA6;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    transition: opacity 0.2s ease-in-out;
 }
 
-#output.visible {
-    opacity: 1;
-}
-
-#output.hidden {
-    opacity: 0;
-}
-
-#output:empty {
-    background-image: none;
-    display: none !important;
-}
-
-#output.default-text {
-    background-color: rgba(0, 94, 166, 0.1);
-    border-left-color: #005EA6;
-    padding: 10px;
-    margin: 10px auto;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.output-text {
-    color: #005EA6;
-    text-align: center;
-    font-size: 1.1em;
-    word-wrap: break-word;
+html {
     width: 100%;
-    line-height: 1.2em;
+    height: 100%;
+    overflow-x: hidden;
 }
 
-.notification-informative {
-    border-left-color: #005EA6 !important;
-    background-color: rgba(0, 94, 166, 0.1) !important;
-}
-
-.notification-informative .output-text {
-    color: #005EA6 !important;
-    font-size: 1.1em !important;
-}
-
-.notification-urgent {
-    border-left-color: #D83B01 !important;
-    background-color: rgba(216, 59, 1, 0.1) !important;
-}
-
-.notification-urgent .output-text {
-    color: #D83B01 !important;
-    font-size: 1.1em !important;
-}
-
-.notification-ok {
-    border-left-color: #107C10 !important;
-    background-color: rgba(16, 124, 16, 0.1) !important;
-}
-
-.notification-ok .output-text {
-    color: #107C10 !important;
-    font-size: 1.1em !important;
-}
-
-.notification-warning {
-    border-left-color: #F28C38 !important;
-    background-color: rgba(242, 140, 56, 0.1) !important;
-}
-
-.notification-warning .output-text {
-    color: #F28C38 !important;
-    font-size: 1.1em !important;
-}
-
-#output::before,
-#output.notification-informative::before,
-#output.default-text::before,
-#output.notification-urgent::before,
-#output.notification-ok::before,
-#output.notification-warning::before {
-    content: none;
-}
-
-#install-button {
-    display: none;
-}
-
-#installPWA {
-    display: none;
-}
-
-body.vyroba .container {
-    max-width: 600px;
-    margin: 0 auto;
-    text-align: center;
-    padding: 20px;
-}
-
-body.vyroba .header {
+.dashboard {
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
     align-items: center;
     justify-content: center;
-    margin-bottom: 20px;
 }
 
-body.vyroba .header img {
-    height: 40px;
-    margin-right: 10px;
+.dashboard iframe {
+    width: 100%;
+    max-width: 1200px;
+    height: 700px;
+    min-height: 500px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-body.vyroba .header h1 {
-    margin: 0;
-    font-size: 24px;
+header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-body.vyroba .agent-section {
-    margin: 20px 0;
+header h1 {
+    font-size: 2rem;
 }
 
-body.vyroba .agent-section p {
-    margin-bottom: 20px;
+header p {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin-top: 0.5rem;
 }
 
-body.vyroba .microphone-container {
-    margin: 20px 0;
+.chytre-ja-section {
+    background-color: #e6f0fa;
+    border-radius: 8px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    max-width: 1200px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-body.vyroba .microphone-container img {
-    height: 100px;
-    display: block;
-    margin: 0 auto 10px;
+.chytre-ja-section h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 1rem;
 }
 
-body.vyroba .microphone-container p {
-    margin: 5px 0;
+.chytre-ja-section p {
+    font-size: 1.1rem;
+    color: #666;
 }
 
-body.vyroba .input-section {
-    margin: 20px 0;
+main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
 }
 
-body.vyroba .input-section input {
-    display: block;
-    padding: 8px;
+.marketplace-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+.marketplace-item {
+    background-color: #e6f0fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    text-align: center;
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 250px;
+}
+
+.marketplace-item:hover {
+    transform: translateY(-5px);
+}
+
+.marketplace-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.marketplace-item h3 {
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+    color: #2c3e50;
+}
+
+.marketplace-item p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.marketplace-item button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background-color 0.2s;
+    width: 100%;
+    max-width: 200px;
+}
+
+.marketplace-item button:hover {
+    background-color: #2980b9;
+}
+
+.agent-section {
+    background-color: #e6f0fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.agent-section h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.agent-section p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.input-section {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.input-section input {
+    padding: 0.8rem;
     width: 300px;
     font-size: 1.2rem;
-    margin: 0 auto 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
-body.vyroba .input-section .buttons-container {
+.input-section .buttons-container {
     display: flex;
     gap: 0.5rem;
-    justify-content: center;
 }
 
-body.vyroba .input-section button {
-    display: block;
-    padding: 5px 10px;
-    background-color: #007bff;
+.input-section button {
+    padding: 0.5rem 1rem;
+    background-color: #3498db;
     color: white;
     border: none;
+    border-radius: 4px;
     cursor: pointer;
-    margin: 0;
+    transition: background-color 0.2s;
 }
 
-body.vyroba .input-section button:hover {
-    background-color: #0056b3;
+.input-section button:hover {
+    background-color: #2980b9;
 }
 
-body.vyroba #output {
-    margin: 20px 0;
-    padding: 10px;
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    display: none;
+.dynamic-content {
+    margin-top: 1rem;
+    text-align: left;
 }
 
-body.vyroba .back-button {
-    display: block;
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    text-align: center;
+.dynamic-content h3 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.dynamic-content ul {
+    list-style-type: disc;
+    padding-left: 2rem;
+}
+
+.dynamic-content li {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.dynamic-content a {
+    color: #3498db;
     text-decoration: none;
-    width: 100px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
-body.vyroba .back-button:hover {
-    background-color: #0056b3;
+.dynamic-content a:hover {
+    text-decoration: underline;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 1rem;
+    color: #3498db;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+footer {
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.status {
+    font-size: 18px;
+    color: #005EA6;
+    font-weight: normal;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.hint {
+    font-size: 15px;
+    color: #333;
+    display: block;
 }
 
 body#looker-results {
@@ -690,26 +795,18 @@ iframe {
 
     .marketplace-grid {
         flex-direction: column;
-        /* Pod sebou na mobilu */
         align-items: center;
-        /* Centrování položek */
         padding-bottom: 80px;
-        /* Prostor pod posledním agentem nad patičkou */
     }
 
     .marketplace-item {
         width: 100%;
-        /* Plná šířka na mobilu */
         padding: 0.5rem;
-        /* Menší padding pro úsporu místa */
     }
 
     .marketplace-item button {
         display: block;
-        /* Zajistí zobrazení tlačítka */
         width: 80%;
-        /* Přizpůsobení šířky na mobilu */
         margin: 0.5rem auto;
-        /* Centrování */
     }
 }
