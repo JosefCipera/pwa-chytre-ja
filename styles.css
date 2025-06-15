@@ -26,17 +26,22 @@ body {
     flex-direction: column;
 }
 
-.top-half,
-.bottom-half {
-    flex: 1;
-    /* Distributes vertical space equally */
+/* New main interface container for microphone and output text */
+.main-interface {
+    flex-grow: 1;
+    /* Allow it to take up available vertical space */
     display: flex;
+    flex-direction: column;
+    /* Stack mic and text vertically */
     justify-content: center;
-    /* Centers horizontally */
+    /* Center content vertically */
     align-items: center;
-    /* Centers vertically within their half */
+    /* Center content horizontally */
     width: 100%;
+    padding: 2vh 10px;
+    /* Add some vertical padding to push content from edges */
 }
+
 
 /* Microphone Container - holds the icon and waves */
 .microphone-container {
@@ -45,17 +50,15 @@ body {
     justify-content: center;
     align-items: center;
     margin: 0 auto;
-    /* Center horizontally */
+    /* Center horizontally within its flex parent */
     width: 90%;
     /* Default responsive width */
     max-width: 280px;
     /* Max size for larger screens (desktop/tablet portrait) */
     aspect-ratio: 1 / 1;
     /* Maintain square aspect ratio */
-    margin-top: 5vh;
-    /* Push it down from top edge of top-half */
-    margin-bottom: auto;
-    /* Allow bottom-half to use more space */
+    margin-bottom: 2vh;
+    /* Space below microphone, pulls text closer */
 }
 
 /* Microphone Icon - ensure it fills its container */
@@ -146,6 +149,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
+    /* Prevent from shrinking too much */
 }
 
 #output.visible {
@@ -269,10 +274,15 @@ body {
 
 /* Landscape specific mobile adjustments (wider screens, limited height) */
 @media (orientation: landscape) and (max-width: 768px) {
+    .main-interface {
+        padding: 1vh 10px;
+        /* Reduce vertical padding for landscape */
+    }
+
     .microphone-container {
-        width: 8vw;
+        width: 10vw;
         /* Drastically reduced width for landscape */
-        max-width: 40px;
+        max-width: 60px;
         /* Even smaller max width for landscape */
         max-height: 25vh;
         /* Constrain by height (was 30vh) */
