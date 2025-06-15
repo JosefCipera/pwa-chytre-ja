@@ -33,15 +33,13 @@ body {
     display: flex;
     flex-direction: column;
     /* Stack mic and text vertically */
-    justify-content: center;
-    /* Center content vertically */
+    justify-content: flex-start;
+    /* Align content to the top of its space */
     align-items: center;
     /* Center content horizontally */
     width: 100%;
-    padding-top: 10vh;
-    /* Adjust vertical padding to move content down on desktop */
-    padding-bottom: 5vh;
-    /* Adjust vertical padding */
+    padding: 0 10px;
+    /* Horizontal padding only, vertical managed by margins */
 }
 
 
@@ -59,6 +57,8 @@ body {
     /* Max size for larger screens (desktop/tablet portrait) */
     aspect-ratio: 1 / 1;
     /* Maintain square aspect ratio */
+    margin-top: 15vh;
+    /* Push it down from top edge of .main-interface on desktop */
     margin-bottom: 2vh;
     /* Space below microphone, pulls text closer */
 }
@@ -149,6 +149,10 @@ body {
     justify-content: center;
     flex-shrink: 0;
     /* Prevent from shrinking too much */
+    margin-top: 2vh;
+    /* Space above text */
+    margin-bottom: auto;
+    /* Push text upwards in .main-interface */
 }
 
 #output.visible {
@@ -241,6 +245,8 @@ body {
         width: 60vw;
         /* General mobile width */
         max-width: 200px;
+        margin-top: 5vh;
+        /* Push mic down a bit on mobile */
         margin-bottom: 1vh;
         /* Smaller margin below mic */
     }
@@ -249,6 +255,8 @@ body {
         font-size: 0.9em;
         margin-top: 1vh;
         /* Smaller margin above output */
+        margin-bottom: auto;
+        /* Rely on auto to push content up */
     }
 }
 
@@ -264,6 +272,8 @@ body {
         width: 70vw;
         /* Larger on portrait */
         max-width: 250px;
+        margin-top: 10vh;
+        /* Push mic down on portrait to center it better */
         margin-bottom: 1vh;
         /* Small margin below mic to bring text closer */
     }
@@ -285,12 +295,14 @@ body {
     }
 
     .microphone-container {
-        width: 7vw;
+        width: 6vw;
         /* Drastically reduced width for landscape */
-        max-width: 35px;
+        max-width: 30px;
         /* Even smaller max width for landscape */
-        max-height: 20vh;
-        /* Constrain by height (was 25vh) */
+        max-height: 15vh;
+        /* Constrain by height */
+        margin-top: auto;
+        /* Push to top of .main-interface */
         margin-bottom: 0.1vh;
         /* Very small margin below mic */
     }
@@ -301,13 +313,13 @@ body {
     }
 
     #output {
-        font-size: 0.5em;
-        /* Smallest font for landscape (was 0.55em) */
-        line-height: 0.9em;
+        font-size: 0.45em;
+        /* Smallest font for landscape */
+        line-height: 0.8em;
         /* Tighter line height for more lines */
         margin-top: 0vh;
         /* Very close to mic */
-        min-height: 25px;
+        min-height: 20px;
         /* Ensure a minimal height for text */
     }
 }
@@ -397,7 +409,7 @@ body#looker-results .content iframe {
 
     body#looker-results .content iframe {
         /* Adjusted for portrait to fit button */
-        height: calc(100vh - 120px);
+        height: calc(100vh - 150px);
         min-height: 300px;
         /* Minimum for very small screens */
     }
@@ -405,9 +417,10 @@ body#looker-results .content iframe {
     /* Specific adjustments for landscape Looker view */
     @media (orientation: landscape) {
         body#looker-results .content iframe {
-            height: calc(100vh - 70px);
+            height: calc(100vh - 100px);
             /* Adjusted height for landscape to fit button */
-            min-height: 250px;
+            min-height: 200px;
+            /* Smallest min-height for landscape iframe */
         }
     }
 
@@ -461,6 +474,10 @@ main {
     max-width: 1200px;
     margin: 2rem auto;
     padding: 0 1rem;
+    min-height: 100vh;
+    /* Ensure main takes up at least full viewport height */
+    overflow-y: auto;
+    /* Allow scrolling for content within main */
 }
 
 .marketplace-grid {
