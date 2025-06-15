@@ -250,16 +250,21 @@ body {
         padding: 5px;
         /* Keep padding */
     }
+
+    #output {
+        margin-top: -20px;
+        /* Pull the output text closer to the microphone */
+    }
 }
 
 /* Landscape specific mobile adjustments */
 @media (orientation: landscape) and (max-width: 768px) {
     .microphone-container {
-        width: 30vw;
-        /* Smaller on landscape, as height is limited */
-        max-width: 150px;
-        /* Ensure it doesn't get too wide on larger landscape screens */
-        max-height: 70vh;
+        width: 40vw;
+        /* Slightly larger in landscape for better visibility */
+        max-width: 180px;
+        /* Adjust max width for landscape */
+        max-height: 60vh;
         /* Constrain by height to prevent it from being too big vertically */
     }
 
@@ -509,11 +514,19 @@ html {
 .dashboard iframe {
     width: 100%;
     max-width: 1200px;
-    height: 700px;
+    height: 100vh;
+    /* Full viewport height */
+    max-height: 800px;
+    /* But not too tall on very large screens */
     min-height: 500px;
+    /* Minimum height */
     border: none;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    /* Center horizontally */
+    display: block;
+    /* Ensure margin auto works */
 }
 
 header {
@@ -757,11 +770,22 @@ body#looker-results .content {
     padding: 20px;
 }
 
-iframe {
+body#looker-results .content iframe {
+    /* Specific styles for iframes within looker-results content */
     width: 100%;
-    height: 700px;
+    height: 100vh;
+    /* Try to take full viewport height initially */
+    max-height: 800px;
+    /* Limit max height for very large screens */
+    min-height: 500px;
+    /* Ensure a minimum height */
     border: none;
-    overflow-y: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    /* Center horizontally */
+    display: block;
+    /* Ensure margin auto works */
 }
 
 #back-button {
@@ -785,8 +809,10 @@ iframe {
         padding: 10px;
     }
 
-    iframe {
+    body#looker-results .content iframe {
         height: 500px;
+        /* Smaller height on mobile */
+        min-height: 300px;
     }
 
     #back-button {
