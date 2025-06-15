@@ -38,8 +38,10 @@ body {
     align-items: center;
     /* Center content horizontally */
     width: 100%;
-    padding: 2vh 10px;
-    /* Add some vertical padding to push content from edges */
+    padding-top: 10vh;
+    /* Adjust vertical padding to move content down on desktop */
+    padding-bottom: 5vh;
+    /* Adjust vertical padding */
 }
 
 
@@ -140,10 +142,6 @@ body {
     padding: 10px;
     margin: 0 auto;
     /* Center horizontally */
-    margin-top: 2vh;
-    /* Push it down from top of bottom-half */
-    margin-bottom: auto;
-    /* Push it up to the top of bottom-half */
     border-left: 5px solid #005EA6;
     border-radius: 5px;
     display: flex;
@@ -233,33 +231,39 @@ body {
 
 /* General mobile adjustments (max-width: 768px applies to both portrait and landscape <=768px) */
 @media (max-width: 768px) {
+    .main-interface {
+        padding-top: 5vh;
+        /* Move content higher on mobile */
+        padding-bottom: 2vh;
+    }
+
     .microphone-container {
         width: 60vw;
         /* General mobile width */
         max-width: 200px;
-        margin-top: 3vh;
-        /* Slightly less margin-top for mobile */
-        margin-bottom: auto;
-        /* Rely on auto to push content up */
+        margin-bottom: 1vh;
+        /* Smaller margin below mic */
     }
 
     #output {
-        font-size: 0.95em;
-        margin-top: 2vh;
-        /* Keep some space above output */
-        margin-bottom: auto;
-        /* Rely on auto to push content up */
+        font-size: 0.9em;
+        margin-top: 1vh;
+        /* Smaller margin above output */
     }
 }
 
 /* Portrait specific mobile adjustments (narrower screens) */
 @media (orientation: portrait) and (max-width: 768px) {
+    .main-interface {
+        padding-top: 8vh;
+        /* Move content higher on portrait */
+        padding-bottom: 5vh;
+    }
+
     .microphone-container {
         width: 70vw;
         /* Larger on portrait */
         max-width: 250px;
-        margin-top: 5vh;
-        /* Larger margin-top for portrait to push it down more */
         margin-bottom: 1vh;
         /* Small margin below mic to bring text closer */
     }
@@ -275,20 +279,19 @@ body {
 /* Landscape specific mobile adjustments (wider screens, limited height) */
 @media (orientation: landscape) and (max-width: 768px) {
     .main-interface {
-        padding: 1vh 10px;
+        padding-top: 1vh;
         /* Reduce vertical padding for landscape */
+        padding-bottom: 1vh;
     }
 
     .microphone-container {
-        width: 10vw;
+        width: 7vw;
         /* Drastically reduced width for landscape */
-        max-width: 60px;
+        max-width: 35px;
         /* Even smaller max width for landscape */
-        max-height: 25vh;
-        /* Constrain by height (was 30vh) */
-        margin-top: auto;
-        /* Push to top of top-half */
-        margin-bottom: 0.2vh;
+        max-height: 20vh;
+        /* Constrain by height (was 25vh) */
+        margin-bottom: 0.1vh;
         /* Very small margin below mic */
     }
 
@@ -298,14 +301,14 @@ body {
     }
 
     #output {
-        font-size: 0.55em;
-        /* Smallest font for landscape (was 0.6em) */
-        line-height: 1em;
+        font-size: 0.5em;
+        /* Smallest font for landscape (was 0.55em) */
+        line-height: 0.9em;
         /* Tighter line height for more lines */
-        margin-top: 0.1vh;
+        margin-top: 0vh;
         /* Very close to mic */
-        margin-bottom: auto;
-        /* Push text to bottom of bottom-half */
+        min-height: 25px;
+        /* Ensure a minimal height for text */
     }
 }
 
@@ -366,7 +369,6 @@ body#looker-results .content iframe {
     margin: 0 auto;
     /* Center horizontally */
     display: block;
-    /* Relying on body's overflow-y: auto for scrolling */
 }
 
 #back-button {
@@ -394,7 +396,6 @@ body#looker-results .content iframe {
     }
 
     body#looker-results .content iframe {
-        /* On mobile, use calc for height, ensuring space for button and padding */
         /* Adjusted for portrait to fit button */
         height: calc(100vh - 120px);
         min-height: 300px;
