@@ -41,8 +41,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0;
-    /* Reset margins as flex container handles alignment */
+    margin: 0 auto;
+    /* Center horizontally */
+    margin-top: 5vh;
+    /* Push microphone slightly down from the top edge */
     /* Set a responsive width for the container */
     width: 90%;
     /* Start with a percentage of parent width */
@@ -243,7 +245,8 @@ body {
         /* Larger on portrait to make it feel "not too small" */
         max-width: 250px;
         /* Keep it from stretching too wide on very wide phones/small tablets */
-        /* Removed fixed height here, aspect-ratio on container handles it */
+        margin-top: 5vh;
+        /* Keep the top margin for portrait as well */
     }
 
     .mic-icon {
@@ -260,12 +263,14 @@ body {
 /* Landscape specific mobile adjustments */
 @media (orientation: landscape) and (max-width: 768px) {
     .microphone-container {
-        width: 40vw;
-        /* Slightly larger in landscape for better visibility */
-        max-width: 180px;
+        width: 35vw;
+        /* Further reduced width for landscape */
+        max-width: 160px;
         /* Adjust max width for landscape */
         max-height: 60vh;
         /* Constrain by height to prevent it from being too big vertically */
+        margin-top: 2vh;
+        /* Smaller top margin for landscape to save vertical space */
     }
 
     .mic-icon {
@@ -276,8 +281,8 @@ body {
     #output {
         font-size: 0.9em;
         /* Smaller font on landscape for more space */
-        margin-top: 10px;
-        /* Adjust spacing */
+        margin-top: 5px;
+        /* Adjust spacing, pull slightly closer */
     }
 }
 
@@ -490,274 +495,15 @@ footer {
     display: block;
 }
 
-body#index #output {
-    margin-top: -40px !important;
-    text-align: center;
-    transition: opacity 0.2s ease-in-out;
-}
-
-html {
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-}
-
-.dashboard {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-}
-
-.dashboard iframe {
-    width: 100%;
-    max-width: 1200px;
-    height: 100vh;
-    /* Full viewport height */
-    max-height: 800px;
-    /* But not too tall on very large screens */
-    min-height: 500px;
-    /* Minimum height */
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin: 0 auto;
-    /* Center horizontally */
-    display: block;
-    /* Ensure margin auto works */
-}
-
-header {
-    background-color: #2c3e50;
-    color: white;
-    padding: 1rem;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-header h1 {
-    font-size: 2rem;
-}
-
-header p {
-    font-size: 1rem;
-    opacity: 0.9;
-    margin-top: 0.5rem;
-}
-
-.chytre-ja-section {
-    background-color: #e6f0fa;
-    border-radius: 8px;
-    margin: 2rem auto;
-    padding: 1.5rem;
-    max-width: 1200px;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.chytre-ja-section h2 {
-    color: #2c3e50;
-    font-size: 2rem;
-    margin-bottom: 1rem;
-}
-
-.chytre-ja-section p {
-    font-size: 1.1rem;
-    color: #666;
-}
-
-main {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-}
-
-.marketplace-grid {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    justify-content: center;
-}
-
-.marketplace-item {
-    background-color: #e6f0fa;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
-    text-align: center;
-    transition: transform 0.2s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 250px;
-}
-
-.marketplace-item:hover {
-    transform: translateY(-5px);
-}
-
-.marketplace-item img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 4px;
-}
-
-.marketplace-item h3 {
-    margin: 0.5rem 0;
-    font-size: 1.2rem;
-    color: #2c3e50;
-}
-
-.marketplace-item p {
-    color: #666;
-    font-size: 0.9rem;
-}
-
-.marketplace-item button {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 0.5rem;
-    transition: background-color 0.2s;
-    width: 100%;
-    max-width: 200px;
-}
-
-.marketplace-item button:hover {
-    background-color: #2980b9;
-}
-
-.agent-section {
-    background-color: #e6f0fa;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-.agent-section h2 {
-    color: #2c3e50;
-    font-size: 2rem;
-    margin-bottom: 1rem;
-}
-
-.agent-section p {
-    font-size: 1.1rem;
-    color: #666;
-    margin-bottom: 1rem;
-}
-
-.input-section {
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    align-items: center;
-}
-
-.input-section input {
-    padding: 0.8rem;
-    width: 300px;
-    font-size: 1.2rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.input-section .buttons-container {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.input-section button {
-    padding: 0.5rem 1rem;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.input-section button:hover {
-    background-color: #2980b9;
-}
-
-.dynamic-content {
-    margin-top: 1rem;
-    text-align: left;
-}
-
-.dynamic-content h3 {
-    color: #2c3e50;
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.dynamic-content ul {
-    list-style-type: disc;
-    padding-left: 2rem;
-}
-
-.dynamic-content li {
-    font-size: 1rem;
-    color: #333;
-    margin-bottom: 0.5rem;
-}
-
-.dynamic-content a {
-    color: #3498db;
-    text-decoration: none;
-}
-
-.dynamic-content a:hover {
-    text-decoration: underline;
-}
-
-.back-link {
-    display: inline-block;
-    margin-top: 1rem;
-    color: #3498db;
-    text-decoration: none;
-    font-size: 1rem;
-}
-
-.back-link:hover {
-    text-decoration: underline;
-}
-
-footer {
-    background-color: #2c3e50;
-    color: white;
-    text-align: center;
-    padding: 1rem;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
-
-.status {
-    font-size: 18px;
-    color: #005EA6;
-    font-weight: normal;
-    display: block;
-    margin-bottom: 10px;
-}
-
-.hint {
-    font-size: 15px;
-    color: #333;
-    display: block;
-}
-
 body#looker-results {
     justify-content: flex-start;
     padding: 0;
+    display: flex;
+    /* Added for flexbox layout */
+    flex-direction: column;
+    /* Stack children vertically */
+    min-height: 100vh;
+    /* Ensure body takes at least full viewport height */
 }
 
 body#looker-results .content {
@@ -768,13 +514,19 @@ body#looker-results .content {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    flex: 1;
+    /* Allow content to grow and take available space */
+    overflow-y: auto;
+    /* Allow scrolling within content if needed */
 }
 
 body#looker-results .content iframe {
     /* Specific styles for iframes within looker-results content */
     width: 100%;
-    height: 100vh;
-    /* Try to take full viewport height initially */
+    height: auto;
+    /* Allow height to be determined by flex-grow */
+    flex-grow: 1;
+    /* Make iframe take up available vertical space */
     max-height: 800px;
     /* Limit max height for very large screens */
     min-height: 500px;
@@ -782,8 +534,8 @@ body#looker-results .content iframe {
     border: none;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin: 0 auto;
-    /* Center horizontally */
+    margin: 0 auto 20px auto;
+    /* Center horizontally, add bottom margin to separate from button */
     display: block;
     /* Ensure margin auto works */
 }
@@ -798,6 +550,7 @@ body#looker-results .content iframe {
     border-radius: 5px;
     cursor: pointer;
     align-self: center;
+    /* Center button within flex container */
 }
 
 #back-button:hover {
@@ -810,8 +563,8 @@ body#looker-results .content iframe {
     }
 
     body#looker-results .content iframe {
-        height: 500px;
-        /* Smaller height on mobile */
+        height: auto;
+        /* Auto height with flex-grow */
         min-height: 300px;
     }
 
