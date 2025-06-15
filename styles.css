@@ -295,12 +295,12 @@ body {
     }
 
     .microphone-container {
-        width: 6vw;
-        /* Drastically reduced width for landscape */
-        max-width: 30px;
-        /* Even smaller max width for landscape */
-        max-height: 15vh;
-        /* Constrain by height */
+        width: 5vw;
+        /* Drastically reduced width for landscape (was 6vw) */
+        max-width: 25px;
+        /* Even smaller max width for landscape (was 30px) */
+        max-height: 10vh;
+        /* Constrain by height (was 15vh) */
         margin-top: auto;
         /* Push to top of .main-interface */
         margin-bottom: 0.1vh;
@@ -313,12 +313,12 @@ body {
     }
 
     #output {
-        font-size: 0.45em;
-        /* Smallest font for landscape */
-        line-height: 0.8em;
-        /* Tighter line height for more lines */
+        font-size: 0.4em;
+        /* Smallest font for landscape (was 0.45em) */
+        line-height: 0.7em;
+        /* Tighter line height for more lines (was 0.8em) */
         margin-top: 0vh;
-        /* Very close to mic */
+        /* Very close to mic (was 0.1vh) */
         min-height: 20px;
         /* Ensure a minimal height for text */
     }
@@ -409,7 +409,7 @@ body#looker-results .content iframe {
 
     body#looker-results .content iframe {
         /* Adjusted for portrait to fit button */
-        height: calc(100vh - 150px);
+        height: calc(100vh - 120px);
         min-height: 300px;
         /* Minimum for very small screens */
     }
@@ -417,10 +417,9 @@ body#looker-results .content iframe {
     /* Specific adjustments for landscape Looker view */
     @media (orientation: landscape) {
         body#looker-results .content iframe {
-            height: calc(100vh - 100px);
+            height: calc(100vh - 70px);
             /* Adjusted height for landscape to fit button */
-            min-height: 200px;
-            /* Smallest min-height for landscape iframe */
+            min-height: 250px;
         }
     }
 
@@ -487,6 +486,9 @@ main {
     gap: 1.5rem;
     justify-content: center;
     padding: 1rem;
+    /* Add padding to prevent content from touching edges */
+    margin-top: 20px;
+    /* Add some margin from the top of the main container */
 }
 
 .marketplace-item {
@@ -500,6 +502,8 @@ main {
     flex-direction: column;
     align-items: center;
     width: 250px;
+    margin-bottom: 20px;
+    /* Add bottom margin to separate items */
 }
 
 .marketplace-item:hover {
