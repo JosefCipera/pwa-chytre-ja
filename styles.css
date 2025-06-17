@@ -333,18 +333,18 @@ body#marketplace-page main {
 /* Landscape specific mobile adjustments (wider screens, limited height) */
 @media (orientation: landscape) and (max-width: 768px) {
     .main-interface {
-        padding-top: 1vh;
-        /* Reduce vertical padding for landscape to move up */
+        padding-top: 3vh;
+        /* Reduce vertical padding for landscape to move up (was 1vh) */
         padding-bottom: 1vh;
     }
 
     .microphone-container {
-        width: 5vw;
-        /* Smaller width for landscape (was 15vw) */
-        max-width: 30px;
-        /* Smaller max width for landscape (was 80px) */
-        max-height: 10vh;
-        /* Smaller max-height (was 30vh) */
+        width: 15vw;
+        /* Smaller width for landscape (was 5vw) */
+        max-width: 100px;
+        /* Smaller max width for landscape (was 30px) */
+        max-height: 35vh;
+        /* Smaller max-height (was 10vh) */
         margin-top: auto;
         /* Push to top of .main-interface */
         margin-bottom: 0.5vh;
@@ -359,8 +359,8 @@ body#marketplace-page main {
     #output {
         font-size: 0.45em;
         /* Adjusted font size for landscape */
-        line-height: 0.7em;
-        /* Tighter line height for more lines */
+        line-height: 0.65em;
+        /* Tighter line height for more lines (was 0.7em) */
         margin-top: 0.5vh;
         /* Very close to mic */
         min-height: 20px;
