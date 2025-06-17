@@ -130,7 +130,26 @@ body#marketplace-page main {
 
 .mic-icon.recording {
     opacity: 0.7;
+    animation: pulse 1.5s infinite ease-in-out;
+    /* Přidáno pulzování */
 }
+
+/* Animace pro pulzování mikrofonu */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    /* Mírné zvětšení */
+    100% {
+        transform: scale(1);
+    }
+}
+
 
 /* Waves - ensure they scale with the container */
 .wave {
@@ -323,6 +342,7 @@ body#marketplace-page main {
     }
 
     #output {
+        font-size: 0.9em;
         margin-top: 1vh;
         /* Pull text closer to mic */
         margin-bottom: 5vh;
@@ -333,38 +353,37 @@ body#marketplace-page main {
 /* Landscape specific mobile adjustments (wider screens, limited height) */
 @media (orientation: landscape) and (max-width: 768px) {
     .main-interface {
-        padding-top: 3vh;
-        /* Reduce vertical padding for landscape to move up (was 1vh) */
+        padding-top: 5vh;
+        /* Posunout celý blok výše (bylo 3vh) */
         padding-bottom: 1vh;
     }
 
     .microphone-container {
-        width: 15vw;
-        /* Smaller width for landscape (was 5vw) */
-        max-width: 100px;
-        /* Smaller max width for landscape (was 30px) */
-        max-height: 35vh;
-        /* Smaller max-height (was 10vh) */
-        margin-top: auto;
-        /* Push to top of .main-interface */
+        width: 10vw;
+        /* Menší šířka pro landscape (bylo 15vw) */
+        max-width: 80px;
+        /* Menší max šířka pro landscape (bylo 100px) */
+        max-height: 25vh;
+        /* Upravená max výška */
+        margin-top: 0;
+        /* Bez okraje shora, aby ho řídil padding-top na main-interface */
         margin-bottom: 0.5vh;
-        /* Very small margin below mic */
+        /* Malý okraj pod mikrofonem */
     }
 
     .mic-icon {
         padding: 0px;
-        /* No padding */
     }
 
     #output {
         font-size: 0.45em;
-        /* Adjusted font size for landscape */
+        /* Zachována velikost fontu */
         line-height: 0.65em;
-        /* Tighter line height for more lines (was 0.7em) */
-        margin-top: 0.5vh;
-        /* Very close to mic */
+        /* Zachována výška řádku */
+        margin-top: 1vh;
+        /* Mírný okraj nad textem (bylo 0.5vh) */
         min-height: 20px;
-        /* Ensure a minimal height for text */
+        /* Zajistit minimální výšku textu */
     }
 }
 
