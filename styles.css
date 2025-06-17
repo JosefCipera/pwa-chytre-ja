@@ -141,10 +141,10 @@ body#marketplace-page main {
     }
 
     50% {
-        transform: scale(1.1);
+        transform: scale(1.2);
     }
 
-    /* Zvětšeno pro lepší viditelnost */
+    /* Zvětšeno pro lepší viditelnost (bylo 1.1) */
     100% {
         transform: scale(1);
     }
@@ -353,17 +353,17 @@ body#marketplace-page main {
 /* Landscape specific mobile adjustments (wider screens, limited height) */
 @media (orientation: landscape) and (max-width: 768px) {
     .main-interface {
-        padding-top: 8vh;
-        /* Posunout celý blok výrazně výše (bylo 5vh) */
+        padding-top: 10vh;
+        /* Posunout celý blok výrazně výše (bylo 8vh) */
         padding-bottom: 1vh;
     }
 
     .microphone-container {
-        width: 15vw;
-        /* Menší šířka pro landscape (bylo 10vw) */
-        max-width: 100px;
-        /* Menší max šířka pro landscape (bylo 80px) */
-        max-height: 30vh;
+        width: 8vw;
+        /* Menší šířka pro landscape (bylo 15vw) */
+        max-width: 60px;
+        /* Menší max šířka pro landscape (bylo 100px) */
+        max-height: 20vh;
         /* Upravená max výška */
         margin-top: 0;
         /* Bez okraje shora, aby ho řídil padding-top na main-interface */
@@ -381,7 +381,7 @@ body#marketplace-page main {
         line-height: 0.65em;
         /* Zachována výška řádku */
         margin-top: 1vh;
-        /* Mírný okraj nad textem (bylo 0.5vh) */
+        /* Mírný okraj nad textem */
         min-height: 20px;
         /* Zajistit minimální výšku textu */
     }
