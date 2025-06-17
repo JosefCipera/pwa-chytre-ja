@@ -7,7 +7,7 @@
     box-sizing: border-box;
 }
 
-/* General app layout */
+/* General app layout - default for index.html (microphone page) and others without specific ID */
 html,
 body {
     margin: 0;
@@ -21,19 +21,53 @@ body {
 
 /* Specific rule for marketplace.html to allow scrolling */
 body#marketplace-page {
+    height: 100%;
+    /* Make it take full viewport height */
     overflow-y: auto;
     /* Allow vertical scrolling specifically for the marketplace page */
-    height: auto;
-    /* Allow body height to adjust to content */
-    min-height: 100vh;
-    /* Ensure it takes at least full viewport height */
+    display: flex;
+    /* Make body a flex container to manage its children */
+    flex-direction: column;
+    /* Stack children vertically */
 }
 
-.container {
-    height: 100%;
-    width: 100%;
+/* Ensure header, section, footer don't shrink, and main takes available space within marketplace-page body */
+body#marketplace-page header,
+body#marketplace-page .chytre-ja-section,
+body#marketplace-page footer {
+    flex-shrink: 0;
+    /* Prevent these sections from shrinking when main grows */
+}
+
+/* Main content area styling (global, applies to all pages unless overridden) */
+main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    /* Top/bottom margin for separation, auto for horizontal centering */
+    padding: 0 1rem;
+    /* Horizontal padding */
+    min-height: auto;
+    /* Allow height to adjust to content (override default 100vh if present) */
+    overflow-y: visible;
+    /* Default to visible, let parent handle overflow */
     display: flex;
+    /* Always make main a flex container */
     flex-direction: column;
+    /* Stack children vertically */
+    flex-grow: 1;
+    /* Allow main to take available vertical space by default */
+}
+
+/* Override for main element specifically when it's inside marketplace-page */
+body#marketplace-page main {
+    flex-grow: 1;
+    /* Allow main to take all remaining vertical space */
+    margin-top: 0;
+    /* Remove top margin conflict with header/section */
+    margin-bottom: 0;
+    /* Remove bottom margin conflict with footer */
+    /* The min-height:auto and overflow-y:visible from the global main rule will apply here,
+       which is exactly what we want, as the body#marketplace-page handles the scroll. */
 }
 
 /* New main interface container for microphone and output text */
@@ -486,9 +520,9 @@ main {
     max-width: 1200px;
     margin: 2rem auto;
     padding: 0 1rem;
-    min-height: 100vh;
+    min-height: auto;
     /* Ensure main takes up at least full viewport height */
-    overflow-y: auto;
+    overflow-y: visible;
     /* Allow scrolling for content within main */
     display: flex;
     /* Make main a flex container */
@@ -669,6 +703,14 @@ footer {
     color: white;
     text-align: center;
     padding: 1rem;
+    /* Removed fixed positioning from global footer */
+    /* position: fixed; */
+    /* bottom: 0; */
+    /* width: 100%; */
+}
+
+/* Apply fixed positioning only to pages NOT marketplace-page */
+body:not(#marketplace-page) footer {
     position: fixed;
     bottom: 0;
     width: 100%;
