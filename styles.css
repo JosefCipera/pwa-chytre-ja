@@ -141,10 +141,10 @@ body#marketplace-page main {
     }
 
     50% {
-        transform: scale(1.05);
+        transform: scale(1.1);
     }
 
-    /* Mírné zvětšení */
+    /* Zvětšeno pro lepší viditelnost */
     100% {
         transform: scale(1);
     }
@@ -353,17 +353,17 @@ body#marketplace-page main {
 /* Landscape specific mobile adjustments (wider screens, limited height) */
 @media (orientation: landscape) and (max-width: 768px) {
     .main-interface {
-        padding-top: 5vh;
-        /* Posunout celý blok výše (bylo 3vh) */
+        padding-top: 8vh;
+        /* Posunout celý blok výrazně výše (bylo 5vh) */
         padding-bottom: 1vh;
     }
 
     .microphone-container {
-        width: 10vw;
-        /* Menší šířka pro landscape (bylo 15vw) */
-        max-width: 80px;
-        /* Menší max šířka pro landscape (bylo 100px) */
-        max-height: 25vh;
+        width: 15vw;
+        /* Menší šířka pro landscape (bylo 10vw) */
+        max-width: 100px;
+        /* Menší max šířka pro landscape (bylo 80px) */
+        max-height: 30vh;
         /* Upravená max výška */
         margin-top: 0;
         /* Bez okraje shora, aby ho řídil padding-top na main-interface */
@@ -430,8 +430,8 @@ body#looker-results .content {
     /* Allow content to grow */
     overflow-y: auto;
     /* Allow this container to scroll */
-    height: 100%;
-    /* Explicitly set height for flex-grow to work as expected */
+    height: auto;
+    /* Zrušeno fixní 100% výška, spoléháme na flex-grow */
 }
 
 body#looker-results .content iframe {
@@ -472,20 +472,17 @@ body#looker-results .content iframe {
         padding: 5px;
     }
 
-    /* Adjusted for portrait and landscape to ensure button visibility and graf fit */
     body#looker-results .content iframe {
-        height: calc(100vh - 120px);
-        /* Default height for smaller screens (portrait) */
-        min-height: 250px;
-        /* Minimum for very small screens */
+        /* Odstraněny calc() výšky, spoléháme na rodiče a overflow */
+        height: 100%;
+        /* min-height: 250px; -- odstraněno */
     }
 
     @media (orientation: landscape) {
         body#looker-results .content iframe {
-            height: calc(100vh - 70px);
-            /* Smaller height for landscape to fit button */
-            min-height: 180px;
-            /* Smallest min-height for landscape iframe */
+            height: 100%;
+            /* Spoléháme na rodiče a overflow */
+            /* min-height: 180px; -- odstraněno */
         }
     }
 
