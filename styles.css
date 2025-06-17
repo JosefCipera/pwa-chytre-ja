@@ -14,9 +14,19 @@ body {
     padding: 0;
     height: 100%;
     overflow: hidden;
-    /* Prevents unwanted scrolling for the main body */
+    /* Prevents unwanted scrolling for the main body by default */
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
+}
+
+/* Specific rule for marketplace.html to allow scrolling */
+body#marketplace-page {
+    overflow-y: auto;
+    /* Allow vertical scrolling specifically for the marketplace page */
+    height: auto;
+    /* Allow body height to adjust to content */
+    min-height: 100vh;
+    /* Ensure it takes at least full viewport height */
 }
 
 .container {
@@ -57,7 +67,7 @@ body {
     /* Max size for larger screens (desktop/tablet portrait) */
     aspect-ratio: 1 / 1;
     /* Maintain square aspect ratio */
-    margin-top: 15vh;
+    margin-top: 10vh;
     /* Push it down from top edge of .main-interface on desktop */
     margin-bottom: 2vh;
     /* Space below microphone, pulls text closer */
@@ -295,12 +305,12 @@ body {
     }
 
     .microphone-container {
-        width: 5vw;
-        /* Drastically reduced width for landscape (was 6vw) */
-        max-width: 25px;
-        /* Even smaller max width for landscape (was 30px) */
-        max-height: 10vh;
-        /* Constrain by height (was 15vh) */
+        width: 4vw;
+        /* Drastically reduced width for landscape (was 5vw) */
+        max-width: 20px;
+        /* Even smaller max width for landscape (was 25px) */
+        max-height: 8vh;
+        /* Constrain by height (was 10vh) */
         margin-top: auto;
         /* Push to top of .main-interface */
         margin-bottom: 0.1vh;
@@ -313,14 +323,14 @@ body {
     }
 
     #output {
-        font-size: 0.4em;
-        /* Smallest font for landscape (was 0.45em) */
-        line-height: 0.7em;
-        /* Tighter line height for more lines (was 0.8em) */
+        font-size: 0.35em;
+        /* Smallest font for landscape (was 0.4em) */
+        line-height: 0.6em;
+        /* Tighter line height for more lines (was 0.7em) */
         margin-top: 0vh;
         /* Very close to mic (was 0.1vh) */
-        min-height: 20px;
-        /* Ensure a minimal height for text */
+        min-height: 15px;
+        /* Ensure a minimal height for text (was 20px) */
     }
 }
 
@@ -365,8 +375,8 @@ body#looker-results .content {
     padding: 10px;
     flex-grow: 1;
     /* Allow content to grow */
-    overflow-y: hidden;
-    /* Hide content overflow, let body handle it */
+    overflow-y: auto;
+    /* Allow this container to scroll */
     height: 100%;
     /* Explicitly set height for flex-grow to work as expected */
 }
@@ -378,14 +388,16 @@ body#looker-results .content iframe {
     border: none;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin: 0 auto;
-    /* Center horizontally */
+    margin: 0 auto 5px auto;
+    /* Center horizontally, add bottom margin to separate from button */
     display: block;
 }
 
 #back-button {
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 5px;
+    /* Reduced margin to bring it closer to iframe */
+    margin-bottom: 5px;
+    /* Reduced margin to give more space */
     padding: 10px 20px;
     background-color: #007bff;
     color: white;
@@ -407,19 +419,20 @@ body#looker-results .content iframe {
         padding: 5px;
     }
 
+    /* Adjusted for portrait and landscape to ensure button visibility and graf fit */
     body#looker-results .content iframe {
-        /* Adjusted for portrait to fit button */
         height: calc(100vh - 120px);
-        min-height: 300px;
+        /* Default height for smaller screens (portrait) */
+        min-height: 250px;
         /* Minimum for very small screens */
     }
 
-    /* Specific adjustments for landscape Looker view */
     @media (orientation: landscape) {
         body#looker-results .content iframe {
             height: calc(100vh - 70px);
-            /* Adjusted height for landscape to fit button */
-            min-height: 250px;
+            /* Smaller height for landscape to fit button */
+            min-height: 180px;
+            /* Smallest min-height for landscape iframe */
         }
     }
 
@@ -477,6 +490,10 @@ main {
     /* Ensure main takes up at least full viewport height */
     overflow-y: auto;
     /* Allow scrolling for content within main */
+    display: flex;
+    /* Make main a flex container */
+    flex-direction: column;
+    /* Stack children vertically */
 }
 
 .marketplace-grid {
@@ -489,6 +506,10 @@ main {
     /* Add padding to prevent content from touching edges */
     margin-top: 20px;
     /* Add some margin from the top of the main container */
+    padding-bottom: 100px;
+    /* Added padding to ensure scroll space for marketplace on mobile */
+    flex-grow: 1;
+    /* Allow grid to grow and take available space */
 }
 
 .marketplace-item {
@@ -502,6 +523,7 @@ main {
     flex-direction: column;
     align-items: center;
     width: 250px;
+    /* Default width for desktop */
     margin-bottom: 20px;
     /* Add bottom margin to separate items */
 }
@@ -664,4 +686,21 @@ footer {
     font-size: 15px;
     color: #333;
     display: block;
+}
+
+@media (max-width: 768px) {
+    .marketplace-item {
+        width: 100%;
+        /* Make items full width on small screens for better stacking */
+        max-width: 300px;
+        /* Optional: limit max width for larger phones/small tablets */
+        margin-left: auto;
+        /* Center items if max-width is applied */
+        margin-right: auto;
+    }
+
+    .marketplace-grid {
+        padding: 1rem;
+        /* Ensure consistent padding on mobile */
+    }
 }
