@@ -126,7 +126,18 @@ body#marketplace-page main {
     z-index: 1;
     display: block;
     border: none;
+    outline: none;
+    /* Odstranění modrého rámečku při focusu/klepnutí */
 }
+
+.mic-icon:focus,
+.mic-icon:active {
+    outline: none;
+    /* Zajištění odstranění outline i pro aktivní/fokus stav */
+    border: none;
+    /* Zajištění odstranění border i pro aktivní/fokus stav, pokud by se nějaký objevil */
+}
+
 
 .mic-icon.recording {
     opacity: 0.7;
@@ -144,7 +155,7 @@ body#marketplace-page main {
         transform: scale(1.2);
     }
 
-    /* Zvětšeno pro lepší viditelnost (bylo 1.1) */
+    /* Zvětšeno pro lepší viditelnost */
     100% {
         transform: scale(1);
     }
@@ -360,9 +371,9 @@ body#marketplace-page main {
 
     .microphone-container {
         width: 8vw;
-        /* Menší šířka pro landscape (bylo 15vw) */
+        /* Menší šířka pro landscape */
         max-width: 60px;
-        /* Menší max šířka pro landscape (bylo 100px) */
+        /* Menší max šířka pro landscape */
         max-height: 20vh;
         /* Upravená max výška */
         margin-top: 0;
@@ -436,8 +447,8 @@ body#looker-results .content {
 
 body#looker-results .content iframe {
     width: 100%;
-    height: 100%;
-    /* Take 100% of parent's height (.content) */
+    height: calc(100vh - 120px);
+    /* Vypočítaná výška pro portrait */
     border: none;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -473,16 +484,14 @@ body#looker-results .content iframe {
     }
 
     body#looker-results .content iframe {
-        /* Odstraněny calc() výšky, spoléháme na rodiče a overflow */
-        height: 100%;
-        /* min-height: 250px; -- odstraněno */
+        height: calc(100vh - 120px);
+        /* Pro mobilní zařízení (portrait) */
     }
 
     @media (orientation: landscape) {
         body#looker-results .content iframe {
-            height: 100%;
-            /* Spoléháme na rodiče a overflow */
-            /* min-height: 180px; -- odstraněno */
+            height: calc(100vh - 70px);
+            /* Menší výška pro landscape, aby se vešel tlačítko */
         }
     }
 

@@ -11,8 +11,7 @@
 <body>
   <main>
     <section class="agent-section">
-      <h2>AI Agent Finance </h2>
-      <p>Chrání firmu do budoucna, hodnotí správně přínosy produktů, investice atd.</p>
+      <!-- Nadpis a podnadpis odstraněny -->
 
       <div class="voice-section">
         <div class="microphone-container">
@@ -22,7 +21,7 @@
           <div class="wave wave3"></div>
         </div>
       </div>
-      <div class="voice-status" id="status">Klikněte na mikrofon a mluvte</div>
+      <div class="voice-status" id="status"></div> <!-- Text odstraněn -->
 
       <div class="input-section">
         <input type="text" id="userInput" placeholder="Napište finanční stabilita, nebo kontrola dat.">
@@ -32,7 +31,7 @@
       <div id="output" class="hidden"></div>
       <div class="dynamic-content" id="dynamicContent"></div>
 
-      <button onclick="goBackToMarketplace()" class="back-link">Zpět na Marketplace</button>
+      <!-- Tlačítko Zpět na Marketplace odstraněno -->
     </section>
   </main>
 
@@ -131,16 +130,16 @@
         showOutput("Chyba při hlasovém rozpoznávání: " + event.error, "urgent");
         microphoneContainer.classList.remove('recording');
         micIcon.classList.remove('recording');
-        statusElement.textContent = "Klikněte pro hlasové ovládání";
+        statusElement.textContent = ""; // Nastaveno na prázdný řetězec
         statusElement.classList.remove('pulsate');
       };
 
       recognition.onend = () => {
         microphoneContainer.classList.remove('recording');
         micIcon.classList.remove('recording');
-        statusElement.textContent = "Klikněte pro hlasové ovládání";
+        statusElement.textContent = ""; // Nastaveno na prázdný řetězec
         statusElement.classList.remove('pulsate');
-        showOutput("Hlasové rozpoznávání ukončeno.", "informative");
+        // showOutput("Hlasové rozpoznávání ukončeno.", "informative"); // Tento řádek jsem zakomentoval/odstranil, aby se nezobrazoval
       };
 
       recognition.start();
