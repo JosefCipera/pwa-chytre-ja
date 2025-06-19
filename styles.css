@@ -97,7 +97,7 @@ body#marketplace-page main {
     /* Center horizontally within its flex parent */
     width: 90%;
     /* Default responsive width */
-    max-width: 280px;
+    max-width: 200px;
     /* Max size for larger screens (desktop/tablet portrait) */
     aspect-ratio: 1 / 1;
     /* Maintain square aspect ratio */
