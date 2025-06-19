@@ -345,7 +345,7 @@ body#marketplace-page main {
     .microphone-container {
         width: 70vw;
         /* Larger on portrait */
-        max-width: 250px;
+        max-width: 200px;
         margin-top: 10vh;
         /* Push mic down on portrait to center it better */
         margin-bottom: 1vh;
@@ -364,7 +364,7 @@ body#marketplace-page main {
 /* Landscape specific mobile adjustments (wider screens, limited height) */
 @media (orientation: landscape) and (max-width: 768px) {
     .main-interface {
-        padding-top: 10vh;
+        padding-top: 12vh;
         /* Posunout celý blok výrazně výše (bylo 8vh) */
         padding-bottom: 1vh;
     }
