@@ -97,7 +97,7 @@ body#marketplace-page main {
     /* Center horizontally within its flex parent */
     width: 90%;
     /* Default responsive width */
-    max-width: 280px;
+    max-width: 200px;
     /* Max size for larger screens (desktop/tablet portrait) */
     aspect-ratio: 1 / 1;
     /* Maintain square aspect ratio */
@@ -130,12 +130,11 @@ body#marketplace-page main {
     /* Odstranění modrého rámečku při focusu/klepnutí */
 }
 
-/* Klíčová pravidla pro odstranění obrysu při fokusu a aktivním stavu */
 .mic-icon:focus,
 .mic-icon:active {
-    outline: none !important;
+    outline: none;
     /* Zajištění odstranění outline i pro aktivní/fokus stav */
-    border: none !important;
+    border: none;
     /* Zajištění odstranění border i pro aktivní/fokus stav, pokud by se nějaký objevil */
 }
 
@@ -363,40 +362,39 @@ body#marketplace-page main {
 }
 
 /* Landscape specific mobile adjustments (wider screens, limited height) */
-/* Vracím se k obecnějším nastavením, které by měly být stabilnější */
 @media (orientation: landscape) and (max-width: 768px) {
     .main-interface {
-        padding-top: 5vh;
-        /* Standardní padding pro mobil */
-        padding-bottom: 2vh;
+        padding-top: 10vh;
+        /* Posunout celý blok výrazně výše (bylo 8vh) */
+        padding-bottom: 1vh;
     }
 
     .microphone-container {
-        width: 50vw;
-        /* Obecnější šířka */
-        max-width: 150px;
-        /* Max šířka */
-        max-height: 30vh;
-        /* Max výška */
-        margin-top: 5vh;
-        /* Standardní okraj */
-        margin-bottom: 1vh;
+        width: 8vw;
+        /* Menší šířka pro landscape */
+        max-width: 60px;
+        /* Menší max šířka pro landscape */
+        max-height: 20vh;
+        /* Upravená max výška */
+        margin-top: 0;
+        /* Bez okraje shora, aby ho řídil padding-top na main-interface */
+        margin-bottom: 0.5vh;
+        /* Malý okraj pod mikrofonem */
     }
 
     .mic-icon {
-        padding: 5px;
-        /* Ponechávám původní padding */
+        padding: 0px;
     }
 
     #output {
-        font-size: 0.9em;
-        /* Standardní mobilní font size */
-        line-height: 1.2em;
-        /* Standardní line height */
+        font-size: 0.45em;
+        /* Zachována velikost fontu */
+        line-height: 0.65em;
+        /* Zachována výška řádku */
         margin-top: 1vh;
-        /* Standardní okraj */
-        min-height: 50px;
-        /* Standardní min výška */
+        /* Mírný okraj nad textem */
+        min-height: 20px;
+        /* Zajistit minimální výšku textu */
     }
 }
 
@@ -411,6 +409,258 @@ body.vyroba .microphone-container {
     width: 60vw;
 }
 
+body.vyroba .input-section input {
+    width: 80%;
+    max-width: 300px;
+}
+
+body.vyroba .input-section .buttons-container {
+    flex-wrap: wrap;
+}
+
+/* --- LOOKER DASHBOARD STYLES --- */
+body#looker-results {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    /* Make body exactly 100% viewport height */
+    overflow-y: auto;
+    /* Allow body to scroll if content overflows */
+}
+
+body#looker-results .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px;
+    flex-grow: 1;
+    /* Allow content to grow */
+    overflow-y: auto;
+    /* Allow this container to scroll */
+    height: auto;
+    /* Zrušeno fixní 100% výška, spoléháme na flex-grow */
+}
+
+body#looker-results .content iframe {
+    width: 100%;
+    height: calc(100vh - 120px);
+    /* Vypočítaná výška pro portrait */
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 0 auto 5px auto;
+    /* Center horizontally, add bottom margin to separate from button */
+    display: block;
+}
+
+#back-button {
+    margin-top: 5px;
+    /* Reduced margin to bring it closer to iframe */
+    margin-bottom: 5px;
+    /* Reduced margin to give more space */
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: center;
+    /* Center button within flex container */
+    flex-shrink: 0;
+    /* Prevent button from shrinking */
+}
+
+#back-button:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    body#looker-results .content {
+        padding: 5px;
+    }
+
+    body#looker-results .content iframe {
+        height: calc(100vh - 120px);
+        /* Pro mobilní zařízení (portrait) */
+    }
+
+    @media (orientation: landscape) {
+        body#looker-results .content iframe {
+            height: calc(100vh - 70px);
+            /* Menší výška pro landscape, aby se vešel tlačítko */
+        }
+    }
+
+    #back-button {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+}
+
+/* --- OTHER EXISTING STYLES (from your original styles.css) --- */
+header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    font-size: 2rem;
+}
+
+header p {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin-top: 0.5rem;
+}
+
+.chytre-ja-section {
+    background-color: #e6f0fa;
+    border-radius: 8px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    max-width: 1200px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.chytre-ja-section h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.chytre-ja-section p {
+    font-size: 1.1rem;
+    color: #666;
+}
+
+main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    min-height: auto;
+    /* Ensure main takes up at least full viewport height */
+    overflow-y: visible;
+    /* Allow scrolling for content within main */
+    display: flex;
+    /* Make main a flex container */
+    flex-direction: column;
+    /* Stack children vertically */
+}
+
+.marketplace-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+    padding: 1rem;
+    /* Add padding to prevent content from touching edges */
+    margin-top: 20px;
+    /* Add some margin from the top of the main container */
+    padding-bottom: 100px;
+    /* Added padding to ensure scroll space for marketplace on mobile */
+    flex-grow: 1;
+    /* Allow grid to grow and take available space */
+}
+
+.marketplace-item {
+    background-color: #e6f0fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    text-align: center;
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 250px;
+    /* Default width for desktop */
+    margin-bottom: 20px;
+    /* Add bottom margin to separate items */
+}
+
+.marketplace-item:hover {
+    transform: translateY(-5px);
+}
+
+.marketplace-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.marketplace-item h3 {
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+    color: #2c3e50;
+}
+
+.marketplace-item p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.marketplace-item button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background-color 0.2s;
+    width: 100%;
+    max-width: 200px;
+}
+
+.marketplace-item button:hover {
+    background-color: #2980b9;
+}
+
+.agent-section {
+    background-color: #e6f0fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.agent-section h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.agent-section p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.input-section {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.input-section input {
+    padding: 0.8rem;
+    width: 300px;
+    font-size: 1.2rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
 .input-section .buttons-container {
     display: flex;
     gap: 0.5rem;
@@ -423,13 +673,7 @@ body.vyroba .microphone-container {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-top: 0.5rem;
-    /* Vráceno na původní hodnotu */
-    font-size: 1rem;
-    /* Vráceno na původní hodnotu */
     transition: background-color 0.2s;
-    width: 100%;
-    max-width: 200px;
 }
 
 .input-section button:hover {
@@ -525,95 +769,5 @@ body:not(#marketplace-page) footer {
     .marketplace-grid {
         padding: 1rem;
         /* Ensure consistent padding on mobile */
-    }
-}
-
-/* Styling for the iframe wrapper page (e.g., iframe.html) */
-body#iframe-looker-wrapper header,
-body#iframe-looker-wrapper footer {
-    display: none;
-    /* Hide header and footer on this page across all sizes */
-}
-
-/* --- LOOKER DASHBOARD STYLES (vylepšená responsivita) --- */
-body#looker-results {
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    /* Make body exactly 100% viewport height */
-    overflow-y: auto;
-    /* Allow body to scroll if content overflows */
-}
-
-body#looker-results .content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 10px;
-    flex-grow: 1;
-    /* Allow content to grow */
-    overflow-y: auto;
-    /* Allow this container to scroll */
-    height: auto;
-    /* Zrušeno fixní 100% výška, spoléháme na flex-grow */
-}
-
-body#looker-results .content iframe {
-    width: 100%;
-    height: calc(100vh - 120px);
-    /* Vypočítaná výška pro portrait */
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin: 0 auto 5px auto;
-    /* Center horizontally, add bottom margin to separate from button */
-    display: block;
-}
-
-#back-button {
-    margin-top: 5px;
-    /* Reduced margin to bring it closer to iframe */
-    margin-bottom: 5px;
-    /* Reduced margin to give more space */
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    align-self: center;
-    /* Center button within flex container */
-    flex-shrink: 0;
-    /* Prevent button from shrinking */
-}
-
-#back-button:hover {
-    background-color: #0056b3;
-}
-
-@media (max-width: 768px) {
-    body#looker-results .content {
-        padding: 5px;
-    }
-
-    body#looker-results .content iframe {
-        height: calc(100vh - 120px);
-        /* Pro mobilní zařízení (portrait) */
-    }
-
-    @media (orientation: landscape) {
-        body#looker-results .content iframe {
-            height: calc(100vh - 70px);
-            /* Menší výška pro landscape, aby se vešel tlačítko */
-        }
-    }
-
-    #back-button {
-        margin-top: 5px;
-        margin-bottom: 5px;
     }
 }
