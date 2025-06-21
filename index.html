@@ -21,8 +21,15 @@
         <div class="wave wave2"></div>
         <div class="wave wave3"></div>
       </div>
+      <!-- Zde je přidán chybějící status element -->
+      <div class="voice-status" id="status">Klikněte na mikrofon a mluvte</div>
       <div id="output" class="default-text">
         <span class="output-text">"Řekněte příkaz: hadr".</span>
+      </div>
+      <!-- Přidán input pro textové zadání a tlačítko (pokud jej chceš mít i na index.html) -->
+      <div class="input-section">
+        <input type="text" id="userInput" placeholder="Napište příkaz, např. Kontrola dat.">
+        <button onclick="processCommand()">Provést příkaz</button>
       </div>
     </div>
   </div>
