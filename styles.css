@@ -78,7 +78,7 @@ body#marketplace-page main {
     flex-direction: column;
     /* Stack mic, status, output, input vertically */
     justify-content: center;
-    /* Vertikálně vystředit obsah */
+    /* **VYCENTRUJE OBSAH VERTIKÁLNĚ NA CELÉ OBRAZOVCE** */
     align-items: center;
     /* Horizontálně vystředit obsah */
     width: 100%;
@@ -93,9 +93,11 @@ body#marketplace-page main {
     justify-content: center;
     align-items: center;
     width: 200px;
+    /* Ponecháno na 200px */
     height: 200px;
+    /* Ponecháno na 200px */
     margin: 0 auto 20px auto;
-    /* Centrování, mezera pod mikrofonem */
+    /* Centrování, mezera pod mikrofonem - BEZ PEVNÉHO margin-top */
 }
 
 /* Microphone Icon - ensure it fills its container */
@@ -120,7 +122,7 @@ body#marketplace-page main {
     outline: none;
     /* Odstranění modrého rámečku při focusu/klepnutí */
     -webkit-tap-highlight-color: transparent;
-    /* Pro mobilní zařízení */
+    /* Pro mobilní zařízení - odstraní modrozelený čtverec */
 }
 
 /* Klíčová pravidla pro odstranění obrysu při fokusu a aktivním stavu */
@@ -434,26 +436,28 @@ body#marketplace-page main {
 /* Landscape specific mobile adjustments (wider screens, limited height) */
 @media (orientation: landscape) and (max-width: 768px) {
     .main-interface {
-        /* Optimalizace pro landscape: menší vertikální padding */
         padding-top: 2vh;
+        /* Optimalizace pro landscape: menší vertikální padding */
         padding-bottom: 2vh;
         justify-content: center;
         /* Vycentrování obsahu vertikálně v landscape */
     }
 
     .microphone-container {
-        width: 100px;
-        /* Menší mikrofon na landscape */
-        height: 100px;
+        width: 130px;
+        /* Zvětšeno pro lepší vzhled */
+        height: 130px;
+        /* Zvětšeno pro lepší vzhled */
         margin-top: 1vh;
         /* Menší okraj */
         margin-bottom: 5px;
     }
 
     #output {
-        font-size: 0.8em;
-        /* Menší font pro lepší čitelnost v landscape */
-        min-height: 30px;
+        font-size: 0.9em;
+        /* Upraven font size pro lepší čitelnost */
+        min-height: 40px;
+        /* Dostatečná min-height */
         margin-bottom: 10px;
     }
 
@@ -475,10 +479,10 @@ body#marketplace-page main {
         /* Input zabere co nejvíce místa */
         margin-bottom: 0;
         /* Bez spodního okraje */
-        padding: 8px 12px;
-        /* Menší padding pro input */
-        font-size: 0.9em;
-        /* Menší font pro input */
+        padding: 10px 12px;
+        /* Mírně větší padding pro input */
+        font-size: 1em;
+        /* Mírně větší font pro input */
     }
 
     .input-section button {
@@ -486,12 +490,12 @@ body#marketplace-page main {
         /* Tlačítko se přizpůsobí obsahu */
         flex-shrink: 0;
         /* Nescvrkne se */
-        padding: 8px 12px;
-        /* Menší padding pro tlačítko */
-        font-size: 0.9em;
-        /* Menší font pro tlačítko */
-        max-width: 120px;
-        /* Maximální šířka tlačítka */
+        padding: 10px 15px;
+        /* Mírně větší padding pro tlačítko */
+        font-size: 1em;
+        /* Mírně větší font pro tlačítko */
+        max-width: 150px;
+        /* Mírně větší max-width pro tlačítko */
     }
 }
 
