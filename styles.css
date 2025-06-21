@@ -21,6 +21,8 @@ body {
     /* Make body a flex container */
     flex-direction: column;
     /* Stack children vertically */
+    -webkit-tap-highlight-color: transparent;
+    /* Odstranění modrého obrysu při tapu na mobilu */
 }
 
 /* Specific rule for marketplace.html to allow scrolling */
@@ -76,12 +78,12 @@ body#marketplace-page main {
     flex-direction: column;
     /* Stack mic, status, output, input vertically */
     justify-content: center;
-    /* Center content vertically */
+    /* Vertikálně vystředit obsah */
     align-items: center;
-    /* Center content horizontally */
+    /* Horizontálně vystředit obsah */
     width: 100%;
     padding: 10px;
-    /* Overall padding */
+    /* Celkové vnitřní odsazení */
 }
 
 /* Microphone Container - holds the icon and waves */
@@ -90,7 +92,6 @@ body#marketplace-page main {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Zmenšeno na 200px a vystředěno */
     width: 200px;
     height: 200px;
     margin: 0 auto 20px auto;
@@ -118,6 +119,8 @@ body#marketplace-page main {
     border: none;
     outline: none;
     /* Odstranění modrého rámečku při focusu/klepnutí */
+    -webkit-tap-highlight-color: transparent;
+    /* Pro mobilní zařízení */
 }
 
 /* Klíčová pravidla pro odstranění obrysu při fokusu a aktivním stavu */
@@ -290,9 +293,9 @@ body#marketplace-page main {
     font-size: 1.1em;
     /* Větší font */
     transition: background-color 0.3s ease, transform 0.2s ease;
-    width: 80%;
-    /* Šířka tlačítka */
-    max-width: 250px;
+    width: 70%;
+    /* Mírně zmenšená šířka tlačítka */
+    max-width: 200px;
     /* Maximální šířka tlačítka */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     /* Jemný stín pro tlačítko */
@@ -385,8 +388,6 @@ body#marketplace-page main {
         /* Mezera pod mikrofonem */
     }
 
-    /* .voice-status { display: none; } */
-    /* Ujistíme se, že je skryto i zde */
     #output {
         font-size: 0.9em;
         width: 90%;
@@ -408,7 +409,8 @@ body#marketplace-page main {
     .input-section button {
         padding: 10px 20px;
         font-size: 1em;
-        width: 90%;
+        width: 80%;
+        /* Standardní šířka pro mobil */
     }
 }
 
@@ -435,24 +437,23 @@ body#marketplace-page main {
         /* Optimalizace pro landscape: menší vertikální padding */
         padding-top: 2vh;
         padding-bottom: 2vh;
-        justify-content: flex-start;
-        /* Zarovnání nahoru, aby se vešlo více obsahu */
+        justify-content: center;
+        /* Vycentrování obsahu vertikálně v landscape */
     }
 
     .microphone-container {
-        width: 120px;
-        /* Ještě menší mikrofon na landscape */
-        height: 120px;
-        margin-top: 2vh;
+        width: 100px;
+        /* Menší mikrofon na landscape */
+        height: 100px;
+        margin-top: 1vh;
         /* Menší okraj */
-        margin-bottom: 10px;
+        margin-bottom: 5px;
     }
 
-    /* .voice-status { display: none; } */
-    /* Ujistíme se, že je skryto i zde */
     #output {
-        font-size: 0.85em;
-        min-height: 35px;
+        font-size: 0.8em;
+        /* Menší font pro lepší čitelnost v landscape */
+        min-height: 30px;
         margin-bottom: 10px;
     }
 
@@ -474,6 +475,10 @@ body#marketplace-page main {
         /* Input zabere co nejvíce místa */
         margin-bottom: 0;
         /* Bez spodního okraje */
+        padding: 8px 12px;
+        /* Menší padding pro input */
+        font-size: 0.9em;
+        /* Menší font pro input */
     }
 
     .input-section button {
@@ -481,8 +486,12 @@ body#marketplace-page main {
         /* Tlačítko se přizpůsobí obsahu */
         flex-shrink: 0;
         /* Nescvrkne se */
-        padding: 10px 15px;
-        /* Menší padding */
+        padding: 8px 12px;
+        /* Menší padding pro tlačítko */
+        font-size: 0.9em;
+        /* Menší font pro tlačítko */
+        max-width: 120px;
+        /* Maximální šířka tlačítka */
     }
 }
 
