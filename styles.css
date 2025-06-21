@@ -97,7 +97,7 @@ body#marketplace-page main {
     height: 200px;
     /* Ponecháno na 200px */
     margin: 0 auto 20px auto;
-    /* Centrování, mezera pod mikrofonem - BEZ PEVNÉHO margin-top */
+    /* Centrování, mezera pod mikrofonem - **ODSTRANĚN PEVNÝ margin-top** */
 }
 
 /* Microphone Icon - ensure it fills its container */
@@ -295,10 +295,10 @@ body#marketplace-page main {
     font-size: 1.1em;
     /* Větší font */
     transition: background-color 0.3s ease, transform 0.2s ease;
-    width: 70%;
-    /* Mírně zmenšená šířka tlačítka */
-    max-width: 200px;
-    /* Maximální šířka tlačítka */
+    width: 60%;
+    /* **Zmenšená šířka tlačítka pro desktop** */
+    max-width: 180px;
+    /* **Maximální šířka tlačítka pro desktop** */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     /* Jemný stín pro tlačítko */
 }
@@ -439,26 +439,28 @@ body#marketplace-page main {
         padding-top: 2vh;
         /* Optimalizace pro landscape: menší vertikální padding */
         padding-bottom: 2vh;
-        justify-content: center;
-        /* Vycentrování obsahu vertikálně v landscape */
+        justify-content: space-evenly;
+        /* **Rovnoměrné rozložení obsahu vertikálně** */
     }
 
     .microphone-container {
-        width: 130px;
-        /* Zvětšeno pro lepší vzhled */
-        height: 130px;
-        /* Zvětšeno pro lepší vzhled */
+        width: 100px;
+        /* **Zmenšeno pro lepší fit** */
+        height: 100px;
+        /* **Zmenšeno pro lepší fit** */
         margin-top: 1vh;
         /* Menší okraj */
         margin-bottom: 5px;
     }
 
     #output {
-        font-size: 0.9em;
-        /* Upraven font size pro lepší čitelnost */
-        min-height: 40px;
-        /* Dostatečná min-height */
+        font-size: 0.8em;
+        /* **Menší font size pro lepší čitelnost** */
+        min-height: 30px;
+        /* **Menší min-height** */
         margin-bottom: 10px;
+        line-height: 1.1em;
+        /* **Těsnější řádkování** */
     }
 
     .input-section {
@@ -479,10 +481,10 @@ body#marketplace-page main {
         /* Input zabere co nejvíce místa */
         margin-bottom: 0;
         /* Bez spodního okraje */
-        padding: 10px 12px;
-        /* Mírně větší padding pro input */
-        font-size: 1em;
-        /* Mírně větší font pro input */
+        padding: 8px 10px;
+        /* **Menší padding pro input** */
+        font-size: 0.9em;
+        /* **Menší font pro input** */
     }
 
     .input-section button {
@@ -490,12 +492,12 @@ body#marketplace-page main {
         /* Tlačítko se přizpůsobí obsahu */
         flex-shrink: 0;
         /* Nescvrkne se */
-        padding: 10px 15px;
-        /* Mírně větší padding pro tlačítko */
-        font-size: 1em;
-        /* Mírně větší font pro tlačítko */
-        max-width: 150px;
-        /* Mírně větší max-width pro tlačítko */
+        padding: 8px 12px;
+        /* **Menší padding pro tlačítko** */
+        font-size: 0.9em;
+        /* **Menší font pro tlačítko** */
+        max-width: 100px;
+        /* **Zmenšená max-width pro tlačítko** */
     }
 }
 
@@ -572,20 +574,15 @@ body#looker-results .content iframe {
         padding: 5px;
     }
 
-    /* Adjusted for portrait and landscape to ensure button visibility and graf fit */
     body#looker-results .content iframe {
         height: calc(100vh - 120px);
-        /* Default height for smaller screens (portrait) */
-        min-height: 250px;
-        /* Minimum for very small screens */
+        /* Pro mobilní zařízení (portrait) */
     }
 
     @media (orientation: landscape) {
         body#looker-results .content iframe {
             height: calc(100vh - 70px);
-            /* Smaller height for landscape to fit button */
-            min-height: 180px;
-            /* Smallest min-height for landscape iframe */
+            /* Menší výška pro landscape, aby se vešel tlačítko */
         }
     }
 
