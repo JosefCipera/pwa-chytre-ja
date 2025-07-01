@@ -3,7 +3,8 @@
 // Konstanta pro URL vašeho Make.com webhooku
 // !!! DŮLEŽITÉ: TUTO URL MUSÍTE NAHRADIT SKUTEČNOU URL Z VAŠEHO MAKE.COM SCÉNÁŘE !!!
 // Získáte ji v Make.com po přidání modulu "Webhooks -> Custom webhook".
-const MAKE_WEBHOOK_URL = "https://hook.eu1.make.com/q9sdlfg0pcu4lhdbf31nknxx3689t2vc";
+// const MAKE_WEBHOOK_URL = "https://hook.eu1.make.com/q9sdlfg0pcu4lhdbf31nknxx3689t2vc";
+const MAKE_WEBHOOK_URL = "https://hook.eu1.make.com/4jibyt5oj7j96mnuaiow2mnofgpfhomo";
 
 // Reference na DOM elementy (ujistěte se, že ID v index.html jsou shodná)
 const microphoneIcon = document.getElementById('microphoneIcon');
